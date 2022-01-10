@@ -2,6 +2,15 @@
   "root": true,
   "ignorePatterns": ["**/*"],
   "plugins": ["@nrwl/nx"],
+  "rules": {
+    "no-alert": "error",
+    "no-debugger": "error",
+    "no-console": ["error", {}],
+    "no-warning-comments": [
+      "warn",
+      { "terms": ["todo"], "location": "anywhere" }
+    ]
+  },
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
