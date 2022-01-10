@@ -13,7 +13,7 @@
           "error",
           {
             "type": "attribute",
-            "prefix": "cleanArchitectureMonorepo",
+            "prefix": "app",
             "style": "camelCase"
           }
         ],
@@ -21,10 +21,18 @@
           "error",
           {
             "type": "element",
-            "prefix": "clean-architecture-monorepo",
+            "prefix": "app",
             "style": "kebab-case"
           }
-        ]
+        ],
+        "@angular-eslint/component-class-suffix": [
+          "error",
+          {
+            "suffixes": ["Page", "Component"]
+          }
+        ],
+        "@angular-eslint/no-empty-lifecycle-method": 0,
+        "@typescript-eslint/no-empty-function": 0
       }
     },
     {
