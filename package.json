@@ -52,7 +52,7 @@
     "@typescript-eslint/eslint-plugin": "~4.31.1",
     "@typescript-eslint/parser": "~4.31.1",
     "cypress": "^8.3.0",
-    "eslint": "7.22.0",
+    "eslint": "7.28.0",
     "eslint-config-prettier": "8.1.0",
     "eslint-plugin-cypress": "^2.10.3",
     "jest": "27.2.3",
