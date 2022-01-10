@@ -13,7 +13,7 @@
           "error",
           {
             "type": "attribute",
-            "prefix": "cleanArchitectureMonorepo",
+            "prefix": "app",
             "style": "camelCase"
           }
         ],
@@ -21,7 +21,7 @@
           "error",
           {
             "type": "element",
-            "prefix": "clean-architecture-monorepo",
+            "prefix": "app",
             "style": "kebab-case"
           }
         ],
