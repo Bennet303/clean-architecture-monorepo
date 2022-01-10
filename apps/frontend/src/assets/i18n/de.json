@@ -1,1 +1,5 @@
-{}
+{
+  "homePage": {
+    "currentUserLabel": "Aktueller Nutzer: {{userId}}"
+  }
+}
