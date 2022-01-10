@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
+import { TRANSLOCO_SCOPE } from '@ngneat/transloco';
+import { TranslocoRootModule } from '../../../transloco-root.module';
 import { HomePageStateModule } from '../../states/home/home.page.state.module';
 import { HomePage } from './home.page';
 
@@ -18,7 +20,9 @@ import { HomePage } from './home.page';
       },
     ]),
     HomePageStateModule,
+    TranslocoRootModule,
   ],
+  providers: [{ provide: TRANSLOCO_SCOPE, useValue: 'home' }],
   declarations: [HomePage],
 })
 export class HomePageModule {}

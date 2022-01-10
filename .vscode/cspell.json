@@ -4,6 +4,14 @@
   // language - current active spelling language
   "language": "en,de-DE",
   // words - list of words to be always considered correct
-  "words": ["devkit", "ngneat", "transloco"],
-  "flagWords": ["Usecase", "Datasource"]
+  "words": [
+    "devkit",
+    "ngneat",
+    "ngxs",
+    "transloco"
+  ],
+  "flagWords": [
+    "Usecase",
+    "Datasource"
+  ]
 }

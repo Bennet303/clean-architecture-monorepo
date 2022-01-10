@@ -1,5 +1,3 @@
 {
-  "homePage": {
-    "currentUserLabel": "Current User: {{userId}}"
-  }
+  "error_no_user_in_state": "Something went wrong"
 }

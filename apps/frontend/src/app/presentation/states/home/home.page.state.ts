@@ -31,7 +31,6 @@ export class HomePageState {
     { user }: HomePageCreateUserAction
   ) {
     patchState({ isLoading: true });
-    console.log('test');
 
     const res = await this.createUserUseCase.execute(user);
 
@@ -77,7 +76,7 @@ export class HomePageState {
 
     if (!currentUser) {
       patchState({
-        errorMessage: 'No user in state',
+        errorMessage: 'error_no_user_in_state',
       });
       return;
     }

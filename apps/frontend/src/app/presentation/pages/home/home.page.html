@@ -1,4 +1,4 @@
-<ng-container *transloco="let t; read: 'homePage'">
+<ng-container *transloco="let t; scope: 'home'">
   <ion-header [translucent]="true">
     <ion-toolbar>
       <ion-title> Blank </ion-title>
@@ -14,15 +14,12 @@
 
     <div id="container">
       <h1 *ngIf="(stateModel$ | async)!.errorMessage">
-        {{ (stateModel$ | async)!.errorMessage || 'Something went wrong' }}
+        {{ t((stateModel$ | async)!.errorMessage) }}
       </h1>
       <ion-spinner *ngIf="(stateModel$ | async)!.isLoading"></ion-spinner>
       <h1>
-        {{
-          t('currentUserLabel', {
-            userId: (stateModel$ | async)!.user?.id || 'unknown'
-          })
-        }}
+        {{ t('home.current_user_label') }}
+        {{ (stateModel$ | async)!.user?.id || t('home.no_user') }}
       </h1>
       <ion-button (click)="createUser()">Create User</ion-button>
       <ion-button (click)="deleteUser()">Delete User</ion-button>
