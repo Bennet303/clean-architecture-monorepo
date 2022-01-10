@@ -83,10 +83,19 @@
             "tsConfig": "apps/frontend/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              "apps/frontend/src/favicon.ico",
-              "apps/frontend/src/assets"
+              "apps/frontend/src/assets",
+              {
+                "glob": "**/*.svg",
+                "input": "node_modules/ionicons/dist/ionicons/svg",
+                "output": "./svg"
+              }
             ],
-            "styles": ["apps/frontend/src/styles.scss"],
+            "styles": [
+              "apps/frontend/src/styles.scss",
+              {
+                "input": "apps/frontend/src/theme/variables.scss"
+              }
+            ],
             "scripts": []
           },
           "configurations": {
@@ -132,10 +141,7 @@
               "browserTarget": "frontend:build:development"
             }
           },
-          "defaultConfiguration": "development",
-          "options": {
-            "proxyConfig": "apps/frontend/proxy.conf.json"
-          }
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
@@ -159,6 +165,96 @@
             "jestConfig": "apps/frontend/jest.config.js",
             "passWithNoTests": true
           }
+        },
+        "cap": {
+          "builder": "@nxtend/capacitor:cap",
+          "options": {
+            "cmd": "--help"
+          }
+        },
+        "add": {
+          "builder": "@nxtend/capacitor:cap",
+          "options": {
+            "cmd": "add"
+          },
+          "configurations": {
+            "ios": {
+              "cmd": "add ios"
+            },
+            "android": {
+              "cmd": "add android"
+            }
+          }
+        },
+        "copy": {
+          "builder": "@nxtend/capacitor:cap",
+          "options": {
+            "cmd": "copy"
+          },
+          "configurations": {
+            "ios": {
+              "cmd": "copy ios"
+            },
+            "android": {
+              "cmd": "copy android"
+            }
+          }
+        },
+        "open": {
+          "builder": "@nxtend/capacitor:cap",
+          "options": {
+            "cmd": "open"
+          },
+          "configurations": {
+            "ios": {
+              "cmd": "open ios"
+            },
+            "android": {
+              "cmd": "open android"
+            }
+          }
+        },
+        "run": {
+          "builder": "@nxtend/capacitor:cap",
+          "options": {
+            "cmd": "run"
+          },
+          "configurations": {
+            "ios": {
+              "cmd": "run ios"
+            },
+            "android": {
+              "cmd": "run android"
+            }
+          }
+        },
+        "sync": {
+          "builder": "@nxtend/capacitor:cap",
+          "options": {
+            "cmd": "sync"
+          },
+          "configurations": {
+            "ios": {
+              "cmd": "sync ios"
+            },
+            "android": {
+              "cmd": "sync android"
+            }
+          }
+        },
+        "update": {
+          "builder": "@nxtend/capacitor:cap",
+          "options": {
+            "cmd": "update"
+          },
+          "configurations": {
+            "ios": {
+              "cmd": "update ios"
+            },
+            "android": {
+              "cmd": "update android"
+            }
+          }
         }
       }
     },
@@ -171,8 +267,7 @@
           "builder": "@nrwl/cypress:cypress",
           "options": {
             "cypressConfig": "apps/frontend-e2e/cypress.json",
-            "devServerTarget": "frontend:serve:development",
-            "tsConfig": "apps/frontend-e2e/tsconfig.json"
+            "devServerTarget": "frontend:serve:development"
           },
           "configurations": {
             "production": {
@@ -190,22 +285,8 @@
       }
     }
   },
-  "cli": {
-    "defaultCollection": "@nrwl/angular",
-    "packageManager": "npm"
-  },
+  "defaultProject": "frontend",
   "schematics": {
-    "@nrwl/angular": {
-      "application": {
-        "linter": "eslint"
-      },
-      "library": {
-        "linter": "eslint"
-      },
-      "storybook-configuration": {
-        "linter": "eslint"
-      }
-    },
     "@nrwl/angular:application": {
       "style": "scss",
       "linter": "eslint",
@@ -221,5 +302,7 @@
       "style": "scss"
     }
   },
-  "defaultProject": "frontend"
+  "cli": {
+    "defaultCollection": "@nrwl/angular"
+  }
 }
