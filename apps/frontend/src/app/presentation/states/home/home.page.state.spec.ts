@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { UserEntity } from '@clean-architecture-monorepo/api-interfaces';
+import { UserEntity } from '@clean-architecture-monorepo/shared';
 import { NgxsModule, Store } from '@ngxs/store';
 import { lastValueFrom } from 'rxjs';
 import { ManageUsersFeatureModule } from '../../../features/manage-users/manage.users.feature.module';

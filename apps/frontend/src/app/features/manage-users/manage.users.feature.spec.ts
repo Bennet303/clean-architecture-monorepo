@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { UserEntity } from '@clean-architecture-monorepo/api-interfaces';
+import { UserEntity } from '@clean-architecture-monorepo/shared';
 import { ManageUsersDataSource } from './data-sources/manage.users.data.source';
 import { ManageUsersFeatureModule } from './manage.users.feature.module';
 import { ManageUsersRepository } from './repositories/manage.users.repository';

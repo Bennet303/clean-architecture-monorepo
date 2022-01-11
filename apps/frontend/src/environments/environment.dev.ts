@@ -1,5 +1,5 @@
-// Configuration for the prod server
+// Configuration for dev server
 export const environment = {
-  production: true,
+  production: false,
   backendUrl: process.env.BACKEND_URI,
 };

@@ -1,4 +1,4 @@
-import { UserEntity } from '@clean-architecture-monorepo/api-interfaces';
+import { UserEntity } from '@clean-architecture-monorepo/shared';
 
 export class HomePageCreateUserAction {
   static readonly type = '[HOME] create user action';

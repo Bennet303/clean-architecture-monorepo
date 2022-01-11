@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  UseCase,
-  UserEntity,
-} from '@clean-architecture-monorepo/api-interfaces';
+import { UseCase, UserEntity } from '@clean-architecture-monorepo/shared';
 import { ManageUsersRepository } from '../repositories/manage.users.repository';
 
 @Injectable()

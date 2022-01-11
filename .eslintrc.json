@@ -2,7 +2,7 @@
   "root": true,
   "ignorePatterns": ["**/*"],
   "extends": ["prettier"],
-  "plugins": ["@nrwl/nx", "prettier"],
+  "plugins": ["@nrwl/nx", "prettier", "jest"],
   "rules": {
     "no-alert": "error",
     "no-debugger": "error",
@@ -31,6 +31,10 @@
           }
         ]
       }
+    },
+    {
+      "files": ["*.spec.ts", "*.spec.tsx"],
+      "extends": ["plugin:jest/recommended", "plugin:jest/style"]
     },
     {
       "files": ["*.ts", "*.tsx"],

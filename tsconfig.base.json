@@ -15,9 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@clean-architecture-monorepo/api-interfaces": [
-        "libs/api-interfaces/src/index.ts"
-      ]
+      "@clean-architecture-monorepo/shared": ["libs/shared/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
