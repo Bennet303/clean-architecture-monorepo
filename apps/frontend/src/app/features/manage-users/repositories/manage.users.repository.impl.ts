@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { UserEntity } from '@clean-architecture-monorepo/shared';
+import { TranslatableError } from '../../../../../core/translatable.error';
 import { ManageUsersDataSource } from '../data-sources/manage.users.data.source';
 import {
   FailedCreatingUserError,
