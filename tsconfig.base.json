@@ -20,7 +20,8 @@
       ],
       "@clean-architecture-monorepo/shared-components": [
         "libs/shared-components/src/index.ts"
-      ]
+      ],
+      "@clean-architecture-monorepo/shared": ["libs/shared/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
