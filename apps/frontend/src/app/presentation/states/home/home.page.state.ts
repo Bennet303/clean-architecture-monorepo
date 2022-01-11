@@ -42,7 +42,6 @@ export class HomePageState {
       });
     } else {
       patchState({
-        errorMessage: undefined,
         isLoading: false,
         user,
       });
@@ -63,7 +62,6 @@ export class HomePageState {
       });
     } else {
       patchState({
-        errorMessage: undefined,
         isLoading: false,
         user: res,
       });
@@ -92,7 +90,6 @@ export class HomePageState {
       });
     } else {
       patchState({
-        errorMessage: undefined,
         isLoading: false,
         user: undefined,
       });
