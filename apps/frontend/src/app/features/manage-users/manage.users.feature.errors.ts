@@ -1,4 +1,4 @@
-import { TranslatableError } from '../../../../core/translatable.error';
+import { TranslatableError } from '../../../../core/abstracts/translatable.error';
 
 export class FailedCreatingUserError extends TranslatableError {
   constructor() {

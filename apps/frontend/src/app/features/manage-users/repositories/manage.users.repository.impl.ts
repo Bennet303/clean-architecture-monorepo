@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { UserEntity } from '@clean-architecture-monorepo/shared';
-import { TranslatableError } from '../../../../../core/translatable.error';
+import { TranslatableError } from '../../../../../core/abstracts/translatable.error';
 import { ManageUsersDataSource } from '../data-sources/manage.users.data.source';
 import {
   FailedCreatingUserError,
@@ -14,7 +14,7 @@ import { ManageUsersRepository } from './manage.users.repository';
 export class ManageUsersRepositoryImpl implements ManageUsersRepository {
   constructor(private readonly dataSource: ManageUsersDataSource) {}
 
-  async createUser(user: UserEntity): Promise<void | Error> {
+  async createUser(user: UserEntity): Promise<void | TranslatableError> {
     try {
       if (!user || !user.id) throw new InvalidUserError();
 
@@ -26,7 +26,7 @@ export class ManageUsersRepositoryImpl implements ManageUsersRepository {
     }
   }
 
-  async deleteUser(user: UserEntity): Promise<void | Error> {
+  async deleteUser(user: UserEntity): Promise<void | TranslatableError> {
     try {
       if (!user || !user.id) throw new InvalidUserError();
 
@@ -38,7 +38,7 @@ export class ManageUsersRepositoryImpl implements ManageUsersRepository {
     }
   }
 
-  async getUser(): Promise<UserEntity | Error> {
+  async getUser(): Promise<UserEntity | TranslatableError> {
     try {
       const user = await this.dataSource.getUser();
 
