@@ -5,6 +5,7 @@
 
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import { AppModule } from './app/app.module';
 
@@ -18,6 +19,15 @@ async function bootstrap() {
       disableErrorMessages: false, //! change to 'true' for production
     })
   );
+
+  const config = new DocumentBuilder()
+    .setTitle('Clean Architecture API')
+    .setDescription('The example API of the clean-architecture-monorepo')
+    .setVersion('1.0')
+    .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup(`${globalPrefix}/docs`, app, document);
 
   const port = process.env.PORT || 3333;
   await app.listen(port, () => {
