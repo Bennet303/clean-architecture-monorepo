@@ -1,7 +1,7 @@
 import { UserEntity } from '@clean-architecture-monorepo/api-interfaces';
 
 export interface HomePageStateModel {
-  user: UserEntity | undefined;
+  user?: UserEntity;
   isLoading: boolean;
   errorMessage: string;
 }

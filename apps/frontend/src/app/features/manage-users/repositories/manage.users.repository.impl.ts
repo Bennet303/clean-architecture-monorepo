@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { UserEntity } from '@clean-architecture-monorepo/api-interfaces';
-import { CustomError } from '../../../../../core/custom.error';
+import { TranslatableError } from '../../../../../core/translatable.error';
 import { ManageUsersDataSource } from '../data-sources/manage.users.data.source';
 import {
   FailedCreatingUserError,
@@ -20,7 +20,7 @@ export class ManageUsersRepositoryImpl implements ManageUsersRepository {
 
       return await this.dataSource.createUser(user);
     } catch (error) {
-      return error instanceof CustomError
+      return error instanceof TranslatableError
         ? error
         : new FailedCreatingUserError();
     }
@@ -32,7 +32,7 @@ export class ManageUsersRepositoryImpl implements ManageUsersRepository {
 
       return await this.dataSource.deleteUser(user);
     } catch (error) {
-      return error instanceof CustomError
+      return error instanceof TranslatableError
         ? error
         : new FailedDeletingUserError();
     }
@@ -46,7 +46,7 @@ export class ManageUsersRepositoryImpl implements ManageUsersRepository {
 
       return user;
     } catch (error) {
-      return error instanceof CustomError
+      return error instanceof TranslatableError
         ? error
         : new FailedGettingUserError();
     }

@@ -1,29 +1,31 @@
-<ng-container *transloco="let t; scope: 'home'">
-  <ion-header [translucent]="true">
-    <ion-toolbar>
-      <ion-title> Blank </ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <ion-content [fullscreen]="true">
-    <ion-header collapse="condense">
+<ng-container *transloco="let t">
+  <ng-container *transloco="let tHome; scope: 'home'; read: 'home'">
+    <ion-header [translucent]="true">
       <ion-toolbar>
-        <ion-title size="large">Blank</ion-title>
+        <ion-title> Blank </ion-title>
       </ion-toolbar>
     </ion-header>
 
-    <div id="container">
-      <h1 *ngIf="(stateModel$ | async)!.errorMessage">
-        {{ t((stateModel$ | async)!.errorMessage) }}
-      </h1>
-      <ion-spinner *ngIf="(stateModel$ | async)!.isLoading"></ion-spinner>
-      <h1>
-        {{ t('home.current_user_label') }}
-        {{ (stateModel$ | async)!.user?.id || t('home.no_user') }}
-      </h1>
-      <ion-button (click)="createUser()">Create User</ion-button>
-      <ion-button (click)="deleteUser()">Delete User</ion-button>
-      <ion-button (click)="getUser()">Get User</ion-button>
-    </div>
-  </ion-content>
+    <ion-content [fullscreen]="true">
+      <ion-header collapse="condense">
+        <ion-toolbar>
+          <ion-title size="large">Blank</ion-title>
+        </ion-toolbar>
+      </ion-header>
+
+      <div id="container">
+        <h1 *ngIf="(stateModel$ | async)!.errorMessage">
+          {{ t((stateModel$ | async)!.errorMessage) }}
+        </h1>
+        <ion-spinner *ngIf="(stateModel$ | async)!.isLoading"></ion-spinner>
+        <h1>
+          {{ tHome('current_user_label') }}
+          {{ (stateModel$ | async)!.user?.id || tHome('no_user') }}
+        </h1>
+        <ion-button (click)="createUser()">Create User</ion-button>
+        <ion-button (click)="deleteUser()">Delete User</ion-button>
+        <ion-button (click)="getUser()">Get User</ion-button>
+      </div>
+    </ion-content>
+  </ng-container>
 </ng-container>
