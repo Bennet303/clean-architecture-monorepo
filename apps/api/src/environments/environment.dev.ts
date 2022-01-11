@@ -1,7 +1,7 @@
-// Configuration for the prod server
+// Configuration for the dev server
 export const environment = {
-  name: 'prod',
-  production: true,
+  name: 'dev',
+  production: false,
   local: false,
   useMockData: false,
   cors_origin: process.env.FRONTEND_URI,

@@ -1,8 +1,8 @@
-// Configuration for local environment using real data
+// Configuration for local environment using mock data
 export const environment = {
-  name: 'local',
+  name: 'mock',
   production: false,
   local: true,
-  useMockData: false,
+  useMockData: true,
   cors_origin: 'http://localhost:4200',
 };

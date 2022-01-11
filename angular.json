@@ -26,11 +26,55 @@
                   "with": "apps/api/src/environments/environment.prod.ts"
                 }
               ]
+            },
+            "development": {
+              "optimization": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/api/src/environments/environment.ts",
+                  "with": "apps/api/src/environments/environment.dev.ts"
+                }
+              ]
+            },
+            "local": {
+              "optimization": false,
+              "extractLicenses": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/api/src/environments/environment.ts",
+                  "with": "apps/api/src/environments/environment.ts"
+                }
+              ]
+            },
+            "mock": {
+              "optimization": false,
+              "extractLicenses": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/api/src/environments/environment.ts",
+                  "with": "apps/api/src/environments/environment.mock.ts"
+                }
+              ]
             }
           }
         },
         "serve": {
           "builder": "@nrwl/node:execute",
+          "configurations": {
+            "production": {
+              "buildTarget": "api:build:production"
+            },
+            "development": {
+              "buildTarget": "api:build:development"
+            },
+            "local": {
+              "buildTarget": "api:build:local"
+            },
+            "mock": {
+              "buildTarget": "api:build:mock"
+            }
+          },
+          "defaultConfiguration": "local",
           "options": {
             "buildTarget": "api:build"
           }
