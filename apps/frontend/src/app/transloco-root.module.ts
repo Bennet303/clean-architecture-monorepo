@@ -1,10 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, NgModule } from '@angular/core';
 import {
+  getBrowserCultureLang,
+  getBrowserLang,
   Translation,
   translocoConfig,
   TranslocoLoader,
   TranslocoModule,
+  TranslocoService,
   TRANSLOCO_CONFIG,
   TRANSLOCO_LOADER,
 } from '@ngneat/transloco';
@@ -38,4 +41,21 @@ export class TranslocoHttpLoader implements TranslocoLoader {
     { provide: TRANSLOCO_LOADER, useClass: TranslocoHttpLoader },
   ],
 })
-export class TranslocoRootModule {}
+export class TranslocoRootModule {
+  constructor(private readonly translocoService: TranslocoService) {
+    const cultureLang = getBrowserCultureLang();
+
+    if (this.translocoService.isLang(getBrowserCultureLang())) {
+      this.translocoService.setActiveLang(cultureLang);
+    } else {
+      const defaultLang = this.translocoService.getDefaultLang();
+      const lang = getBrowserLang() || defaultLang;
+
+      if (this.translocoService.isLang(lang)) {
+        this.translocoService.setActiveLang(lang);
+      } else {
+        this.translocoService.setActiveLang(defaultLang);
+      }
+    }
+  }
+}
