@@ -31,7 +31,6 @@ export class HomePageState {
     { user }: HomePageCreateUserAction
   ) {
     patchState({ isLoading: true });
-    console.log('test');
 
     const res = await this.createUserUseCase.execute(user);
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { UserEntity } from '../entities/user.entity';
+import { UserEntity } from '@clean-architecture-monorepo/api-interfaces';
 import { ManageUsersDataSource } from './manage.users.data.source';
 
 @Injectable()

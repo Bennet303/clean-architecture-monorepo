@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
+import { UserEntity } from '@clean-architecture-monorepo/api-interfaces';
 import { NgxsModule, Store } from '@ngxs/store';
 import { lastValueFrom } from 'rxjs';
-import { UserEntity } from '../../../features/manage-users/entities/user.entity';
 import { ManageUsersFeatureModule } from '../../../features/manage-users/manage.users.feature.module';
 import { CreateUserUseCase } from '../../../features/manage-users/use-cases/create.user.use.case';
 import { DeleteUserUseCase } from '../../../features/manage-users/use-cases/delete.user.use.case';

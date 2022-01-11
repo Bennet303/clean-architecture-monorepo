@@ -1,4 +1,4 @@
-import { UserEntity } from '../entities/user.entity';
+import { UserEntity } from '@clean-architecture-monorepo/api-interfaces';
 
 export abstract class ManageUsersRepository {
   abstract getUser(): Promise<UserEntity | Error>;

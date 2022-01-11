@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
+import { UserEntity } from '@clean-architecture-monorepo/api-interfaces';
 import { ManageUsersDataSource } from './data-sources/manage.users.data.source';
-import { UserEntity } from './entities/user.entity';
 import { ManageUsersFeatureModule } from './manage.users.feature.module';
 import { ManageUsersRepository } from './repositories/manage.users.repository';
 import { CreateUserUseCase } from './use-cases/create.user.use.case';
