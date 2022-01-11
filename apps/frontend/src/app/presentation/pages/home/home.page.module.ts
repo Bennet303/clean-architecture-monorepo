@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { HomePageStateModule } from '../../states/home/home.page.state.module';
+import { UserCardComponentModule } from './components/user-card/user.card.component.module';
 import { HomePage } from './home.page';
 
 @NgModule({
@@ -18,6 +19,7 @@ import { HomePage } from './home.page';
       },
     ]),
     HomePageStateModule,
+    UserCardComponentModule,
   ],
   declarations: [HomePage],
 })

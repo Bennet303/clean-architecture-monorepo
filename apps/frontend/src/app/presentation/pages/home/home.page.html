@@ -16,7 +16,8 @@
       {{ (stateModel$ | async)!.errorMessage || 'Something went wrong' }}
     </h1>
     <ion-spinner *ngIf="(stateModel$ | async)!.isLoading"></ion-spinner>
-    <h1>Current User: {{ (stateModel$ | async)!.user?.id || 'unknown' }}</h1>
+    <app-user-card [userId]="(stateModel$ | async)!.user?.id"></app-user-card>
+    <!-- <h1>Current User: {{ (stateModel$ | async)!.user?.id || 'unknown' }}</h1> -->
     <ion-button (click)="createUser()">Create User</ion-button>
     <ion-button (click)="deleteUser()">Delete User</ion-button>
     <ion-button (click)="getUser()">Get User</ion-button>
