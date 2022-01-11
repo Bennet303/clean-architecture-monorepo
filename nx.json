@@ -45,6 +45,13 @@
     "frontend-e2e": {
       "tags": [],
       "implicitDependencies": ["frontend"]
+    },
+    "shared-components": {
+      "tags": []
+    },
+    "shared-components-e2e": {
+      "tags": [],
+      "implicitDependencies": ["shared-components"]
     }
   }
 }

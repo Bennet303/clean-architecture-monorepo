@@ -4,8 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { HomePageStateModule } from '../../states/home/home.page.state.module';
-import { UserCardComponentModule } from './components/user-card/user.card.component.module';
 import { HomePage } from './home.page';
+import { SharedComponentsModule } from '@clean-architecture-monorepo/shared-components';
+import { HeaderComponentModule } from './components/header/header.component.module';
 
 @NgModule({
   imports: [
@@ -19,7 +20,8 @@ import { HomePage } from './home.page';
       },
     ]),
     HomePageStateModule,
-    UserCardComponentModule,
+    SharedComponentsModule,
+    HeaderComponentModule,
   ],
   declarations: [HomePage],
 })

@@ -1,22 +1,14 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title> Blank </ion-title>
-  </ion-toolbar>
-</ion-header>
+<app-header title="Home Page" size="large"></app-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
   <div id="container">
     <h1 *ngIf="(stateModel$ | async)!.errorMessage">
       {{ (stateModel$ | async)!.errorMessage || 'Something went wrong' }}
     </h1>
     <ion-spinner *ngIf="(stateModel$ | async)!.isLoading"></ion-spinner>
-    <app-user-card [userId]="(stateModel$ | async)!.user?.id"></app-user-card>
+    <clean-architecture-monorepo-user-card
+      [userId]="(stateModel$ | async)!.user?.id"
+    ></clean-architecture-monorepo-user-card>
     <!-- <h1>Current User: {{ (stateModel$ | async)!.user?.id || 'unknown' }}</h1> -->
     <ion-button (click)="createUser()">Create User</ion-button>
     <ion-button (click)="deleteUser()">Delete User</ion-button>

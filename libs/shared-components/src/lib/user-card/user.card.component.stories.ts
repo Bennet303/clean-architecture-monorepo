@@ -1,9 +1,9 @@
 import { IonicModule } from '@ionic/angular';
 import { moduleMetadata, Story, Meta } from '@storybook/angular';
-import { UserCardComponent } from './user.card.component';
+import { UserCardComponent } from './user-card.component';
 
 export default {
-  title: 'UserCardComponent',
+  title: 'Shared Components/UserCardComponent',
   component: UserCardComponent,
   decorators: [
     moduleMetadata({

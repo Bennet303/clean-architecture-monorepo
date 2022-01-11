@@ -17,6 +17,9 @@
     "paths": {
       "@clean-architecture-monorepo/api-interfaces": [
         "libs/api-interfaces/src/index.ts"
+      ],
+      "@clean-architecture-monorepo/shared-components": [
+        "libs/shared-components/src/index.ts"
       ]
     }
   },
