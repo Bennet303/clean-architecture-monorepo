@@ -74,7 +74,7 @@ export class HomePageState {
 
     if (!currentUser) {
       patchState({
-        errorMessage: 'error_no_user_in_state',
+        errorMessage: 'errors.states.home.no_user_found',
       });
       return;
     }

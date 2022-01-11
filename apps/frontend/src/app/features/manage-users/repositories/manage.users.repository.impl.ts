@@ -1,6 +1,13 @@
 import { Injectable } from '@angular/core';
 import { UserEntity } from '@clean-architecture-monorepo/api-interfaces';
+import { CustomError } from '../../../../../core/custom.error';
 import { ManageUsersDataSource } from '../data-sources/manage.users.data.source';
+import {
+  FailedCreatingUserError,
+  FailedDeletingUserError,
+  FailedGettingUserError,
+  InvalidUserError,
+} from '../manage.users.feature.errors';
 import { ManageUsersRepository } from './manage.users.repository';
 
 @Injectable()
@@ -9,35 +16,39 @@ export class ManageUsersRepositoryImpl implements ManageUsersRepository {
 
   async createUser(user: UserEntity): Promise<void | Error> {
     try {
-      if (user && user.id) {
-        return await this.dataSource.createUser(user);
-      }
-      throw new Error();
+      if (!user || !user.id) throw new InvalidUserError();
+
+      return await this.dataSource.createUser(user);
     } catch (error) {
-      return new Error('Failed creating user');
+      return error instanceof CustomError
+        ? error
+        : new FailedCreatingUserError();
     }
   }
 
   async deleteUser(user: UserEntity): Promise<void | Error> {
     try {
-      if (user && user.id) {
-        return await this.dataSource.deleteUser(user);
-      }
-      throw new Error();
+      if (!user || !user.id) throw new InvalidUserError();
+
+      return await this.dataSource.deleteUser(user);
     } catch (error) {
-      return new Error('Failed deleting user');
+      return error instanceof CustomError
+        ? error
+        : new FailedDeletingUserError();
     }
   }
 
   async getUser(): Promise<UserEntity | Error> {
     try {
       const user = await this.dataSource.getUser();
-      if (user && user.id) {
-        return user;
-      }
-      throw new Error();
+
+      if (!user || !user.id) throw new InvalidUserError();
+
+      return user;
     } catch (error) {
-      return new Error('Failed getting user');
+      return error instanceof CustomError
+        ? error
+        : new FailedGettingUserError();
     }
   }
 }
