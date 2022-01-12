@@ -9,6 +9,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
+import * as compression from 'compression';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -18,6 +19,8 @@ async function bootstrap() {
   app.enableVersioning({
     type: VersioningType.URI, //! has to been called before the Swagger Document is build
   });
+
+  app.use(compression());
 
   app.useGlobalPipes(
     new ValidationPipe({
