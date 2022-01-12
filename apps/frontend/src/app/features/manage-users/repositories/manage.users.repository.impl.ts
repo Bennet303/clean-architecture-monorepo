@@ -1,43 +1,54 @@
 import { Injectable } from '@angular/core';
-import { UserEntity } from '@clean-architecture-monorepo/api-interfaces';
+import { UserEntity } from '@clean-architecture-monorepo/shared';
+import { TranslatableError } from '../../../../../core/abstracts/translatable.error';
 import { ManageUsersDataSource } from '../data-sources/manage.users.data.source';
+import {
+  FailedCreatingUserError,
+  FailedDeletingUserError,
+  FailedGettingUserError,
+  InvalidUserError,
+} from '../manage.users.feature.errors';
 import { ManageUsersRepository } from './manage.users.repository';
 
 @Injectable()
 export class ManageUsersRepositoryImpl implements ManageUsersRepository {
   constructor(private readonly dataSource: ManageUsersDataSource) {}
 
-  async createUser(user: UserEntity): Promise<void | Error> {
+  async createUser(user: UserEntity): Promise<void | TranslatableError> {
     try {
-      if (user && user.id) {
-        return await this.dataSource.createUser(user);
-      }
-      throw new Error();
+      if (!user || !user.id) throw new InvalidUserError();
+
+      return await this.dataSource.createUser(user);
     } catch (error) {
-      return new Error('Failed creating user');
+      return error instanceof TranslatableError
+        ? error
+        : new FailedCreatingUserError();
     }
   }
 
-  async deleteUser(user: UserEntity): Promise<void | Error> {
+  async deleteUser(user: UserEntity): Promise<void | TranslatableError> {
     try {
-      if (user && user.id) {
-        return await this.dataSource.deleteUser(user);
-      }
-      throw new Error();
+      if (!user || !user.id) throw new InvalidUserError();
+
+      return await this.dataSource.deleteUser(user);
     } catch (error) {
-      return new Error('Failed deleting user');
+      return error instanceof TranslatableError
+        ? error
+        : new FailedDeletingUserError();
     }
   }
 
-  async getUser(): Promise<UserEntity | Error> {
+  async getUser(): Promise<UserEntity | TranslatableError> {
     try {
       const user = await this.dataSource.getUser();
-      if (user && user.id) {
-        return user;
-      }
-      throw new Error();
+
+      if (!user || !user.id) throw new InvalidUserError();
+
+      return user;
     } catch (error) {
-      return new Error('Failed getting user');
+      return error instanceof TranslatableError
+        ? error
+        : new FailedGettingUserError();
     }
   }
 }

@@ -1,0 +1,18 @@
+{
+  "errors": {
+    "common": "Something went wrong.",
+    "features": {
+      "manage_users": {
+        "failed_creating_user": "The user could not be created.",
+        "failed_deleting_user": "The user could not be deleted.",
+        "failed_getting_user": "The user could not be loaded.",
+        "invalid_user": "The user data is invalid."
+      }
+    },
+    "states": {
+      "home": {
+        "no_user_found": "Could not find a current user."
+      }
+    }
+  }
+}

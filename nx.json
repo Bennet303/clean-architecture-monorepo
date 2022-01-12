@@ -36,9 +36,6 @@
     "api": {
       "tags": []
     },
-    "api-interfaces": {
-      "tags": []
-    },
     "frontend": {
       "tags": []
     },
