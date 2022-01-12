@@ -1,0 +1,18 @@
+{
+  "errors": {
+    "common": "Etwas ist schief gelaufen.",
+    "features": {
+      "manage_users": {
+        "failed_creating_user": "Der Nutzer konnte nicht erstellt werden.",
+        "failed_deleting_user": "Der Nutzer konnte nicht gelöscht werden.",
+        "failed_getting_user": "Der Nutzer konnte nicht geladen werden.",
+        "invalid_user": "Die Nutzerdaten sind ungültig."
+      }
+    },
+    "states": {
+      "home": {
+        "no_user_found": "Es konnte kein aktueller Nutzer gefunden werden."
+      }
+    }
+  }
+}

@@ -1,3 +1,4 @@
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
@@ -8,6 +9,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AppState } from './presentation/states/app/app.state';
 import { AppStateModule } from './presentation/states/app/app.state.module';
+import { TranslocoRootModule } from './transloco-root.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -20,6 +22,8 @@ import { AppStateModule } from './presentation/states/app/app.state.module';
       developmentMode: !environment.production,
     }),
     AppStateModule,
+    HttpClientModule,
+    TranslocoRootModule,
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],

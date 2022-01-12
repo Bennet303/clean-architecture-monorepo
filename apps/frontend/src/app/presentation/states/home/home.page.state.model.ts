@@ -1,7 +1,7 @@
 import { UserEntity } from '@clean-architecture-monorepo/shared';
 
 export interface HomePageStateModel {
-  user: UserEntity | undefined;
+  user?: UserEntity;
   isLoading: boolean;
   errorMessage: string;
 }

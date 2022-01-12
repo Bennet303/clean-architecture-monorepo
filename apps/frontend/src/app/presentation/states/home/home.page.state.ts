@@ -8,6 +8,7 @@ import {
   HomePageDeleteUserAction,
   HomePageGetUserAction,
 } from './home.page.state.actions';
+import { NoUserInStateError } from './home.page.state.errors';
 import {
   defaultHomePageStateModel,
   HomePageStateModel,
@@ -44,6 +45,7 @@ export class HomePageState {
       patchState({
         isLoading: false,
         user,
+        errorMessage: '',
       });
     }
   }
@@ -64,6 +66,7 @@ export class HomePageState {
       patchState({
         isLoading: false,
         user: res,
+        errorMessage: '',
       });
     }
   }
@@ -74,7 +77,7 @@ export class HomePageState {
 
     if (!currentUser) {
       patchState({
-        errorMessage: 'No user in state',
+        errorMessage: new NoUserInStateError().message,
       });
       return;
     }
@@ -92,6 +95,7 @@ export class HomePageState {
       patchState({
         isLoading: false,
         user: undefined,
+        errorMessage: '',
       });
     }
   }
