@@ -7,7 +7,7 @@ import { AuthFeatureModule } from '../../../features/auth/auth.feature.module';
 import { LoginResponseEntity } from '../../../features/auth/entities/login.response.entity';
 import { LoginUseCase } from '../../../features/auth/use-cases/login.use.case';
 import { AuthState } from './auth.state';
-import { LoginAction } from './auth.state.actions';
+import { AuthStateLoginAction } from './auth.state.actions';
 import { AuthStateModel, defaultAuthStateModel } from './auth.state.model';
 import { AuthStateSelectors } from './auth.state.selectors';
 
@@ -44,7 +44,7 @@ describe('state: auth', () => {
           .spyOn(loginUseCase, 'execute')
           .mockResolvedValue(mockLoginResponse);
 
-        store.dispatch(new LoginAction());
+        store.dispatch(new AuthStateLoginAction());
 
         actions$.pipe(ofActionDispatched(Navigate)).subscribe(() => {
           const res = store.selectSnapshot(AuthStateSelectors.stateModel);
@@ -66,7 +66,7 @@ describe('state: auth', () => {
 
       jest.spyOn(loginUseCase, 'execute').mockResolvedValue(mockError);
 
-      await lastValueFrom(store.dispatch(new LoginAction()));
+      await lastValueFrom(store.dispatch(new AuthStateLoginAction()));
       const res = store.selectSnapshot(AuthStateSelectors.stateModel);
 
       expect(loginUseCase.execute).toHaveBeenCalledTimes(1);

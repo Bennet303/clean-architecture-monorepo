@@ -3,7 +3,7 @@ import { Navigate } from '@ngxs/router-plugin';
 import { Action, State, StateContext } from '@ngxs/store';
 import { TranslatableError } from '../../../../../core/abstracts/translatable.error';
 import { LoginUseCase } from '../../../features/auth/use-cases/login.use.case';
-import { LoginAction } from './auth.state.actions';
+import { AuthStateLoginAction } from './auth.state.actions';
 import { AuthStateModel, defaultAuthStateModel } from './auth.state.model';
 
 @State<AuthStateModel>({
@@ -14,7 +14,7 @@ import { AuthStateModel, defaultAuthStateModel } from './auth.state.model';
 export class AuthState {
   constructor(private readonly loginUseCase: LoginUseCase) {}
 
-  @Action(LoginAction)
+  @Action(AuthStateLoginAction)
   async login({ dispatch, patchState }: StateContext<AuthStateModel>) {
     patchState({ errorMessage: '', isLoading: true });
 

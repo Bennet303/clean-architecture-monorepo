@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { LoginAction } from '../../states/auth/auth.state.actions';
+import { AuthStateLoginAction } from '../../states/auth/auth.state.actions';
 import { AuthStateModel } from '../../states/auth/auth.state.model';
 import { AuthStateSelectors } from '../../states/auth/auth.state.selectors';
 
@@ -16,6 +16,6 @@ export class LoginPage {
   constructor(private readonly store: Store) {}
 
   login() {
-    this.store.dispatch(new LoginAction());
+    this.store.dispatch(new AuthStateLoginAction());
   }
 }
