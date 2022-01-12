@@ -33,7 +33,7 @@ async function bootstrap() {
 
   app.useGlobalPipes(
     new ValidationPipe({
-      disableErrorMessages: false, //! change to 'true' for production
+      disableErrorMessages: !environment.local, //! change to 'true' for production
     })
   );
 
