@@ -4,7 +4,7 @@ import { AuthStateModel } from './auth.state.model';
 
 export abstract class AuthStateSelectors {
   @Selector([AuthState])
-  static token({ token }: AuthStateModel) {
-    return token;
+  static stateModel(stateModel: AuthStateModel) {
+    return stateModel;
   }
 }

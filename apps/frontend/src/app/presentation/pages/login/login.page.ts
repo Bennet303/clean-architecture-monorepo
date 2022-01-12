@@ -1,6 +1,9 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Store } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
+import { Observable } from 'rxjs';
 import { LoginAction } from '../../states/auth/auth.state.actions';
+import { AuthStateModel } from '../../states/auth/auth.state.model';
+import { AuthStateSelectors } from '../../states/auth/auth.state.selectors';
 
 @Component({
   templateUrl: 'login.page.html',
@@ -8,6 +11,8 @@ import { LoginAction } from '../../states/auth/auth.state.actions';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginPage {
+  @Select(AuthStateSelectors.stateModel)
+  authStateModel$!: Observable<AuthStateModel>;
   constructor(private readonly store: Store) {}
 
   login() {

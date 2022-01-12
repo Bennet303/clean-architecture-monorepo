@@ -7,6 +7,10 @@
         "failed_deleting_user": "Der Nutzer konnte nicht gelöscht werden.",
         "failed_getting_user": "Der Nutzer konnte nicht geladen werden.",
         "invalid_user": "Die Nutzerdaten sind ungültig."
+      },
+      "auth": {
+        "invalid_token": "Der Token ist ungültig.",
+        "failed_logging_in": "Beim Anmelden ist ein Fehler aufgetreten."
       }
     },
     "states": {

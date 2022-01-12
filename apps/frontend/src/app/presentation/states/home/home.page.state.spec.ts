@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { UserEntity } from '@clean-architecture-monorepo/shared';
 import { NgxsModule, Store } from '@ngxs/store';
 import { lastValueFrom } from 'rxjs';
+import { TranslatableError } from '../../../../../core/abstracts/translatable.error';
 import { ManageUsersFeatureModule } from '../../../features/manage-users/manage.users.feature.module';
 import { CreateUserUseCase } from '../../../features/manage-users/use-cases/create.user.use.case';
 import { DeleteUserUseCase } from '../../../features/manage-users/use-cases/delete.user.use.case';
@@ -12,6 +13,7 @@ import {
   HomePageDeleteUserAction,
   HomePageGetUserAction,
 } from './home.page.state.actions';
+import { NoUserInStateError } from './home.page.state.errors';
 import {
   defaultHomePageStateModel,
   HomePageStateModel,
@@ -56,7 +58,7 @@ describe('state: home', () => {
       expect(res).toEqual(expectedStateModel);
     });
     it('should write the error to the state if creating the user fails', async () => {
-      const mockError = new Error('failed creating user');
+      const mockError = new TranslatableError();
       expectedStateModel = {
         errorMessage: mockError.message,
         isLoading: false,
@@ -95,7 +97,7 @@ describe('state: home', () => {
       expect(res).toEqual(expectedStateModel);
     });
     it('should write the error to the state if getting the user fails', async () => {
-      const mockError = new Error('failed getting user');
+      const mockError = new TranslatableError();
       expectedStateModel = {
         errorMessage: mockError.message,
         isLoading: false,
@@ -141,7 +143,7 @@ describe('state: home', () => {
     });
     it('should write the error to the state if deleting the user fails', async () => {
       mockUser = new UserEntity({ id: '1' });
-      const mockError = new Error('failed getting user');
+      const mockError = new TranslatableError();
       expectedStateModel = {
         errorMessage: mockError.message,
         isLoading: false,
@@ -164,9 +166,8 @@ describe('state: home', () => {
       expect(res).toEqual(expectedStateModel);
     });
     it('should write an error to the state if there is currently no user to be deleted', async () => {
-      const mockError = new Error('errors.states.home.no_user_found');
       expectedStateModel = {
-        errorMessage: mockError.message,
+        errorMessage: new NoUserInStateError().message,
         isLoading: false,
         user: undefined,
       };

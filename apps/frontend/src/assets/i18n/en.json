@@ -7,6 +7,10 @@
         "failed_deleting_user": "The user could not be deleted.",
         "failed_getting_user": "The user could not be loaded.",
         "invalid_user": "The user data is invalid."
+      },
+      "auth": {
+        "invalid_token": "The token is invalid",
+        "failed_logging_in": "Failed logging in the user."
       }
     },
     "states": {
