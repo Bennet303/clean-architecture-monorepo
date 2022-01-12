@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CanActivate, CanLoad } from '@angular/router';
 import { Navigate } from '@ngxs/router-plugin';
 import { Store } from '@ngxs/store';
-import { AuthStateSelectors } from '../../src/app/presentation/states/auth/auth.state.selectors';
+import { AuthStateSelectors } from '../../presentation/states/auth/auth.state.selectors';
 
 @Injectable()
 export class AuthGuard implements CanActivate, CanLoad {

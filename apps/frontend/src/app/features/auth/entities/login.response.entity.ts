@@ -1,4 +1,4 @@
-import { Entity } from '../../../../../../../libs/shared/src';
+import { Entity } from '@clean-architecture-monorepo/shared';
 
 export class LoginResponseEntity extends Entity {
   readonly token: string;

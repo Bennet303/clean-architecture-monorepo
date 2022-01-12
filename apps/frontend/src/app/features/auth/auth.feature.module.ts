@@ -6,6 +6,7 @@ import { MockAuthDataSource } from './data-sources/mock.auth.data.source';
 import { AuthRepository } from './repositories/auth.repository';
 import { AuthRepositoryImpl } from './repositories/auth.repository.impl';
 import { LoginUseCase } from './use-cases/login.use.case';
+import { LogoutUseCase } from './use-cases/logout.use.case';
 
 @NgModule({
   imports: [HttpClientModule],
@@ -24,6 +25,7 @@ import { LoginUseCase } from './use-cases/login.use.case';
       useClass: AuthRepositoryImpl,
     },
     LoginUseCase,
+    LogoutUseCase,
   ],
 })
 export class AuthFeatureModule {}

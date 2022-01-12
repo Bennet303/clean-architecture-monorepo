@@ -1,9 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Navigate } from '@ngxs/router-plugin';
 import { Action, State, StateContext } from '@ngxs/store';
-import { TranslatableError } from '../../../../../core/abstracts/translatable.error';
+import { TranslatableError } from '../../../core/abstracts/translatable.error';
 import { LoginUseCase } from '../../../features/auth/use-cases/login.use.case';
-import { AuthStateLoginAction } from './auth.state.actions';
+import { LogoutUseCase } from '../../../features/auth/use-cases/logout.use.case';
+import {
+  AuthStateLoginAction,
+  AuthStateLogoutAction,
+} from './auth.state.actions';
 import { AuthStateModel, defaultAuthStateModel } from './auth.state.model';
 
 @State<AuthStateModel>({
@@ -12,7 +16,10 @@ import { AuthStateModel, defaultAuthStateModel } from './auth.state.model';
 })
 @Injectable()
 export class AuthState {
-  constructor(private readonly loginUseCase: LoginUseCase) {}
+  constructor(
+    private readonly loginUseCase: LoginUseCase,
+    private readonly logoutUseCase: LogoutUseCase
+  ) {}
 
   @Action(AuthStateLoginAction)
   async login({ dispatch, patchState }: StateContext<AuthStateModel>) {
@@ -27,5 +34,21 @@ export class AuthState {
 
     patchState({ token: res.token, isLoading: false });
     dispatch(new Navigate(['home']));
+  }
+
+  @Action(AuthStateLogoutAction)
+  async logout(
+    { dispatch, patchState }: StateContext<AuthStateModel>,
+    { error }: AuthStateLogoutAction
+  ) {
+    patchState({ errorMessage: error?.message || '', token: '' });
+
+    dispatch(new Navigate(['login']));
+
+    const res = await this.logoutUseCase.execute();
+
+    if (res instanceof TranslatableError) {
+      patchState({ errorMessage: res.message });
+    }
   }
 }

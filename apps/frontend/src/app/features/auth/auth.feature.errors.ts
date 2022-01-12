@@ -1,4 +1,4 @@
-import { TranslatableError } from '../../../../core/abstracts/translatable.error';
+import { TranslatableError } from '../../core/abstracts/translatable.error';
 
 export class InvalidTokenError extends TranslatableError {
   constructor() {
@@ -9,5 +9,11 @@ export class InvalidTokenError extends TranslatableError {
 export class FailedLoggingInError extends TranslatableError {
   constructor() {
     super('errors.features.auth.failed_logging_in');
+  }
+}
+
+export class FailedLoggingOutError extends TranslatableError {
+  constructor() {
+    super('errors.features.auth.failed_logging_out');
   }
 }
