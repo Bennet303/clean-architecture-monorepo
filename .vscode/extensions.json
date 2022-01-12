@@ -8,7 +8,6 @@
     "nrwl.angular-console",
     "streetsidesoftware.code-spell-checker",
     "streetsidesoftware.code-spell-checker-german",
-    "andys8.jest-snippets",
-    "orta.vscode-jest"
+    "andys8.jest-snippets"
   ]
 }
