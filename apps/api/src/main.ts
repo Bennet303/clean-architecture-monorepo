@@ -15,9 +15,13 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 import * as compression from 'compression';
+import * as helmet from 'helmet';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  app.use(helmet());
+
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
 
