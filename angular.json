@@ -54,6 +54,21 @@
         },
         "serve": {
           "builder": "@nrwl/node:execute",
+          "configurations": {
+            "production": {
+              "buildTarget": "api:build:production"
+            },
+            "development": {
+              "buildTarget": "api:build:development"
+            },
+            "local": {
+              "buildTarget": "api:build:local"
+            },
+            "mock": {
+              "buildTarget": "api:build:mock"
+            }
+          },
+          "defaultConfiguration": "local",
           "options": {
             "buildTarget": "api:build"
           }
