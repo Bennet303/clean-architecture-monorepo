@@ -54,21 +54,6 @@
         },
         "serve": {
           "builder": "@nrwl/node:execute",
-          "configurations": {
-            "production": {
-              "buildTarget": "api:build:production"
-            },
-            "development": {
-              "buildTarget": "api:build:development"
-            },
-            "local": {
-              "buildTarget": "api:build:local"
-            },
-            "mock": {
-              "buildTarget": "api:build:mock"
-            }
-          },
-          "defaultConfiguration": "local",
           "options": {
             "buildTarget": "api:build"
           }
@@ -320,6 +305,37 @@
               "cmd": "update android"
             }
           }
+        },
+        "storybook": {
+          "builder": "@nrwl/storybook:storybook",
+          "options": {
+            "uiFramework": "@storybook/angular",
+            "port": 4400,
+            "config": {
+              "configFolder": "apps/frontend/.storybook"
+            }
+          },
+          "configurations": {
+            "ci": {
+              "quiet": true
+            }
+          }
+        },
+        "build-storybook": {
+          "builder": "@nrwl/storybook:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "uiFramework": "@storybook/angular",
+            "outputPath": "dist/storybook/frontend",
+            "config": {
+              "configFolder": "apps/frontend/.storybook"
+            }
+          },
+          "configurations": {
+            "ci": {
+              "quiet": true
+            }
+          }
         }
       }
     },
@@ -345,6 +361,88 @@
           "outputs": ["{options.outputFile}"],
           "options": {
             "lintFilePatterns": ["apps/frontend-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    },
+    "shared-components": {
+      "projectType": "library",
+      "root": "libs/shared-components",
+      "sourceRoot": "libs/shared-components/src",
+      "prefix": "clean-architecture-monorepo",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/shared-components"],
+          "options": {
+            "jestConfig": "libs/shared-components/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/shared-components/src/**/*.ts",
+              "libs/shared-components/src/**/*.html"
+            ]
+          }
+        },
+        "storybook": {
+          "builder": "@nrwl/storybook:storybook",
+          "options": {
+            "uiFramework": "@storybook/angular",
+            "port": 4400,
+            "config": {
+              "configFolder": "libs/shared-components/.storybook"
+            }
+          },
+          "configurations": {
+            "ci": {
+              "quiet": true
+            }
+          }
+        },
+        "build-storybook": {
+          "builder": "@nrwl/storybook:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "uiFramework": "@storybook/angular",
+            "outputPath": "dist/storybook/shared-components",
+            "config": {
+              "configFolder": "libs/shared-components/.storybook"
+            }
+          },
+          "configurations": {
+            "ci": {
+              "quiet": true
+            }
+          }
+        }
+      }
+    },
+    "shared-components-e2e": {
+      "root": "apps/shared-components-e2e",
+      "sourceRoot": "apps/shared-components-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/shared-components-e2e/cypress.json",
+            "devServerTarget": "shared-components:storybook"
+          },
+          "configurations": {
+            "ci": {
+              "devServerTarget": "shared-components:storybook:ci"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/shared-components-e2e/**/*.{js,ts}"]
           }
         }
       }
