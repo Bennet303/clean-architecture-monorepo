@@ -3,7 +3,12 @@
  * This is only a minimal backend to get started.
  */
 
-import { Logger, ValidationPipe, VersioningType } from '@nestjs/common';
+import {
+  INestApplication,
+  Logger,
+  ValidationPipe,
+  VersioningType,
+} from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
@@ -28,6 +33,17 @@ async function bootstrap() {
     })
   );
 
+  if (environment.local) setupSwagger(app, globalPrefix);
+
+  const port = process.env.PORT || 3333;
+
+  await app.listen(port, () => {
+    Logger.log(`Application is starting in ${environment.name} mode...`);
+    Logger.log('Listening at http://localhost:' + port + '/' + globalPrefix);
+  });
+}
+
+function setupSwagger(app: INestApplication, globalPrefix: string) {
   const config = new DocumentBuilder()
     .setTitle('Clean Architecture API')
     .setDescription('The example API of the clean-architecture-monorepo')
@@ -36,13 +52,6 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup(`${globalPrefix}/docs`, app, document);
-
-  const port = process.env.PORT || 3333;
-
-  await app.listen(port, () => {
-    Logger.log(`Application is starting in ${environment.name} mode...`);
-    Logger.log('Listening at http://localhost:' + port + '/' + globalPrefix);
-  });
 }
 
 bootstrap();
