@@ -1,4 +1,4 @@
-import { Entity } from '../../../../libs/shared/src/lib/abstracts/entity';
+import { Entity } from '@clean-architecture-monorepo/shared';
 import { TranslatableError } from './translatable.error';
 
 export abstract class UseCase<
