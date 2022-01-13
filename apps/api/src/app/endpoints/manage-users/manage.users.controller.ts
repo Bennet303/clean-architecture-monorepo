@@ -36,7 +36,7 @@ import { FindOneUserParam } from './params/find.one.user.param';
   version: '1',
   path: '/manage-users',
 })
-export class ManageUserController {
+export class ManageUsersController {
   logger = new Logger('ManageUserController');
 
   constructor(
