@@ -7,7 +7,7 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngxs/store';
-import { Observable, tap } from 'rxjs';
+import { catchError, Observable, throwError, timeout } from 'rxjs';
 import { AuthStateLogoutAction } from '../../presentation/states/auth/auth.state.actions';
 import { UnauthorizedError } from '../../presentation/states/auth/auth.state.errors';
 import { AuthStateSelectors } from '../../presentation/states/auth/auth.state.selectors';
@@ -28,19 +28,27 @@ export class TokenInterceptor implements HttpInterceptor {
       setHeaders: {
         Authorization: `Bearer ${token}`,
       },
+      // withCredentials: true, when using backend session
     });
 
-    return next.handle(req).pipe(
-      tap((event: HttpEvent<unknown>) => {
-        if (event instanceof HttpErrorResponse) {
-          if (event.status === 401) {
-            this.store.dispatch(
-              new AuthStateLogoutAction(new UnauthorizedError())
-            );
+    return next
+      .handle(req)
+      .pipe(
+        catchError((error, caughtReq$) => {
+          if (error instanceof HttpErrorResponse) {
+            if (error.status === 401) {
+              this.store.dispatch(
+                new AuthStateLogoutAction(new UnauthorizedError())
+              );
+              return throwError(() => error); // stop sending the request to the backend after 401
+            }
           }
-        }
-        return event;
-      })
-    );
+          return caughtReq$; //retry sending the request to the backend unit success
+        })
+      )
+      .pipe(
+        timeout(30000),
+        catchError((error) => throwError(() => error)) // throw TimeoutError if there is no response after 30 seconds
+      );
   }
 }
