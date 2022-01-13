@@ -7,7 +7,7 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngxs/store';
-import { map, Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { AuthStateLogoutAction } from '../../presentation/states/auth/auth.state.actions';
 import { UnauthorizedError } from '../../presentation/states/auth/auth.state.errors';
 import { AuthStateSelectors } from '../../presentation/states/auth/auth.state.selectors';
@@ -31,7 +31,7 @@ export class TokenInterceptor implements HttpInterceptor {
     });
 
     return next.handle(req).pipe(
-      map((event: HttpEvent<unknown>) => {
+      tap((event: HttpEvent<unknown>) => {
         if (event instanceof HttpErrorResponse) {
           if (event.status === 401) {
             this.store.dispatch(
