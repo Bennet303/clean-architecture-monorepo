@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { RolesEnum } from '../../../core/enums/roles.enum';
 import { LoginResponseEntity } from '../entities/login.response.entity';
 import { AuthDataSource } from './auth.data.source';
 
@@ -10,7 +11,13 @@ export class MockAuthDataSource implements AuthDataSource {
 
   login(): Promise<LoginResponseEntity> {
     return new Promise((resolve) =>
-      setTimeout(() => resolve(new LoginResponseEntity({ token: '123' })), 2000)
+      setTimeout(
+        () =>
+          resolve(
+            new LoginResponseEntity({ token: '123', role: RolesEnum.User })
+          ),
+        2000
+      )
     );
   }
 }

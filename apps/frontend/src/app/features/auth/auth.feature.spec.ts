@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { TranslatableError } from '../../core/abstracts/translatable.error';
+import { RolesEnum } from '../../core/enums/roles.enum';
 import {
   FailedLoggingInError,
   FailedLoggingOutError,
@@ -34,7 +35,10 @@ describe('feature: auth', () => {
     });
     describe('success', () => {
       it('should login the user', async () => {
-        mockLoginResponse = new LoginResponseEntity({ token: '123' });
+        mockLoginResponse = new LoginResponseEntity({
+          token: '123',
+          role: RolesEnum.User,
+        });
         jest.spyOn(dataSource, 'login').mockResolvedValue(mockLoginResponse);
 
         const res = await useCase.execute();

@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { RolesEnum } from './core/enums/roles.enum';
 import { AuthGuard } from './core/guards/auth.guard';
+import { RoleGuard } from './core/guards/role.guard';
 
 const routes: Routes = [
   {
@@ -16,8 +18,11 @@ const routes: Routes = [
       import('./presentation/pages/home/home.page.module').then(
         (m) => m.HomePageModule
       ),
-    canActivate: [AuthGuard],
-    canLoad: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
+    canLoad: [AuthGuard, RoleGuard],
+    data: {
+      acceptedRoles: [RolesEnum.User, RolesEnum.Admin],
+    },
   },
   {
     path: '',
