@@ -1,6 +1,10 @@
 <ng-container *transloco="let t">
   <ng-container *transloco="let tHome; scope: 'home'; read: 'home'">
-    <app-header title="Home Page" size="large"></app-header>
+    <app-header
+      data-cy="home-title"
+      title="Home Page"
+      size="large"
+    ></app-header>
 
     <ion-content [fullscreen]="true">
       <div id="container">
@@ -11,9 +15,13 @@
         <clean-architecture-monorepo-user-card
           [userId]="(stateModel$ | async)!.user?.id"
         ></clean-architecture-monorepo-user-card>
-        <ion-button (click)="createUser()">Create User</ion-button>
-        <ion-button (click)="deleteUser()">Delete User</ion-button>
-        <ion-button (click)="getUser()">Get User</ion-button>
+        <ion-button data-cy="create-user" (click)="createUser()"
+          >Create User</ion-button
+        >
+        <ion-button data-cy="delete-user" (click)="deleteUser()"
+          >Delete User</ion-button
+        >
+        <ion-button data-cy="get-user" (click)="getUser()">Get User</ion-button>
       </div>
     </ion-content>
   </ng-container>
