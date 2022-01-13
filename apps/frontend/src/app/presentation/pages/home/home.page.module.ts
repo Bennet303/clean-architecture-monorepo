@@ -6,7 +6,7 @@ import { SharedComponentsModule } from '@clean-architecture-monorepo/shared-comp
 import { IonicModule } from '@ionic/angular';
 import { TranslocoModule } from '@ngneat/transloco';
 import { HomePageStateModule } from '../../states/home/home.page.state.module';
-import { HeaderComponentModule } from './components/header/header.component.module';
+import { HeaderComponentModule } from '../../components/header/header.component.module';
 import { HomePage } from './home.page';
 
 @NgModule({

@@ -1,5 +1,5 @@
-<app-header title="Home Page" size="large"></app-header>
+<app-header data-cy="login-title" title="Login Page" size="large"></app-header>
 <ion-content [fullscreen]="true">
-  <ion-button (click)="login()">Login</ion-button>
+  <ion-button data-cy="login" (click)="login()">Login</ion-button>
   <ion-spinner *ngIf="(authStateModel$ | async)!.isLoading"></ion-spinner>
 </ion-content>
