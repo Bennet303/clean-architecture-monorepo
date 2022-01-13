@@ -9,18 +9,25 @@ export class AuthGuard implements CanActivate, CanLoad {
   constructor(private readonly store: Store) {}
 
   canActivate(): boolean {
+    return this.isTokenValid();
+  }
+
+  canLoad(): boolean {
+    if (this.isTokenValid()) {
+      return true;
+    }
+    this.store.dispatch(new Navigate(['login']));
+    return false;
+  }
+
+  private isTokenValid(): boolean {
     const token = this.store.selectSnapshot(
       AuthStateSelectors.stateModel
     ).token;
 
-    if (!token) {
-      this.store.dispatch(new Navigate(['login']));
-      return false;
+    if (token) {
+      return true;
     }
-    return true;
-  }
-
-  canLoad(): boolean {
-    return this.canActivate();
+    return false;
   }
 }

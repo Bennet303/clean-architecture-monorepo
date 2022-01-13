@@ -4,6 +4,7 @@ import { Navigate } from '@ngxs/router-plugin';
 import { Actions, NgxsModule, ofActionDispatched, Store } from '@ngxs/store';
 import { lastValueFrom } from 'rxjs';
 import { TranslatableError } from '../../../core/abstracts/translatable.error';
+import { RolesEnum } from '../../../core/enums/roles.enum';
 import { AuthFeatureModule } from '../../../features/auth/auth.feature.module';
 import { LoginResponseEntity } from '../../../features/auth/entities/login.response.entity';
 import { LoginUseCase } from '../../../features/auth/use-cases/login.use.case';
@@ -37,12 +38,16 @@ describe('state: auth', () => {
     beforeEach(() => {
       loginUseCase = TestBed.inject(LoginUseCase);
     });
-    it('should write the token to the state', (done) => {
-      mockLoginResponse = new LoginResponseEntity({ token: '123' });
+    it('should write the data to the state', (done) => {
+      mockLoginResponse = new LoginResponseEntity({
+        token: '123',
+        role: RolesEnum.User,
+      });
       expectedStateModel = {
         errorMessage: '',
         isLoading: false,
         token: mockLoginResponse.token,
+        role: mockLoginResponse.role,
       };
       jest.spyOn(loginUseCase, 'execute').mockResolvedValue(mockLoginResponse);
 

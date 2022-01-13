@@ -28,11 +28,16 @@ export class AuthState {
     const res = await this.loginUseCase.execute();
 
     if (res instanceof TranslatableError) {
-      patchState({ errorMessage: res.message, token: '', isLoading: false });
+      patchState({
+        errorMessage: res.message,
+        token: '',
+        isLoading: false,
+        role: undefined,
+      });
       return;
     }
 
-    patchState({ token: res.token, isLoading: false });
+    patchState({ token: res.token, isLoading: false, role: res.role });
     dispatch(new Navigate(['home']));
   }
 
@@ -41,7 +46,11 @@ export class AuthState {
     { dispatch, patchState }: StateContext<AuthStateModel>,
     { error }: AuthStateLogoutAction
   ) {
-    patchState({ errorMessage: error?.message || '', token: '' });
+    patchState({
+      errorMessage: error?.message || '',
+      token: '',
+      role: undefined,
+    });
 
     dispatch(new Navigate(['login']));
 

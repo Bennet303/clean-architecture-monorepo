@@ -10,6 +10,7 @@ import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthGuard } from './core/guards/auth.guard';
+import { RoleGuard } from './core/guards/role.guard';
 import { TokenInterceptor } from './core/interceptors/token.interceptor';
 import { AppState } from './presentation/states/app/app.state';
 import { AppStateModule } from './presentation/states/app/app.state.module';
@@ -36,6 +37,7 @@ import { TranslocoRootModule } from './transloco-root.module';
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     AuthGuard,
+    RoleGuard,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
