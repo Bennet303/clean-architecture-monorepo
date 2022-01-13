@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { environment } from '../../../../src/environments/environment';
 import { ManageUsersRepository } from './repositories/manage.users.repository';
 import { ManageUsersRepositoryImpl } from './repositories/manage.users.repository.impl';
 import { ManageUsersService } from './services/manage.users.service';
@@ -14,7 +15,16 @@ import { GetUserUseCase } from './use-cases/get.user.use.case';
     DeleteUserUseCase,
     GetUserUseCase,
     { provide: ManageUsersRepository, useClass: ManageUsersRepositoryImpl },
-    { provide: ManageUsersService, useClass: MockManageUsersService },
+    {
+      provide: ManageUsersService,
+      useFactory: () => {
+        if (environment.useMockData) {
+          return new MockManageUsersService();
+        } else {
+          return new MockManageUsersService(); // TODO: implement real service
+        }
+      },
+    },
   ],
   exports: [CreateUserUseCase, DeleteUserUseCase, GetUserUseCase],
 })

@@ -6,15 +6,21 @@ import { ManageUsersService } from './manage.users.service';
 
 @Injectable()
 export class MockManageUsersService implements ManageUsersService {
+  currentUser: UserModel;
+
   createUser(user: UserModel): Promise<UserModel> {
-    return new Promise((resolve) => setTimeout(() => resolve(user), 500));
+    this.currentUser = user;
+    return new Promise((resolve) =>
+      setTimeout(() => resolve(this.currentUser), 500)
+    );
   }
   deleteUser(param: FindOneUserParam): Promise<void> {
+    this.currentUser = undefined;
     return new Promise((resolve) => setTimeout(() => resolve(), 500));
   }
   getUser(): Promise<UserModel> {
     return new Promise((resolve) =>
-      setTimeout(() => resolve(new UserModel({ _id: '1' })), 500)
+      setTimeout(() => resolve(this.currentUser), 500)
     );
   }
 }
