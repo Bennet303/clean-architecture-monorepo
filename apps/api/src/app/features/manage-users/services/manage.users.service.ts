@@ -4,5 +4,5 @@ import { FindOneUserParam } from '../../../endpoints/manage-users/params/find.on
 export abstract class ManageUsersService {
   abstract createUser(user: UserModel): Promise<UserModel>;
   abstract deleteUser(param: FindOneUserParam): Promise<void>;
-  abstract getUser(): Promise<UserModel>;
+  abstract getUser(): Promise<UserModel | undefined>;
 }

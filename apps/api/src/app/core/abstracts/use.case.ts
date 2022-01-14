@@ -1,8 +1,5 @@
-import { Entity } from '@clean-architecture-monorepo/shared';
+import { DTO } from '../dtos/dto';
 
-export abstract class UseCase<
-  I extends Entity | void,
-  O extends Entity | void
-> {
+export abstract class UseCase<I extends DTO | void, O extends DTO | void> {
   abstract execute(param: I): Promise<O | Error>;
 }

@@ -8,10 +8,10 @@ export class UserDTO extends DTO implements UserEntity {
   @IsNotEmpty()
   @IsString()
   @Length(1, 10)
-  id: string;
+  readonly id!: string;
 
   constructor(obj: UserDTO) {
-    super();
+    super(obj);
     Object.assign(this, obj);
   }
 }

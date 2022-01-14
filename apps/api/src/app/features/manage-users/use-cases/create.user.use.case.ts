@@ -12,8 +12,6 @@ export class CreateUserUseCase implements UseCase<UserDTO, UserDTO> {
   async execute(
     param: UserDTO
   ): Promise<UserDTO | InvalidInputError | UserAlreadyExistsError | Error> {
-    if (!param) return new InvalidInputError();
-
     return this.repository.createUser(param);
   }
 }

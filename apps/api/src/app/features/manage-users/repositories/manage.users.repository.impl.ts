@@ -18,7 +18,7 @@ export class ManageUsersRepositoryImpl implements ManageUsersRepository {
       const res = await this.service.createUser(UserModel.fromDTO(user));
       return UserModel.toDTO(res);
     } catch (err) {
-      return err;
+      return err as Error;
     }
   }
 
@@ -26,7 +26,7 @@ export class ManageUsersRepositoryImpl implements ManageUsersRepository {
     try {
       return this.service.deleteUser(param);
     } catch (err) {
-      return err;
+      return err as Error;
     }
   }
 
@@ -38,7 +38,7 @@ export class ManageUsersRepositoryImpl implements ManageUsersRepository {
 
       return UserModel.toDTO(res);
     } catch (err) {
-      return err;
+      return err as Error;
     }
   }
 }
