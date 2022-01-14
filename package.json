@@ -25,6 +25,7 @@
     "@nestjs/core": "^8.0.0",
     "@nestjs/platform-express": "^8.0.0",
     "@nestjs/swagger": "^5.1.5",
+    "@nestjs/throttler": "^2.0.0",
     "@ngneat/transloco": "^3.1.1",
     "@ngxs/router-plugin": "^3.7.3",
     "@ngxs/store": "^3.7.3",

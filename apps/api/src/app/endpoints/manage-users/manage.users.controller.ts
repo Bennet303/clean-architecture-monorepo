@@ -22,6 +22,7 @@ import {
   ApiNotFoundResponse,
   ApiBody,
   ApiConflictResponse,
+  ApiTooManyRequestsResponse,
 } from '@nestjs/swagger';
 import { BaseController } from '../../core/abstracts/base.controller';
 import { UserDTO } from '../../core/dtos/user.dto';
@@ -34,11 +35,13 @@ import { DeleteUserUseCase } from '../../features/manage-users/use-cases/delete.
 import { GetUserUseCase } from '../../features/manage-users/use-cases/get.user.use.case';
 import { FindOneUserParam } from './params/find.one.user.param';
 
-@ApiTags('users')
 @Controller({
   version: '1',
   path: '/users',
 })
+@ApiTags('users')
+@ApiTooManyRequestsResponse({ description: 'Too many requests.' })
+@ApiInternalServerErrorResponse({ description: 'Internal server error.' })
 export class ManageUsersController extends BaseController {
   constructor(
     private readonly getUserUC: GetUserUseCase,
@@ -55,7 +58,6 @@ export class ManageUsersController extends BaseController {
   @ApiNotFoundResponse({
     description: 'No current user found',
   })
-  @ApiInternalServerErrorResponse({ description: 'Internal server error.' })
   async getUser(): Promise<UserDTO | undefined> {
     this.logger?.log('Making call to get user...');
     const res = await this.getUserUC.execute();
@@ -80,7 +82,6 @@ export class ManageUsersController extends BaseController {
   @ApiCreatedResponse({ description: 'The created user.', type: UserDTO })
   @ApiConflictResponse({ description: 'User already exists.' })
   @ApiBadRequestResponse({ description: 'Invalid user.' })
-  @ApiInternalServerErrorResponse({ description: 'Internal server error.' })
   async createUser(@Body() user: UserDTO): Promise<UserDTO> {
     this.logger?.log(
       `Making call to create user... [user=${JSON.stringify(user)}]`
@@ -112,7 +113,6 @@ export class ManageUsersController extends BaseController {
   @ApiNoContentResponse({ description: 'The current user has been deleted.' })
   @ApiNotFoundResponse({ description: 'User not found.' })
   @ApiBadRequestResponse({ description: 'Invalid params.' })
-  @ApiInternalServerErrorResponse({ description: 'Internal server error.' })
   async deleteUser(@Param() params: FindOneUserParam): Promise<void> {
     this.logger?.log(
       `Making call to delete user... [params=${JSON.stringify(params)}]`
