@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { UseCase } from '../../../core/abstracts/use.case';
 import { FindOneUserParam } from '../../../endpoints/manage-users/params/find.one.user.param';
-import { InvalidInputError } from '../errors/invalid.input.error';
-import { UserNotFoundError } from '../errors/user.not.found.error';
+import {
+  InvalidInputError,
+  UserNotFoundError,
+} from '../manage.users.feature.errors';
 import { ManageUsersRepository } from '../repositories/manage.users.repository';
 
 @Injectable()

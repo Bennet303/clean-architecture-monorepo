@@ -9,8 +9,10 @@ import { ManageUsersService } from '../../features/manage-users/services/manage.
 import { MockManageUsersService } from '../../features/manage-users/services/mock.manage.users.service';
 import * as request from 'supertest';
 import * as compression from 'compression';
-import { UserNotFoundError } from '../../features/manage-users/errors/user.not.found.error';
-import { UserAlreadyExistsError } from '../../features/manage-users/errors/user.already.exists.error';
+import {
+  UserAlreadyExistsError,
+  UserNotFoundError,
+} from '../../features/manage-users/manage.users.feature.errors';
 
 describe('controller: manage-users', () => {
   let app: INestApplication;
