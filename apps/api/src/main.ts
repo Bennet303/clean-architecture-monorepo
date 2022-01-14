@@ -16,6 +16,7 @@ import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 import * as compression from 'compression';
 import * as helmet from 'helmet';
+import { metaInformation } from './meta.information';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -49,9 +50,9 @@ async function bootstrap() {
 
 function setupSwagger(app: INestApplication, globalPrefix: string) {
   const config = new DocumentBuilder()
-    .setTitle('Clean Architecture API')
-    .setDescription('The example API of the clean-architecture-monorepo')
-    .setVersion('1.0')
+    .setTitle(metaInformation.title)
+    .setDescription(metaInformation.description)
+    .setVersion(metaInformation.version)
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
