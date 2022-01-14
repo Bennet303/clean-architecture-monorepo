@@ -23,6 +23,10 @@ steps:
   - script: |
       nx run api:lint
     displayName: "Backend linting"
+    
+  - script: |
+      nx run shared-components:lint
+    displayName: "Shared components linting"
   
   - script: |
       nx run frontend:test
