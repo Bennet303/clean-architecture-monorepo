@@ -2,6 +2,7 @@
 import { Injectable } from '@nestjs/common';
 import { UserModel } from '../../../core/models/user.model';
 import { FindOneUserParam } from '../../../endpoints/manage-users/params/find.one.user.param';
+import { UserNotFoundError } from '../manage.users.feature.errors';
 import { ManageUsersService } from './manage.users.service';
 
 @Injectable()
@@ -13,7 +14,8 @@ export class MockManageUsersService implements ManageUsersService {
     return new Promise((resolve) => setTimeout(() => resolve(user), 500));
   }
   deleteUser(param: FindOneUserParam): Promise<void> {
-    this.currentUser = undefined;
+    if (this.currentUser) this.currentUser = undefined;
+    else throw new UserNotFoundError();
     return new Promise((resolve) => setTimeout(() => resolve(), 500));
   }
   getUser(): Promise<UserModel | undefined> {
