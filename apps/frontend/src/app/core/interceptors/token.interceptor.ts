@@ -7,7 +7,13 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngxs/store';
-import { catchError, Observable, throwError, timeout } from 'rxjs';
+import {
+  catchError,
+  Observable,
+  throwError,
+  timeout,
+  TimeoutError,
+} from 'rxjs';
 import { AuthStateLogoutAction } from '../../presentation/states/auth/auth.state.actions';
 import { UnauthorizedError } from '../../presentation/states/auth/auth.state.errors';
 import { AuthStateSelectors } from '../../presentation/states/auth/auth.state.selectors';
@@ -48,7 +54,13 @@ export class TokenInterceptor implements HttpInterceptor {
       )
       .pipe(
         timeout(30000),
-        catchError((error) => throwError(() => error)) // throw TimeoutError if there is no response after 30 seconds
+        catchError((error, caughtReq$) => {
+          if (error instanceof TimeoutError) {
+            // handle timeout error here
+            return throwError(() => error); // throw TimeoutError if there is no response after 30 seconds
+          }
+          return caughtReq$; //retry sending the request to the backend until receiving a response
+        })
       );
   }
 }
