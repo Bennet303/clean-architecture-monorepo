@@ -16,8 +16,6 @@ export class ManageUsersRepositoryImpl implements ManageUsersRepository {
 
   async createUser(user: UserEntity): Promise<void | TranslatableError> {
     try {
-      if (!user || !user.id) throw new InvalidUserError();
-
       return await this.dataSource.createUser(user);
     } catch (error) {
       return error instanceof TranslatableError
@@ -28,8 +26,6 @@ export class ManageUsersRepositoryImpl implements ManageUsersRepository {
 
   async deleteUser(user: UserEntity): Promise<void | TranslatableError> {
     try {
-      if (!user || !user.id) throw new InvalidUserError();
-
       return await this.dataSource.deleteUser(user);
     } catch (error) {
       return error instanceof TranslatableError
