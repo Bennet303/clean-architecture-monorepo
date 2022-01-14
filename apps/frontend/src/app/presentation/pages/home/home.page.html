@@ -5,13 +5,15 @@
       title="Home Page"
       size="large"
     ></app-header>
-
     <ion-content [fullscreen]="true">
+      <ion-progress-bar
+        *ngIf="(stateModel$ | async)!.isLoading"
+        type="indeterminate"
+      ></ion-progress-bar>
       <div id="container">
         <h1 *ngIf="(stateModel$ | async)!.errorMessage">
           {{ t((stateModel$ | async)!.errorMessage) }}
         </h1>
-        <ion-spinner *ngIf="(stateModel$ | async)!.isLoading"></ion-spinner>
         <clean-architecture-monorepo-user-card
           [userId]="(stateModel$ | async)!.user?.id"
         ></clean-architecture-monorepo-user-card>

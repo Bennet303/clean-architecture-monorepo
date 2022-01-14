@@ -3,7 +3,13 @@
     <ion-card-title>Current User</ion-card-title>
   </ion-card-header>
 
-  <ion-card-content>
+  <ion-card-content
+    [ngClass]="{
+      'ion-card-content--success': userId,
+      'ion-card-content--error':
+        userId === undefined || userId === null || userId === ''
+    }"
+  >
     {{ userId ?? 'unknown' }}
   </ion-card-content>
 </ion-card>

@@ -1,0 +1,10 @@
+ion-card {
+  .ion-card-content--success {
+    font-size: var(--default-font-size-big);
+    color: var(--ion-color-success);
+  }
+  .ion-card-content--error {
+    font-size: var(--default-font-size-normal);
+    color: var(--ion-color-danger);
+  }
+}

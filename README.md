@@ -39,6 +39,10 @@ Backend:
 
 # Storybook
 
+## Generating Storybook Configuration
+
+`nx g @nrwl/angular:storybook-configuration project-name`
+
 ## How to run storybook
 
 For the Web-Frontend:

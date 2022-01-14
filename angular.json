@@ -116,6 +116,7 @@
             ],
             "styles": [
               "apps/frontend/src/styles.scss",
+              "apps/frontend/src/theme/main.scss",
               {
                 "input": "apps/frontend/src/theme/variables.scss"
               }
