@@ -39,28 +39,31 @@ export class TokenInterceptor implements HttpInterceptor {
 
     return next
       .handle(req)
-      .pipe(
-        catchError((error, caughtReq$) => {
-          if (error instanceof HttpErrorResponse) {
-            if (error.status === 401) {
-              this.store.dispatch(
-                new AuthStateLogoutAction(new UnauthorizedError())
-              );
-              return throwError(() => error); // throw error after receiving 401 from the backend
-            }
-          }
-          return caughtReq$; //retry sending the request to the backend until receiving a response
-        })
-      )
-      .pipe(
-        timeout(30000),
-        catchError((error, caughtReq$) => {
-          if (error instanceof TimeoutError) {
-            // handle timeout error here
-            return throwError(() => error); // throw TimeoutError if there is no response after 30 seconds
-          }
-          return caughtReq$; //retry sending the request to the backend until receiving a response
-        })
-      );
+      .pipe(catchError(this.handleHttpError))
+      .pipe(timeout(30000), catchError(this.handleTimeoutError));
   }
+
+  private handleHttpError = (
+    error: unknown,
+    caughtReq$: Observable<HttpEvent<unknown>>
+  ): Observable<HttpEvent<unknown>> => {
+    if (error instanceof HttpErrorResponse) {
+      if (error.status === 401) {
+        this.store.dispatch(new AuthStateLogoutAction(new UnauthorizedError()));
+        return throwError(() => error); // throw error after receiving 401 from the backend
+      }
+    }
+    return caughtReq$; // retry sending the request to the backend until receiving a response
+  };
+
+  private handleTimeoutError = (
+    error: unknown,
+    caughtReq$: Observable<HttpEvent<unknown>>
+  ): Observable<HttpEvent<unknown>> => {
+    if (error instanceof TimeoutError) {
+      // handle timeout error here
+      return throwError(() => error); // throw TimeoutError if there is no response after 30 seconds
+    }
+    return caughtReq$; //retry sending the request to the backend until receiving a response
+  };
 }
