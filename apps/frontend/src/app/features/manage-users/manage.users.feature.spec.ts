@@ -103,28 +103,10 @@ describe('feature: manage-users', () => {
 
         expect(res).toBeInstanceOf(FailedGettingUserError);
       });
-      describe('user is invalid', () => {
-        // it('should return an error when the user is undefined', async () => {
-        //   mockUser = undefined;
-        //   jest.spyOn(dataSource, 'getUser').mockResolvedValue(undefined); //.and.resolveTo(mockUser);
-
-        //   const res = await useCase.execute();
-
-        //   expect(dataSource.getUser).toHaveBeenCalledOnceWith();
-        //   expect(res).toBeInstanceOf(Error);
-        // });
-        // it('should return an error when the users id is undefined', async () => {
-        //   mockUser = new UserEntity({ id: undefined });
-        //   jest.spyOn(dataSource, 'getUser').and.resolveTo(mockUser);
-
-        //   const res = await useCase.execute();
-
-        //   expect(dataSource.getUser).toHaveBeenCalledOnceWith();
-        //   expect(res).toBeInstanceOf(Error);
-        // });
-        it('should return an InvalidUserError when the users id is empty', async () => {
-          mockUser = new UserEntity({ id: '' });
-
+      const mockUsers = [{}, { id: '' }] as UserEntity[];
+      it.each(mockUsers)(
+        'should return an InvalidUserError if the user is invalid',
+        async (mockUser) => {
           const call = useCase.execute();
           const req = httpMock.expectOne(backendURL + '/get');
           expect(req.request.method).toBe('GET');
@@ -133,8 +115,8 @@ describe('feature: manage-users', () => {
           const res = await call;
 
           expect(res).toBeInstanceOf(InvalidUserError);
-        });
-      });
+        }
+      );
     });
   });
   describe('use case: create user', () => {
@@ -185,32 +167,18 @@ describe('feature: manage-users', () => {
 
         expect(res).toBeInstanceOf(FailedCreatingUserError);
       });
-      describe('user is invalid', () => {
-        // it('should return an error when the user is undefined', async () => {
-        //   mockUser = undefined;
-
-        //   const res = await useCase.execute(mockUser);
-
-        //   expect(res).toBeInstanceOf(Error);
-        // });
-        // it('should return an error when the users id is undefined', async () => {
-        //   mockUser = new UserEntity({ id: undefined });
-
-        //   const res = await useCase.execute(mockUser);
-
-        //   expect(res).toBeInstanceOf(Error);
-        // });
-        it('should return an InvalidUserError when the users id is empty', async () => {
-          mockUser = new UserEntity({ id: '' });
-
+      const mockUsers = [{}, { id: '' }] as UserEntity[];
+      it.each(mockUsers)(
+        'should return an InvalidUserError if the user is invalid',
+        async (mockUser) => {
           const call = useCase.execute(mockUser);
           httpMock.expectNone(backendURL + '/create');
 
           const res = await call;
 
           expect(res).toBeInstanceOf(InvalidUserError);
-        });
-      });
+        }
+      );
     });
   });
   describe('use case: delete user', () => {
@@ -261,32 +229,18 @@ describe('feature: manage-users', () => {
 
         expect(res).toBeInstanceOf(FailedDeletingUserError);
       });
-      describe('user is invalid', () => {
-        // it('should return an error when the user is undefined', async () => {
-        //   mockUser = undefined;
-
-        //   const res = await useCase.execute(mockUser);
-
-        //   expect(res).toBeInstanceOf(Error);
-        // });
-        // it('should return an error when the users id is undefined', async () => {
-        //   mockUser = new UserEntity({ id: undefined });
-
-        //   const res = await useCase.execute(mockUser);
-
-        //   expect(res).toBeInstanceOf(Error);
-        // });
-        it('should return an InvalidUserError when the users id is empty', async () => {
-          mockUser = new UserEntity({ id: '' });
-
+      const mockUsers = [{}, { id: '' }] as UserEntity[];
+      it.each(mockUsers)(
+        'should return an InvalidUserError if the user is invalid',
+        async (mockUser) => {
           const call = useCase.execute(mockUser);
           httpMock.expectNone(backendURL + '/delete');
 
           const res = await call;
 
           expect(res).toBeInstanceOf(InvalidUserError);
-        });
-      });
+        }
+      );
     });
   });
 });
