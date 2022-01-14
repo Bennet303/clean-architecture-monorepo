@@ -1,6 +1,13 @@
+import { HttpStatusCode } from '@angular/common/http';
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { UserEntity } from '@clean-architecture-monorepo/shared';
+import { environment } from '../../../environments/environment';
 import { TranslatableError } from '../../core/abstracts/translatable.error';
+import { BackendManageUsersDataSource } from './data-sources/backend.manage.users.data.source';
 import { ManageUsersDataSource } from './data-sources/manage.users.data.source';
 import {
   FailedCreatingUserError,
@@ -8,21 +15,43 @@ import {
   FailedGettingUserError,
   InvalidUserError,
 } from './manage.users.feature.errors';
-import { ManageUsersFeatureModule } from './manage.users.feature.module';
 import { ManageUsersRepository } from './repositories/manage.users.repository';
+import { ManageUsersRepositoryImpl } from './repositories/manage.users.repository.impl';
 import { CreateUserUseCase } from './use-cases/create.user.use.case';
 import { DeleteUserUseCase } from './use-cases/delete.user.use.case';
 import { GetUserUseCase } from './use-cases/get.user.use.case';
 
 describe('feature: manage-users', () => {
+  const backendURL = environment.backendUrl + '/manage-users';
+  let httpMock: HttpTestingController;
   let dataSource: ManageUsersDataSource;
   let repository: ManageUsersRepository;
   beforeEach(() => {
-    TestBed.configureTestingModule({ imports: [ManageUsersFeatureModule] });
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [
+        {
+          provide: ManageUsersDataSource,
+          useClass: BackendManageUsersDataSource,
+        },
+        {
+          provide: ManageUsersRepository,
+          useClass: ManageUsersRepositoryImpl,
+        },
+        GetUserUseCase,
+        CreateUserUseCase,
+        DeleteUserUseCase,
+      ],
+    });
+    httpMock = TestBed.inject(HttpTestingController);
     dataSource = TestBed.inject(ManageUsersDataSource);
     repository = TestBed.inject(ManageUsersRepository);
   });
-  it('should have a defined dataSource and repository', () => {
+  afterEach(() => {
+    httpMock.verify();
+  });
+  it('should have a defined httpClient, dataSource and repository', () => {
+    expect(httpMock).toBeDefined();
     expect(dataSource).toBeDefined();
     expect(repository).toBeDefined();
   });
@@ -38,31 +67,40 @@ describe('feature: manage-users', () => {
     describe('success', () => {
       it('should get the user', async () => {
         mockUser = new UserEntity({ id: '1' });
-        jest.spyOn(dataSource, 'getUser').mockResolvedValue(mockUser);
 
-        const res = await useCase.execute();
+        const call = useCase.execute();
+        const req = httpMock.expectOne(backendURL + '/get');
+        expect(req.request.method).toBe('GET');
+        req.flush(mockUser, { status: HttpStatusCode.Ok, statusText: '' });
 
-        expect(dataSource.getUser).toHaveBeenCalledTimes(1);
+        const res = await call;
+
         expect(res).toBe(mockUser);
       });
     });
     describe('failure', () => {
-      it('should return an FailedGettingUserError when the data source fails fetching the user from the backend', async () => {
-        jest.spyOn(dataSource, 'getUser').mockImplementation(() => {
-          throw new Error();
-        });
+      it('should return an FailedGettingUserError when the network fails', async () => {
+        mockUser = new UserEntity({ id: '1' });
 
-        const res = await useCase.execute();
+        const call = useCase.execute();
+        const req = httpMock.expectOne(backendURL + '/get');
+        expect(req.request.method).toBe('GET');
+        req.error(new ErrorEvent('error'));
 
-        expect(dataSource.getUser).toHaveBeenCalledTimes(1);
+        const res = await call;
+
         expect(res).toBeInstanceOf(FailedGettingUserError);
       });
-      it('should return an FailedGettingUserError when the data source rejects the promise', async () => {
-        jest.spyOn(dataSource, 'getUser').mockRejectedValue(new Error());
+      it('should return an FailedGettingUserError when the http request fails', async () => {
+        mockUser = new UserEntity({ id: '1' });
 
-        const res = await useCase.execute();
+        const call = useCase.execute();
+        const req = httpMock.expectOne(backendURL + '/get');
+        expect(req.request.method).toBe('GET');
+        req.flush({}, { status: HttpStatusCode.BadRequest, statusText: '' });
 
-        expect(dataSource.getUser).toHaveBeenCalledTimes(1);
+        const res = await call;
+
         expect(res).toBeInstanceOf(FailedGettingUserError);
       });
       describe('user is invalid', () => {
@@ -86,11 +124,14 @@ describe('feature: manage-users', () => {
         // });
         it('should return an InvalidUserError when the users id is empty', async () => {
           mockUser = new UserEntity({ id: '' });
-          jest.spyOn(dataSource, 'getUser').mockResolvedValue(mockUser);
 
-          const res = await useCase.execute();
+          const call = useCase.execute();
+          const req = httpMock.expectOne(backendURL + '/get');
+          expect(req.request.method).toBe('GET');
+          req.flush(mockUser, { status: HttpStatusCode.Ok, statusText: '' });
 
-          expect(dataSource.getUser).toHaveBeenCalledTimes(1);
+          const res = await call;
+
           expect(res).toBeInstanceOf(InvalidUserError);
         });
       });
@@ -108,36 +149,40 @@ describe('feature: manage-users', () => {
     describe('success', () => {
       it('should create the user', async () => {
         mockUser = new UserEntity({ id: '1' });
-        jest.spyOn(dataSource, 'createUser').mockResolvedValue();
 
-        const res = await useCase.execute(mockUser);
+        const call = useCase.execute(mockUser);
+        const req = httpMock.expectOne(backendURL + '/create');
+        expect(req.request.method).toBe('POST');
+        req.flush({}, { status: HttpStatusCode.Created, statusText: '' });
 
-        expect(dataSource.createUser).toHaveBeenCalledWith(mockUser);
-        expect(dataSource.createUser).toHaveBeenCalledTimes(1);
+        const res = await call;
+
         expect(res).not.toBeInstanceOf(TranslatableError);
       });
     });
     describe('failure', () => {
-      it('should return an FailedCreatingUserError when the data source fails creating the user', async () => {
+      it('should return an FailedCreatingUserError when the network fails', async () => {
         mockUser = new UserEntity({ id: '1' });
-        jest.spyOn(dataSource, 'createUser').mockImplementation(() => {
-          throw new Error();
-        });
 
-        const res = await useCase.execute(mockUser);
+        const call = useCase.execute(mockUser);
+        const req = httpMock.expectOne(backendURL + '/create');
+        expect(req.request.method).toBe('POST');
+        req.error(new ErrorEvent('error'));
 
-        expect(dataSource.createUser).toHaveBeenCalledWith(mockUser);
-        expect(dataSource.createUser).toHaveBeenCalledTimes(1);
+        const res = await call;
+
         expect(res).toBeInstanceOf(FailedCreatingUserError);
       });
-      it('should return an FailedCreatingUserError when the data source rejects the promise', async () => {
+      it('should return an FailedCreatingUserError when the http request fails', async () => {
         mockUser = new UserEntity({ id: '1' });
-        jest.spyOn(dataSource, 'createUser').mockRejectedValue(new Error());
 
-        const res = await useCase.execute(mockUser);
+        const call = useCase.execute(mockUser);
+        const req = httpMock.expectOne(backendURL + '/create');
+        expect(req.request.method).toBe('POST');
+        req.flush({}, { status: HttpStatusCode.BadRequest, statusText: '' });
 
-        expect(dataSource.createUser).toHaveBeenCalledWith(mockUser);
-        expect(dataSource.createUser).toHaveBeenCalledTimes(1);
+        const res = await call;
+
         expect(res).toBeInstanceOf(FailedCreatingUserError);
       });
       describe('user is invalid', () => {
@@ -158,7 +203,10 @@ describe('feature: manage-users', () => {
         it('should return an InvalidUserError when the users id is empty', async () => {
           mockUser = new UserEntity({ id: '' });
 
-          const res = await useCase.execute(mockUser);
+          const call = useCase.execute(mockUser);
+          httpMock.expectNone(backendURL + '/create');
+
+          const res = await call;
 
           expect(res).toBeInstanceOf(InvalidUserError);
         });
@@ -177,36 +225,40 @@ describe('feature: manage-users', () => {
     describe('success', () => {
       it('should delete the user', async () => {
         mockUser = new UserEntity({ id: '1' });
-        jest.spyOn(dataSource, 'deleteUser').mockResolvedValue();
 
-        const res = await useCase.execute(mockUser);
+        const call = useCase.execute(mockUser);
+        const req = httpMock.expectOne(backendURL + '/delete');
+        expect(req.request.method).toBe('POST');
+        req.flush({}, { status: HttpStatusCode.Ok, statusText: '' });
 
-        expect(dataSource.deleteUser).toHaveBeenCalledWith(mockUser);
-        expect(dataSource.deleteUser).toHaveBeenCalledTimes(1);
+        const res = await call;
+
         expect(res).not.toBeInstanceOf(TranslatableError);
       });
     });
     describe('failure', () => {
-      it('should return an FailedDeletingUserError when the data source fails deleting the user', async () => {
+      it('should return an FailedDeletingUserError when the network fails', async () => {
         mockUser = new UserEntity({ id: '1' });
-        jest.spyOn(dataSource, 'deleteUser').mockImplementation(() => {
-          throw new Error();
-        });
 
-        const res = await useCase.execute(mockUser);
+        const call = useCase.execute(mockUser);
+        const req = httpMock.expectOne(backendURL + '/delete');
+        expect(req.request.method).toBe('POST');
+        req.error(new ErrorEvent('error'));
 
-        expect(dataSource.deleteUser).toHaveBeenCalledWith(mockUser);
-        expect(dataSource.deleteUser).toHaveBeenCalledTimes(1);
+        const res = await call;
+
         expect(res).toBeInstanceOf(FailedDeletingUserError);
       });
-      it('should return an FailedDeletingUserError when the data source rejects the promise', async () => {
+      it('should return an FailedDeletingUserError when the http request fails', async () => {
         mockUser = new UserEntity({ id: '1' });
-        jest.spyOn(dataSource, 'deleteUser').mockRejectedValue(new Error());
 
-        const res = await useCase.execute(mockUser);
+        const call = useCase.execute(mockUser);
+        const req = httpMock.expectOne(backendURL + '/delete');
+        expect(req.request.method).toBe('POST');
+        req.flush({}, { status: HttpStatusCode.BadRequest, statusText: '' });
 
-        expect(dataSource.deleteUser).toHaveBeenCalledWith(mockUser);
-        expect(dataSource.deleteUser).toHaveBeenCalledTimes(1);
+        const res = await call;
+
         expect(res).toBeInstanceOf(FailedDeletingUserError);
       });
       describe('user is invalid', () => {
@@ -227,7 +279,10 @@ describe('feature: manage-users', () => {
         it('should return an InvalidUserError when the users id is empty', async () => {
           mockUser = new UserEntity({ id: '' });
 
-          const res = await useCase.execute(mockUser);
+          const call = useCase.execute(mockUser);
+          httpMock.expectNone(backendURL + '/delete');
+
+          const res = await call;
 
           expect(res).toBeInstanceOf(InvalidUserError);
         });
