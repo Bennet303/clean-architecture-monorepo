@@ -24,12 +24,14 @@ import {
   ApiConflictResponse,
 } from '@nestjs/swagger';
 import { UserDTO } from '../../core/dtos/user.dto';
-import { UserNotFoundError } from '../../features/manage-users/errors/user.not.found.error';
+import {
+  UserAlreadyExistsError,
+  UserNotFoundError,
+} from '../../features/manage-users/manage.users.feature.errors';
 import { CreateUserUseCase } from '../../features/manage-users/use-cases/create.user.use.case';
 import { DeleteUserUseCase } from '../../features/manage-users/use-cases/delete.user.use.case';
 import { GetUserUseCase } from '../../features/manage-users/use-cases/get.user.use.case';
 import { FindOneUserParam } from './params/find.one.user.param';
-import { UserAlreadyExistsError } from '../../features/manage-users/errors/user.already.exists.error';
 
 @ApiTags('users')
 @Controller({
@@ -37,7 +39,7 @@ import { UserAlreadyExistsError } from '../../features/manage-users/errors/user.
   path: '/users',
 })
 export class ManageUsersController {
-  logger = new Logger('ManageUserController');
+  logger = new Logger('ManageUsersController');
 
   constructor(
     private readonly getUserUC: GetUserUseCase,

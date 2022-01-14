@@ -6,7 +6,6 @@ import { ManageUsersFeatureModule } from './manage.users.feature.module';
 import { ManageUsersRepository } from './repositories/manage.users.repository';
 import { ManageUsersService } from './services/manage.users.service';
 import { CreateUserUseCase } from './use-cases/create.user.use.case';
-import { InvalidInputError } from './errors/invalid.input.error';
 import { DeleteUserUseCase } from './use-cases/delete.user.use.case';
 import { UserNotFoundError } from './errors/user.not.found.error';
 import { GetUserUseCase } from './use-cases/get.user.use.case';
@@ -60,12 +59,6 @@ describe('feature: manage-users', () => {
     });
 
     describe('failure', () => {
-      it('should return an InvalidInputError when the user is undefined', async () => {
-        const res = await useCase.execute(undefined);
-
-        expect(res).toBeInstanceOf(InvalidInputError);
-      });
-
       it('should return an UserAlreadyExistsError when the user already exists', async () => {
         await useCase.execute(mockUser);
         const res = await useCase.execute(mockUser);
@@ -111,12 +104,6 @@ describe('feature: manage-users', () => {
     });
 
     describe('failure', () => {
-      it('should return an InvalidInputError when the param is undefined', async () => {
-        const res = await useCase.execute(undefined);
-
-        expect(res).toBeInstanceOf(InvalidInputError);
-      });
-
       it('should return an UserNotFoundError when the user does not exist', async () => {
         jest.spyOn(service, 'deleteUser').mockImplementation(() => {
           throw new UserNotFoundError();
@@ -165,15 +152,6 @@ describe('feature: manage-users', () => {
       });
     });
     describe('failure', () => {
-      it('should return an UserNotFoundError if there is no user', async () => {
-        jest.spyOn(service, 'getUser').mockResolvedValue(undefined);
-
-        const res = await useCase.execute();
-
-        expect(service.getUser).toHaveBeenCalledTimes(1);
-        expect(res).toBeInstanceOf(UserNotFoundError);
-      });
-
       it('should return any error thrown within the service', async () => {
         jest.spyOn(service, 'getUser').mockImplementation(() => {
           throw new Error();
