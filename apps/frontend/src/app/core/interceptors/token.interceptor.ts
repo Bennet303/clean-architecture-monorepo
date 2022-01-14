@@ -40,10 +40,10 @@ export class TokenInterceptor implements HttpInterceptor {
               this.store.dispatch(
                 new AuthStateLogoutAction(new UnauthorizedError())
               );
-              return throwError(() => error); // stop sending the request to the backend after 401
+              return throwError(() => error); // throw error after receiving 401 from the backend
             }
           }
-          return caughtReq$; //retry sending the request to the backend unit success
+          return caughtReq$; //retry sending the request to the backend until receiving a response
         })
       )
       .pipe(
