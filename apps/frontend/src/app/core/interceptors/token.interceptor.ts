@@ -20,12 +20,12 @@ import { AuthStateSelectors } from '../../presentation/states/auth/auth.state.se
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
-  private readonly throttleLogout = new Subject<void>();
+  private readonly throttledLogout = new Subject<void>();
 
   constructor(private readonly store: Store) {
     // Only logs out the user once every 3 seconds.
     // So that if multiple http request get a 401 response this will not be called multiple times.
-    this.throttleLogout
+    this.throttledLogout
       .pipe(throttleTime(3000))
       .subscribe(() =>
         this.store.dispatch(new AuthStateLogoutAction(new UnauthorizedError()))
@@ -56,7 +56,7 @@ export class TokenInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<unknown>> => {
     if (error instanceof HttpErrorResponse) {
       if (error.status === 401) {
-        this.throttleLogout.next();
+        this.throttledLogout.next();
       }
     }
     return throwError(() => error); // throw error back to the handler, so that data source and repository receive the error
