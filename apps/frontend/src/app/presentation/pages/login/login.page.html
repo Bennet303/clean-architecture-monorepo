@@ -1,5 +1,8 @@
 <app-header data-cy="login-title" title="Login Page" size="large"></app-header>
 <ion-content [fullscreen]="true">
+  <ion-progress-bar
+    *ngIf="(authStateModel$ | async)!.isLoading"
+    type="indeterminate"
+  ></ion-progress-bar>
   <ion-button data-cy="login" (click)="login()">Login</ion-button>
-  <ion-spinner *ngIf="(authStateModel$ | async)!.isLoading"></ion-spinner>
 </ion-content>
