@@ -10,9 +10,9 @@ import { Store } from '@ngxs/store';
 import {
   catchError,
   Observable,
+  Subject,
+  throttleTime,
   throwError,
-  timeout,
-  TimeoutError,
 } from 'rxjs';
 import { AuthStateLogoutAction } from '../../presentation/states/auth/auth.state.actions';
 import { UnauthorizedError } from '../../presentation/states/auth/auth.state.errors';
@@ -20,50 +20,56 @@ import { AuthStateSelectors } from '../../presentation/states/auth/auth.state.se
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
-  constructor(private readonly store: Store) {}
+  private readonly throttleLogout = new Subject<void>();
+
+  constructor(private readonly store: Store) {
+    // Only logs out the user once every 3 seconds.
+    // So that if multiple http request get a 401 response this will not be called multiple times.
+    this.throttleLogout
+      .pipe(throttleTime(3000))
+      .subscribe(() =>
+        this.store.dispatch(new AuthStateLogoutAction(new UnauthorizedError()))
+      );
+  }
 
   intercept(
-    req: HttpRequest<unknown>,
+    request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
     const token = this.store.selectSnapshot(
       AuthStateSelectors.stateModel
     ).token;
 
-    req = req.clone({
+    request = request.clone({
       setHeaders: {
         Authorization: `Bearer ${token}`,
       },
       // withCredentials: true, when using backend session
     });
 
-    return next
-      .handle(req)
-      .pipe(catchError(this.handleHttpError))
-      .pipe(timeout(30000), catchError(this.handleTimeoutError));
+    return next.handle(request).pipe(catchError(this.handleHttpError));
+    // .pipe(timeout(30000), catchError(this.handleTimeoutError));
   }
 
   private handleHttpError = (
-    error: unknown,
-    caughtReq$: Observable<HttpEvent<unknown>>
+    error: unknown
   ): Observable<HttpEvent<unknown>> => {
     if (error instanceof HttpErrorResponse) {
       if (error.status === 401) {
-        this.store.dispatch(new AuthStateLogoutAction(new UnauthorizedError()));
-        return throwError(() => error); // throw error after receiving 401 from the backend
+        this.throttleLogout.next();
       }
     }
-    return caughtReq$; // retry sending the request to the backend until receiving a response
+    return throwError(() => error); // throw error back to the handler, so that data source and repository receive the error
   };
 
-  private handleTimeoutError = (
-    error: unknown,
-    caughtReq$: Observable<HttpEvent<unknown>>
-  ): Observable<HttpEvent<unknown>> => {
-    if (error instanceof TimeoutError) {
-      // handle timeout error here
-      return throwError(() => error); // throw TimeoutError if there is no response after 30 seconds
-    }
-    return caughtReq$; //retry sending the request to the backend until receiving a response
-  };
+  // private handleTimeoutError = (
+  //   error: unknown,
+  //   caughtReq$: Observable<HttpEvent<unknown>>
+  // ): Observable<HttpEvent<unknown>> => {
+  //   if (error instanceof TimeoutError) {
+  //     // handle timeout error here
+  //     return throwError(() => error); // throw TimeoutError if there is no response after 30 seconds
+  //   }
+  //   return caughtReq$; //retry sending the request to the backend until receiving a response
+  // };
 }
