@@ -1,5 +1,7 @@
+/* eslint-disable jest/no-done-callback */
 import {
   HttpClient,
+  HttpErrorResponse,
   HttpStatusCode,
   HTTP_INTERCEPTORS,
 } from '@angular/common/http';
@@ -8,10 +10,11 @@ import {
   HttpTestingController,
 } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { NgxsModule, Store } from '@ngxs/store';
+import { Actions, NgxsModule, ofActionDispatched, Store } from '@ngxs/store';
 import { lastValueFrom } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { AuthState } from '../../presentation/states/auth/auth.state';
+import { AuthStateLogoutAction } from '../../presentation/states/auth/auth.state.actions';
 import {
   AuthStateModel,
   defaultAuthStateModel,
@@ -23,6 +26,7 @@ describe('token interceptor', () => {
   let httpMock: HttpTestingController;
   let httpClient: HttpClient;
   let store: Store;
+  let actions$: Actions;
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -37,6 +41,7 @@ describe('token interceptor', () => {
     httpMock = TestBed.inject(HttpTestingController);
     httpClient = TestBed.inject(HttpClient);
     store = TestBed.inject(Store);
+    actions$ = TestBed.inject(Actions);
   });
   afterEach(() => {
     httpMock.verify();
@@ -70,7 +75,97 @@ describe('token interceptor', () => {
         expect(res).toStrictEqual(mockBody);
       }
     );
-    //TODO restliche logikpfade testen! können im hinteren handleError andere error als timeout auftreten?
-    //TODO kann time out im ersten error handling auftreten?
+  });
+  describe('failure', () => {
+    it(`should call the state to log out the user if the http response is ${HttpStatusCode.Unauthorized}`, (done) => {
+      const mockToken = '123';
+      store.reset({
+        ...store.snapshot(),
+        auth: {
+          ...defaultAuthStateModel,
+          token: mockToken,
+        } as AuthStateModel,
+      });
+
+      actions$.pipe(ofActionDispatched(AuthStateLogoutAction)).subscribe(() => {
+        done();
+      });
+
+      let res: unknown;
+      let error: unknown;
+      httpClient.get(environment.backendUrl).subscribe({
+        next: (response) => {
+          res = response;
+        },
+        error: (err) => {
+          error = err;
+        },
+      });
+
+      const req = httpMock.expectOne(environment.backendUrl);
+      req.flush({}, { status: HttpStatusCode.Unauthorized, statusText: '' });
+
+      expect(res).toBeUndefined();
+      expect(error).toBeInstanceOf(HttpErrorResponse);
+      expect((error as HttpErrorResponse).status).toBe(
+        HttpStatusCode.Unauthorized
+      );
+    });
+    it(`should throw the error back to the caller if any other http error occurs (e.g. 404)`, () => {
+      const mockToken = '123';
+      store.reset({
+        ...store.snapshot(),
+        auth: {
+          ...defaultAuthStateModel,
+          token: mockToken,
+        } as AuthStateModel,
+      });
+
+      let res: unknown;
+      let error: unknown;
+      httpClient.get(environment.backendUrl).subscribe({
+        next: (response) => {
+          res = response;
+        },
+        error: (err) => {
+          error = err;
+        },
+      });
+
+      const req = httpMock.expectOne(environment.backendUrl);
+      req.flush({}, { status: HttpStatusCode.NotFound, statusText: '' });
+
+      expect(res).toBeUndefined();
+      expect(error).toBeInstanceOf(HttpErrorResponse);
+      expect((error as HttpErrorResponse).status).toBe(HttpStatusCode.NotFound);
+    });
+    it(`should throw the error back to the caller if any other network failure occurs`, () => {
+      const mockToken = '123';
+      store.reset({
+        ...store.snapshot(),
+        auth: {
+          ...defaultAuthStateModel,
+          token: mockToken,
+        } as AuthStateModel,
+      });
+
+      let res: unknown;
+      let error: unknown;
+      httpClient.get(environment.backendUrl).subscribe({
+        next: (response) => {
+          res = response;
+        },
+        error: (err) => {
+          error = err;
+        },
+      });
+
+      const req = httpMock.expectOne(environment.backendUrl);
+      req.error(new ErrorEvent('error'));
+
+      expect(res).toBeUndefined();
+      expect(error).toBeInstanceOf(HttpErrorResponse);
+      expect((error as HttpErrorResponse).status).toBe(0);
+    });
   });
 });

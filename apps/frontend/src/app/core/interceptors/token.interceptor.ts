@@ -48,20 +48,19 @@ export class TokenInterceptor implements HttpInterceptor {
     });
 
     return next.handle(request).pipe(catchError(this.handleHttpError));
-    // .pipe(timeout(30000), catchError(this.handleTimeoutError));
+    // .pipe(timeout(30000), catchError(this.handleTimeoutError)); // when explicitly wanting to catch custom timeout error
   }
 
   private handleHttpError = (
-    error: unknown
+    error: HttpErrorResponse
   ): Observable<HttpEvent<unknown>> => {
-    if (error instanceof HttpErrorResponse) {
-      if (error.status === 401) {
-        this.throttledLogout.next();
-      }
+    if (error.status === 401) {
+      this.throttledLogout.next();
     }
-    return throwError(() => error); // throw error back to the handler, so that data source and repository receive the error
+    return throwError(() => error); // throw error back to the handler so that the data source throws the error to the repository
   };
 
+  //! only necessary for custom handling timeout error
   // private handleTimeoutError = (
   //   error: unknown,
   //   caughtReq$: Observable<HttpEvent<unknown>>
