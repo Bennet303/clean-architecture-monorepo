@@ -1,4 +1,4 @@
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
@@ -9,12 +9,9 @@ import { NgxsModule } from '@ngxs/store';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AuthGuard } from './core/guards/auth.guard';
-import { RoleGuard } from './core/guards/role.guard';
-import { TokenHttpInterceptor } from './core/http-interceptors/token.http.interceptor';
+import { HttpInterceptorsModule } from './core/http-interceptors/http.interceptors.module';
 import { AppState } from './presentation/states/app/app.state';
 import { AppStateModule } from './presentation/states/app/app.state.module';
-import { AuthStateModule } from './presentation/states/auth/auth.state.module';
 import { TranslocoRootModule } from './transloco-root.module';
 
 @NgModule({
@@ -32,18 +29,9 @@ import { TranslocoRootModule } from './transloco-root.module';
     AppStateModule,
     HttpClientModule,
     TranslocoRootModule,
-    AuthStateModule,
+    HttpInterceptorsModule,
   ],
-  providers: [
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    AuthGuard,
-    RoleGuard,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: TokenHttpInterceptor,
-      multi: true,
-    },
-  ],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })
 export class AppComponentModule {}

@@ -38,7 +38,7 @@ export class AuthState {
     }
 
     patchState({ token: res.token, isLoading: false, role: res.role });
-    dispatch(new Navigate(['home']));
+    dispatch(new Navigate(['/home']));
   }
 
   @Action(AuthStateLogoutAction)
@@ -52,7 +52,7 @@ export class AuthState {
       role: undefined,
     });
 
-    dispatch(new Navigate(['login']));
+    dispatch(new Navigate(['/login']));
 
     const res = await this.logoutUseCase.execute();
 

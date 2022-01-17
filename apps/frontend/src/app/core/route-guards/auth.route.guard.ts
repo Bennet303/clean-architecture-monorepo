@@ -5,7 +5,7 @@ import { Store } from '@ngxs/store';
 import { AuthStateSelectors } from '../../presentation/states/auth/auth.state.selectors';
 
 @Injectable()
-export class AuthGuard implements CanActivate, CanLoad {
+export class AuthRouteGuard implements CanActivate, CanLoad {
   constructor(private readonly store: Store) {}
 
   canActivate(): boolean {
@@ -13,11 +13,7 @@ export class AuthGuard implements CanActivate, CanLoad {
   }
 
   canLoad(): boolean {
-    if (this.isTokenValid()) {
-      return true;
-    }
-    this.store.dispatch(new Navigate(['login']));
-    return false;
+    return this.isTokenValid();
   }
 
   private isTokenValid(): boolean {
@@ -28,6 +24,7 @@ export class AuthGuard implements CanActivate, CanLoad {
     if (token) {
       return true;
     }
+    this.store.dispatch(new Navigate(['/login']));
     return false;
   }
 }

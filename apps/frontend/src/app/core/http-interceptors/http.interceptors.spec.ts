@@ -10,11 +10,12 @@ import {
   HttpTestingController,
 } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { Actions, NgxsModule, ofActionDispatched, Store } from '@ngxs/store';
+import { NgxsModule, Store } from '@ngxs/store';
 import { lastValueFrom } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { AuthState } from '../../presentation/states/auth/auth.state';
 import { AuthStateLogoutAction } from '../../presentation/states/auth/auth.state.actions';
+import { UnauthorizedError } from '../../presentation/states/auth/auth.state.errors';
 import {
   AuthStateModel,
   defaultAuthStateModel,
@@ -26,7 +27,6 @@ describe('interceptors', () => {
     let httpMock: HttpTestingController;
     let httpClient: HttpClient;
     let store: Store;
-    let actions$: Actions;
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [
@@ -45,7 +45,6 @@ describe('interceptors', () => {
       httpMock = TestBed.inject(HttpTestingController);
       httpClient = TestBed.inject(HttpClient);
       store = TestBed.inject(Store);
-      actions$ = TestBed.inject(Actions);
     });
     afterEach(() => {
       httpMock.verify();
@@ -81,7 +80,7 @@ describe('interceptors', () => {
       );
     });
     describe('failure', () => {
-      it(`should call the state to log out the user if the http response is ${HttpStatusCode.Unauthorized}`, (done) => {
+      it(`should call the state to log out the user if the http response is ${HttpStatusCode.Unauthorized}`, () => {
         const mockToken = '123';
         store.reset({
           ...store.snapshot(),
@@ -90,12 +89,7 @@ describe('interceptors', () => {
             token: mockToken,
           } as AuthStateModel,
         });
-
-        actions$
-          .pipe(ofActionDispatched(AuthStateLogoutAction))
-          .subscribe(() => {
-            done();
-          });
+        jest.spyOn(store, 'dispatch');
 
         let res: unknown;
         let error: unknown;
@@ -116,6 +110,10 @@ describe('interceptors', () => {
         expect((error as HttpErrorResponse).status).toBe(
           HttpStatusCode.Unauthorized
         );
+        expect(store.dispatch).toHaveBeenCalledWith(
+          new AuthStateLogoutAction(new UnauthorizedError())
+        );
+        expect(store.dispatch).toHaveBeenCalledTimes(1);
       });
       it(`should throw the error back to the caller if any other http error occurs (e.g. 404)`, () => {
         const mockToken = '123';
