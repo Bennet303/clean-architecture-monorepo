@@ -20,7 +20,7 @@ import {
   defaultAuthStateModel,
 } from '../../presentation/states/auth/auth.state.model';
 import { AuthStateModule } from '../../presentation/states/auth/auth.state.module';
-import { TokenInterceptor } from './token.interceptor';
+import { TokenHttpInterceptor } from './token.http.interceptor';
 describe('interceptors', () => {
   describe('token interceptor', () => {
     let httpMock: HttpTestingController;
@@ -37,7 +37,7 @@ describe('interceptors', () => {
         providers: [
           {
             provide: HTTP_INTERCEPTORS,
-            useClass: TokenInterceptor,
+            useClass: TokenHttpInterceptor,
             multi: true,
           },
         ],

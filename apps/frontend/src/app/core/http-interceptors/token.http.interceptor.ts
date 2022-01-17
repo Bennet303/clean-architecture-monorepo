@@ -19,7 +19,7 @@ import { UnauthorizedError } from '../../presentation/states/auth/auth.state.err
 import { AuthStateSelectors } from '../../presentation/states/auth/auth.state.selectors';
 
 @Injectable()
-export class TokenInterceptor implements HttpInterceptor {
+export class TokenHttpInterceptor implements HttpInterceptor {
   private readonly throttledLogout = new Subject<void>();
 
   constructor(private readonly store: Store) {

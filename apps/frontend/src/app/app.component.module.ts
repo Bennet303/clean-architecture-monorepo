@@ -11,7 +11,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthGuard } from './core/guards/auth.guard';
 import { RoleGuard } from './core/guards/role.guard';
-import { TokenInterceptor } from './core/interceptors/token.interceptor';
+import { TokenHttpInterceptor } from './core/http-interceptors/token.http.interceptor';
 import { AppState } from './presentation/states/app/app.state';
 import { AppStateModule } from './presentation/states/app/app.state.module';
 import { AuthStateModule } from './presentation/states/auth/auth.state.module';
@@ -40,7 +40,7 @@ import { TranslocoRootModule } from './transloco-root.module';
     RoleGuard,
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: TokenInterceptor,
+      useClass: TokenHttpInterceptor,
       multi: true,
     },
   ],
