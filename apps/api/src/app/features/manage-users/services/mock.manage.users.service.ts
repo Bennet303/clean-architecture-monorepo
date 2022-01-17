@@ -9,6 +9,12 @@ import { ManageUsersService } from './manage.users.service';
 export class MockManageUsersService implements ManageUsersService {
   currentUser?: UserModel;
 
+  constructor() {
+    this.currentUser = new UserModel({
+      _id: '1',
+    });
+  }
+
   createUser(user: UserModel): Promise<UserModel> {
     this.currentUser = user;
     return new Promise((resolve) => setTimeout(() => resolve(user), 500));
