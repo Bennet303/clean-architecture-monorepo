@@ -3,8 +3,8 @@
   "ignorePatterns": ["!**/*"],
   "overrides": [
     {
-      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
-      "rules": {}
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx", "*.spec.ts"],
+      "rules": { "jest/expect-expect": "off" }
     }
   ]
 }

@@ -9,6 +9,9 @@ describe('The Home page', () => {
     cy.get('clean-architecture-monorepo-user-card')
       .should('be.visible')
       .and('contain', 'unknown');
+    cy.getBySel('create-user').should('exist');
+    cy.getBySel('delete-user').should('exist');
+    cy.getBySel('get-user').should('exist');
   });
   it('should allow users to create users', function () {
     cy.getBySel('create-user').click();

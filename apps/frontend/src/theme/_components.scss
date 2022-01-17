@@ -1,0 +1,13 @@
+ion-button {
+  border-radius: var(--default-border-radius-input);
+}
+
+ion-card {
+  border-radius: var(--default-border-radius-box);
+  margin: var(--default-margin);
+
+  ion-card-header,
+  ion-card-content {
+    padding: var(--default-inner-padding) !important;
+  }
+}

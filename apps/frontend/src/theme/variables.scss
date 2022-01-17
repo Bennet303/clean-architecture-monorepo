@@ -3,6 +3,32 @@
 
 /** Ionic CSS Variables **/
 :root {
+  // Custom theming variables
+  --default-inner-padding: 1rem;
+  --default-outer-padding: 1rem;
+  --default-border-radius-box: 4px;
+  --default-border-radius-input: 4px;
+  --default-font-size-normal: 16px;
+  --default-font-size-big: 24px;
+  --default-margin: 1rem;
+
+  // ionic colors
+  --ion-background-color: #ffffff;
+  --ion-background-color-rgb: 255, 255, 255;
+
+  --ion-text-color: #121212;
+  --ion-text-color-rgb: 18, 18, 18;
+
+  --ion-border-color: #222222;
+
+  --ion-item-background: #ebebeb;
+
+  --ion-toolbar-background: #ebebeb;
+
+  --ion-tab-bar-background: #ebebeb;
+
+  --ion-card-background: #ebebeb;
+
   /** primary **/
   --ion-color-primary: #3880ff;
   --ion-color-primary-rgb: 56, 128, 255;
