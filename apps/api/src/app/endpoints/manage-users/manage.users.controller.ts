@@ -33,7 +33,7 @@ import {
 import { CreateUserUseCase } from '../../features/manage-users/use-cases/create.user.use.case';
 import { DeleteUserUseCase } from '../../features/manage-users/use-cases/delete.user.use.case';
 import { GetUserUseCase } from '../../features/manage-users/use-cases/get.user.use.case';
-import { FindOneUserParam } from './params/find.one.user.param';
+import { FindOneUserParam } from '../../core/dtos/params/users/find.one.user.param';
 
 @Controller({
   version: '1',
