@@ -29,6 +29,12 @@ import { environment } from '../../../../src/environments/environment';
       },
     },
   ],
-  exports: [],
+  exports: [
+    CreatePostUseCase,
+    DeletePostUseCase,
+    EditPostUseCase,
+    GetPostsUseCase,
+    GetPostUseCase,
+  ],
 })
 export class PostsFeatureModule {}

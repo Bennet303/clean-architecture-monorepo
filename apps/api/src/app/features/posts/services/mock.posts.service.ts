@@ -45,10 +45,10 @@ export class MockPostsService implements PostsService {
   }
 
   createPost(post: ExtendedCreatePostParam): Promise<PostModel> {
-    const id = (Math.random() + 1).toString(36).substring(10);
+    const id = Math.floor(100000 + Math.random() * 900000);
 
     const newPost = new PostModel({
-      _id: id,
+      _id: id.toString(),
       title: post.title,
       content: post.content,
       author: UserModel.fromDTO(post.author),
