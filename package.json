@@ -20,6 +20,7 @@
     "@angular/platform-browser-dynamic": "^12.2.0",
     "@angular/router": "^12.2.0",
     "@capacitor/core": "^3.2.5",
+    "@casl/ability": "^5.4.3",
     "@ionic/angular": "^5.8.3",
     "@nestjs/common": "^8.0.0",
     "@nestjs/core": "^8.0.0",
