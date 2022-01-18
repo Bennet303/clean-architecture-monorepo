@@ -6,7 +6,7 @@ import { PostsService } from './services/posts.service';
 import { CreatePostUseCase } from './use-cases/create.post.use.case';
 import { DeletePostUseCase } from './use-cases/delete.post.use.case';
 import { EditPostUseCase } from './use-cases/edit.post.use.case';
-import { GetAllPostsUseCase } from './use-cases/get.all.posts.use.case';
+import { GetPostsUseCase } from './use-cases/get.posts.use.case';
 import { GetPostUseCase } from './use-cases/get.post.use.case';
 import { environment } from '../../../../src/environments/environment';
 
@@ -15,7 +15,7 @@ import { environment } from '../../../../src/environments/environment';
     CreatePostUseCase,
     DeletePostUseCase,
     EditPostUseCase,
-    GetAllPostsUseCase,
+    GetPostsUseCase,
     GetPostUseCase,
     { provide: PostsRepository, useClass: PostsRepositoryImpl },
     {

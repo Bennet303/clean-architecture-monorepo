@@ -6,7 +6,7 @@ import { PaginatedResponse } from '../../../core/dtos/responses/paginated.respon
 import { PostsRepository } from '../repositories/posts.repository';
 
 @Injectable()
-export class GetAllPostsUseCase
+export class GetPostsUseCase
   implements UseCase<FindPostsParam, PaginatedResponse<PostDTO>>
 {
   constructor(private readonly repository: PostsRepository) {}
