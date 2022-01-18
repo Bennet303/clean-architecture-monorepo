@@ -1,15 +1,17 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserDTO } from '../../core/dtos/user.dto';
 import { UserModel } from '../../core/models/user.model';
-import { UserAlreadyExistsError } from './errors/user.already.exists.error';
+import {
+  UserAlreadyExistsError,
+  UserNotFoundError,
+} from './manage.users.feature.errors';
 import { ManageUsersFeatureModule } from './manage.users.feature.module';
 import { ManageUsersRepository } from './repositories/manage.users.repository';
 import { ManageUsersService } from './services/manage.users.service';
+import { MockManageUsersService } from './services/mock.manage.users.service';
 import { CreateUserUseCase } from './use-cases/create.user.use.case';
 import { DeleteUserUseCase } from './use-cases/delete.user.use.case';
-import { UserNotFoundError } from './errors/user.not.found.error';
 import { GetUserUseCase } from './use-cases/get.user.use.case';
-import { MockManageUsersService } from './services/mock.manage.users.service';
 
 describe('feature: manage-users', () => {
   let service: ManageUsersService;
