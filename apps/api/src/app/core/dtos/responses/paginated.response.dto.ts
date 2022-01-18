@@ -6,13 +6,13 @@ import {
 } from '@nestjs/swagger';
 import { PaginationParam } from '../params/pagination.param';
 
-export class PaginatedResponseDTO<T> extends PaginationParam {
+export class PaginatedResponse<T> extends PaginationParam {
   items!: T[];
 
   @ApiResponseProperty({ type: Number, example: 1 })
   total!: number;
 
-  constructor(obj: PaginatedResponseDTO<T>) {
+  constructor(obj: PaginatedResponse<T>) {
     super(obj);
     Object.assign(this, obj);
   }
@@ -26,7 +26,7 @@ export const ApiPaginatedDto = <TModel extends Type<unknown>>(
     ApiOkResponse({
       schema: {
         allOf: [
-          { $ref: getSchemaPath(PaginatedResponseDTO) },
+          { $ref: getSchemaPath(PaginatedResponse) },
           {
             properties: {
               items: {

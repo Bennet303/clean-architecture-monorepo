@@ -25,7 +25,7 @@ import {
 import { BaseController } from '../../core/abstracts/base.controller';
 import {
   ApiPaginatedDto,
-  PaginatedResponseDTO,
+  PaginatedResponse,
 } from '../../core/dtos/responses/paginated.response.dto';
 import { PostDTO } from '../../core/dtos/post.dto';
 import { UserDTO } from '../../core/dtos/user.dto';
@@ -40,7 +40,7 @@ import { FindOnePostParam } from '../../core/dtos/params/posts/find.one.post.par
   path: '/posts',
 })
 @ApiTags('posts')
-@ApiExtraModels(PaginatedResponseDTO)
+@ApiExtraModels(PaginatedResponse)
 @ApiTooManyRequestsResponse({ description: 'Too many requests.' })
 @ApiInternalServerErrorResponse({ description: 'Internal server error.' })
 export class PostsController extends BaseController {
@@ -72,11 +72,11 @@ export class PostsController extends BaseController {
   @ApiBadRequestResponse({ description: 'Invalid http query params.' })
   async getPosts(
     @Query() query: FindPostsParam
-  ): Promise<PaginatedResponseDTO<PostDTO>> {
+  ): Promise<PaginatedResponse<PostDTO>> {
     const user = new UserDTO({
       id: '1',
     });
-    return new PaginatedResponseDTO({
+    return new PaginatedResponse({
       total: 1,
       limit: 10,
       offset: 0,
@@ -101,15 +101,16 @@ export class PostsController extends BaseController {
   })
   @ApiBadRequestResponse({ description: 'Invalid post.' })
   async createPost(@Body() post: CreatePostParam): Promise<PostDTO> {
-    const user = new UserDTO({
-      id: '1',
-    });
-    return new PostDTO({
-      id: '1',
-      author: user,
-      createdAt: new Date(),
-      ...post,
-    });
+    throw new Error('Method not implemented.');
+    // const user = new UserDTO({
+    //   id: '1',
+    // });
+    // return new PostDTO({
+    //   id: '1',
+    //   author: user,
+    //   createdAt: new Date(),
+    //   ...post,
+    // });
   }
 
   // PATCH is used instead of PUT because we only allow updating the content and the title fields instead of replacing the whole post.
