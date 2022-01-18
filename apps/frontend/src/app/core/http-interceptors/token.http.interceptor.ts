@@ -4,6 +4,7 @@ import {
   HttpHandler,
   HttpInterceptor,
   HttpRequest,
+  HttpStatusCode,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngxs/store';
@@ -13,6 +14,8 @@ import {
   Subject,
   throttleTime,
   throwError,
+  timeout,
+  TimeoutError,
 } from 'rxjs';
 import { AuthStateLogoutAction } from '../../presentation/states/auth/auth.state.actions';
 import { UnauthorizedError } from '../../presentation/states/auth/auth.state.errors';
@@ -47,28 +50,28 @@ export class TokenHttpInterceptor implements HttpInterceptor {
       // withCredentials: true, when using backend session
     });
 
-    return next.handle(request).pipe(catchError(this.handleHttpError));
-    // .pipe(timeout(30000), catchError(this.handleTimeoutError)); // when explicitly wanting to catch custom timeout error
+    return next
+      .handle(request)
+      .pipe(catchError(this.handleHttpErrorResponse))
+      .pipe(timeout(30000), catchError(this.handleErrors));
   }
 
-  private handleHttpError = (
-    error: HttpErrorResponse
+  private handleHttpErrorResponse = (
+    error: HttpErrorResponse,
+    caughtRequest$: Observable<HttpEvent<unknown>>
   ): Observable<HttpEvent<unknown>> => {
-    if (error.status === 401) {
+    if (error.status === HttpStatusCode.Unauthorized) {
       this.throttledLogout.next();
+    } else if (error.status === 0) {
+      return caughtRequest$;
     }
     return throwError(() => error); // throw error back to the handler so that the data source throws the error to the repository
   };
 
-  //! only necessary for custom handling timeout error
-  // private handleTimeoutError = (
-  //   error: unknown,
-  //   caughtReq$: Observable<HttpEvent<unknown>>
-  // ): Observable<HttpEvent<unknown>> => {
-  //   if (error instanceof TimeoutError) {
-  //     // handle timeout error here
-  //     return throwError(() => error); // throw TimeoutError if there is no response after 30 seconds
-  //   }
-  //   return caughtReq$; //retry sending the request to the backend until receiving a response
-  // };
+  private handleErrors = (error: unknown): Observable<HttpEvent<unknown>> => {
+    if (error instanceof TimeoutError) {
+      // handle timeout error here
+    }
+    return throwError(() => error);
+  };
 }
