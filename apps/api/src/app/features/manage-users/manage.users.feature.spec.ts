@@ -51,6 +51,7 @@ describe('feature: manage-users', () => {
 
     describe('success', () => {
       it('should create a user', async () => {
+        jest.spyOn(service, 'getUser').mockResolvedValue(undefined);
         jest.spyOn(service, 'createUser').mockResolvedValue(mockUserModel);
 
         const res = await useCase.execute(mockUser);
@@ -69,6 +70,7 @@ describe('feature: manage-users', () => {
       });
 
       it('should return any error thrown within the service', async () => {
+        jest.spyOn(service, 'getUser').mockResolvedValue(undefined);
         jest.spyOn(service, 'createUser').mockImplementation(() => {
           throw new Error();
         });
