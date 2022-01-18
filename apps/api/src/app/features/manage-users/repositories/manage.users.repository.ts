@@ -1,5 +1,5 @@
 import { UserDTO } from '../../../core/dtos/user.dto';
-import { FindOneUserParam } from '../../../endpoints/manage-users/params/find.one.user.param';
+import { FindOneUserParam } from '../../../core/dtos/params/users/find.one.user.param';
 import {
   UserAlreadyExistsError,
   UserNotFoundError,

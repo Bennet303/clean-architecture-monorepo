@@ -1,10 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserDTO } from '../../core/dtos/user.dto';
 import { UserModel } from '../../core/models/user.model';
-import {
-  UserAlreadyExistsError,
-  UserNotFoundError,
-} from './manage.users.feature.errors';
 import { ManageUsersFeatureModule } from './manage.users.feature.module';
 import { ManageUsersRepository } from './repositories/manage.users.repository';
 import { ManageUsersService } from './services/manage.users.service';
@@ -12,6 +8,10 @@ import { MockManageUsersService } from './services/mock.manage.users.service';
 import { CreateUserUseCase } from './use-cases/create.user.use.case';
 import { DeleteUserUseCase } from './use-cases/delete.user.use.case';
 import { GetUserUseCase } from './use-cases/get.user.use.case';
+import {
+  UserAlreadyExistsError,
+  UserNotFoundError,
+} from './manage.users.feature.errors';
 
 describe('feature: manage-users', () => {
   let service: ManageUsersService;
@@ -51,6 +51,7 @@ describe('feature: manage-users', () => {
 
     describe('success', () => {
       it('should create a user', async () => {
+        jest.spyOn(service, 'getUser').mockResolvedValue(undefined);
         jest.spyOn(service, 'createUser').mockResolvedValue(mockUserModel);
 
         const res = await useCase.execute(mockUser);
@@ -69,6 +70,7 @@ describe('feature: manage-users', () => {
       });
 
       it('should return any error thrown within the service', async () => {
+        jest.spyOn(service, 'getUser').mockResolvedValue(undefined);
         jest.spyOn(service, 'createUser').mockImplementation(() => {
           throw new Error();
         });

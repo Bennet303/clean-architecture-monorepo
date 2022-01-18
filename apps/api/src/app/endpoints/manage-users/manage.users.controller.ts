@@ -22,7 +22,9 @@ import {
   ApiNotFoundResponse,
   ApiBody,
   ApiConflictResponse,
+  ApiTooManyRequestsResponse,
 } from '@nestjs/swagger';
+import { BaseController } from '../../core/abstracts/base.controller';
 import { UserDTO } from '../../core/dtos/user.dto';
 import {
   UserAlreadyExistsError,
@@ -31,21 +33,24 @@ import {
 import { CreateUserUseCase } from '../../features/manage-users/use-cases/create.user.use.case';
 import { DeleteUserUseCase } from '../../features/manage-users/use-cases/delete.user.use.case';
 import { GetUserUseCase } from '../../features/manage-users/use-cases/get.user.use.case';
-import { FindOneUserParam } from './params/find.one.user.param';
+import { FindOneUserParam } from '../../core/dtos/params/users/find.one.user.param';
 
-@ApiTags('users')
 @Controller({
   version: '1',
   path: '/users',
 })
-export class ManageUsersController {
-  logger = new Logger('ManageUsersController');
-
+@ApiTags('users')
+@ApiTooManyRequestsResponse({ description: 'Too many requests.' })
+@ApiInternalServerErrorResponse({ description: 'Internal server error.' })
+export class ManageUsersController extends BaseController {
   constructor(
     private readonly getUserUC: GetUserUseCase,
     private readonly createUserUC: CreateUserUseCase,
     private readonly deleteUserUC: DeleteUserUseCase
-  ) {}
+  ) {
+    super();
+    this.logger = new Logger(ManageUsersController.name);
+  }
 
   @Get()
   @ApiOperation({ summary: 'Get the current user.' })
@@ -53,15 +58,20 @@ export class ManageUsersController {
   @ApiNotFoundResponse({
     description: 'No current user found',
   })
-  @ApiInternalServerErrorResponse({ description: 'Internal server error.' })
   async getUser(): Promise<UserDTO | undefined> {
+    this.logger?.log('Making call to get user...');
     const res = await this.getUserUC.execute();
 
-    if (res instanceof UserNotFoundError)
+    if (res instanceof UserNotFoundError) {
+      this.logger?.warn(`User not found. [error=${res.message}]`);
       throw new HttpException('No current user found', HttpStatus.NOT_FOUND);
-    else if (res instanceof Error)
-      throw new HttpException(res.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    } else if (res instanceof Error) {
+      throw this.handleUnexpectedError(res);
+    }
 
+    this.logger?.log(
+      `Successfully returned user. [user=${JSON.stringify(res)}]`
+    );
     return res;
   }
 
@@ -72,16 +82,23 @@ export class ManageUsersController {
   @ApiCreatedResponse({ description: 'The created user.', type: UserDTO })
   @ApiConflictResponse({ description: 'User already exists.' })
   @ApiBadRequestResponse({ description: 'Invalid user.' })
-  @ApiInternalServerErrorResponse({ description: 'Internal server error.' })
   async createUser(@Body() user: UserDTO): Promise<UserDTO> {
-    this.logger.log(`Creating user: ${JSON.stringify(user)}`);
+    this.logger?.log(
+      `Making call to create user... [user=${JSON.stringify(user)}]`
+    );
+
     const res = await this.createUserUC.execute(user);
 
-    if (res instanceof UserAlreadyExistsError)
+    if (res instanceof UserAlreadyExistsError) {
+      this.logger?.warn(`User already exists. [error=${res.message}]`);
       throw new HttpException(res.message, HttpStatus.CONFLICT);
-    else if (res instanceof Error)
-      throw new HttpException(res.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    } else if (res instanceof Error) {
+      throw this.handleUnexpectedError(res);
+    }
 
+    this.logger?.log(
+      `Successfully created user. [user=${JSON.stringify(res)}]`
+    );
     return res;
   }
 
@@ -96,13 +113,18 @@ export class ManageUsersController {
   @ApiNoContentResponse({ description: 'The current user has been deleted.' })
   @ApiNotFoundResponse({ description: 'User not found.' })
   @ApiBadRequestResponse({ description: 'Invalid params.' })
-  @ApiInternalServerErrorResponse({ description: 'Internal server error.' })
   async deleteUser(@Param() params: FindOneUserParam): Promise<void> {
+    this.logger?.log(
+      `Making call to delete user... [params=${JSON.stringify(params)}]`
+    );
     const res = await this.deleteUserUC.execute(params);
 
-    if (res instanceof UserNotFoundError)
+    if (res instanceof UserNotFoundError) {
+      this.logger?.warn(`User not found. [error=${res.message}]`);
       throw new HttpException(res.message, HttpStatus.NOT_FOUND);
-    else if (res instanceof Error)
-      throw new HttpException(res.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    } else if (res instanceof Error) {
+      throw this.handleUnexpectedError(res);
+    }
+    this.logger?.log(`Successfully deleted user.`);
   }
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UseCase } from '../../../core/abstracts/use.case';
-import { FindOneUserParam } from '../../../endpoints/manage-users/params/find.one.user.param';
+import { FindOneUserParam } from '../../../core/dtos/params/users/find.one.user.param';
 import {
   InvalidInputError,
   UserNotFoundError,

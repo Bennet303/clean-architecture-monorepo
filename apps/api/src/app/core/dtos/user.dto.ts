@@ -1,13 +1,11 @@
 import { UserEntity } from '@clean-architecture-monorepo/shared';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString, Length } from 'class-validator';
+import { UserId } from '../decorators/user.id.decorator';
 import { DTO } from './dto';
 
 export class UserDTO extends DTO implements UserEntity {
   @ApiProperty({ example: '1' })
-  @IsNotEmpty()
-  @IsString()
-  @Length(1, 10)
+  @UserId()
   readonly id!: string;
 
   constructor(obj: UserDTO) {
