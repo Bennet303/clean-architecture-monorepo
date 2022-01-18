@@ -4,10 +4,10 @@ import { UserModel } from '../../core/models/user.model';
 import { ManageUsersFeatureModule } from './manage.users.feature.module';
 import { ManageUsersRepository } from './repositories/manage.users.repository';
 import { ManageUsersService } from './services/manage.users.service';
+import { MockManageUsersService } from './services/mock.manage.users.service';
 import { CreateUserUseCase } from './use-cases/create.user.use.case';
 import { DeleteUserUseCase } from './use-cases/delete.user.use.case';
 import { GetUserUseCase } from './use-cases/get.user.use.case';
-import { MockManageUsersService } from './services/mock.manage.users.service';
 import {
   UserAlreadyExistsError,
   UserNotFoundError,

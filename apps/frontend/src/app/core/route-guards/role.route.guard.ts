@@ -1,4 +1,3 @@
-import { Location } from '@angular/common';
 import { Injectable } from '@angular/core';
 import {
   ActivatedRouteSnapshot,
@@ -11,11 +10,8 @@ import { AuthStateSelectors } from '../../presentation/states/auth/auth.state.se
 import { RolesEnum } from '../enums/roles.enum';
 
 @Injectable()
-export class RoleGuard implements CanActivate, CanLoad {
-  constructor(
-    private readonly store: Store,
-    private readonly location: Location
-  ) {}
+export class RoleRouteGuard implements CanActivate, CanLoad {
+  constructor(private readonly store: Store) {}
 
   canActivate(route: ActivatedRouteSnapshot): boolean {
     const acceptedRoles: Array<RolesEnum> = route.data.acceptedRoles || [];
@@ -24,11 +20,7 @@ export class RoleGuard implements CanActivate, CanLoad {
 
   canLoad(route: Route): boolean {
     const acceptedRoles: Array<RolesEnum> = route.data?.acceptedRoles || [];
-    if (this.isRoleAccepted(acceptedRoles)) {
-      return true;
-    }
-    this.location.back(); //TODO Maybe navigate to some 'Permission Denied Page' in the future
-    return false;
+    return this.isRoleAccepted(acceptedRoles);
   }
 
   private isRoleAccepted(acceptedRoles: Array<RolesEnum>): boolean {
@@ -36,9 +28,14 @@ export class RoleGuard implements CanActivate, CanLoad {
       AuthStateSelectors.stateModel
     ).role;
 
-    if (userRole && acceptedRoles.some((role) => role === userRole)) {
+    if (
+      userRole &&
+      acceptedRoles.length > 0 &&
+      acceptedRoles.includes(userRole)
+    ) {
       return true;
     }
+    //? Maybe navigate to some 'Permission Denied Page' in the future
     return false;
   }
 }
