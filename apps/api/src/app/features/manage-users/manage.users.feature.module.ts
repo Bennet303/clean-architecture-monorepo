@@ -21,7 +21,7 @@ import { GetUserUseCase } from './use-cases/get.user.use.case';
         if (environment.useMockData) {
           return new MockManageUsersService();
         } else {
-          return new MockManageUsersService(); // TODO: implement real service
+          return new MockManageUsersService(); // use real service here
         }
       },
     },
