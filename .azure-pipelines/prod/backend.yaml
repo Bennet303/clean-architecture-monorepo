@@ -1,9 +1,6 @@
 trigger:
   - master
 
-pool:
-  vmImage: 'ubuntu-latest'
-
 # variables:
 #   - group: backend_prod
 

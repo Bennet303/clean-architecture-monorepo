@@ -1,0 +1,13 @@
+trigger: none
+
+steps:
+  - task: PowerShell@2
+    displayName: 'Validating source branch'
+    inputs:
+      targetType: inline
+      script: |
+        $sourceBranch = "$(System.PullRequest.SourceBranch)"
+        if($sourceBranch -ne "refs/heads/develop")
+        {
+          exit 1
+        }
