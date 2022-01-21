@@ -1,3 +1,4 @@
+import { Ability } from '@casl/ability';
 import { Injectable } from '@nestjs/common';
 import { CreatePostParam } from '../../../core/dtos/params/posts/create.post.param';
 import { ExtendedCreatePostParam } from '../../../core/dtos/params/posts/extended.create.post.param';
@@ -25,10 +26,11 @@ export class PostsRepositoryImpl implements PostsRepository {
   }
 
   async getPosts(
-    query: FindPostsParam
+    query: FindPostsParam,
+    ability: Ability
   ): Promise<PaginatedResponse<PostDTO> | Error> {
     try {
-      const model = await this.service.getPosts(query);
+      const model = await this.service.getPosts(query, ability);
       const postDTOs = model.items.map(PostModel.toDTO);
 
       return new PaginatedResponse({

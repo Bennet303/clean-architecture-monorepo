@@ -1,3 +1,4 @@
+import { Ability } from '@casl/ability';
 import { ExtendedCreatePostParam } from '../../../core/dtos/params/posts/extended.create.post.param';
 import { FindOnePostParam } from '../../../core/dtos/params/posts/find.one.post.param';
 import { FindPostsParam } from '../../../core/dtos/params/posts/find.posts.param';
@@ -8,7 +9,8 @@ import { PostModel } from '../../../core/models/post.model';
 export abstract class PostsService {
   abstract getPost(findOnePost: FindOnePostParam): Promise<PostModel>;
   abstract getPosts(
-    query: FindPostsParam
+    query: FindPostsParam,
+    ability: Ability
   ): Promise<PaginatedResponse<PostModel>>;
   abstract createPost(post: ExtendedCreatePostParam): Promise<PostModel>;
   abstract updatePost(

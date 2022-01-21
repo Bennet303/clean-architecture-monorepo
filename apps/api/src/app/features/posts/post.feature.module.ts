@@ -9,8 +9,10 @@ import { EditPostUseCase } from './use-cases/edit.post.use.case';
 import { GetPostsUseCase } from './use-cases/get.posts.use.case';
 import { GetPostUseCase } from './use-cases/get.post.use.case';
 import { environment } from '../../../../src/environments/environment';
+import { CASLModule } from '../auth/casl.module';
 
 @Module({
+  imports: [CASLModule],
   providers: [
     CreatePostUseCase,
     DeletePostUseCase,
