@@ -6,30 +6,29 @@ pool:
 steps:
   - task: NodeTool@0
     inputs:
-      versionSpec: '12.x'
-    displayName: 'Install Node.js'
+      versionSpec: '16.x'
+    displayName: 'Installing Node.js'
 
   - script: |
-      npm install nx -g
       npm ci
-    displayName: 'Install dependencies'
+    displayName: 'Installing dependencies'
 
   - script: |
-      nx run api:lint
-    displayName: 'Backend linting'
+      nx lint api
+    displayName: 'Linting backend'
 
   - script: |
-      nx run api:test
-    displayName: 'Backend unit tests'
+      nx test api
+    displayName: 'Unit testing backend'
 
   - script: |
-      nx run frontend:lint
-    displayName: 'Frontend linting'
+      nx lint frontend
+    displayName: 'Linting frontend'
 
   - script: |
-      nx run shared-components:lint
-    displayName: 'Shared components linting'
+      nx lint shared-components
+    displayName: 'Linting shared components'
 
   - script: |
-      nx run frontend:test
-    displayName: 'Frontend unit tests'
+      nx test frontend
+    displayName: 'Unit testing frontend'
