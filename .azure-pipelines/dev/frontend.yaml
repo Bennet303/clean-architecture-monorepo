@@ -1,0 +1,27 @@
+trigger:
+  - develop
+
+steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '16.x'
+    displayName: 'Installing Node.js'
+
+  - script: |
+      npm ci
+    displayName: 'Installing dependencies'
+
+  - script: |
+      nx lint frontend
+    displayName: 'Linting'
+
+  - script: |
+      nx test frontend
+    displayName: 'Unit testing'
+
+  - script: |
+      nx build frontend --configuration=development
+    displayName: 'Building'
+
+  # - script: |
+  #   displayName: 'Deploying'
