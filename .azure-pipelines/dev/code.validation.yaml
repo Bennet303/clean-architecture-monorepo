@@ -1,0 +1,38 @@
+name: Code Validation Dev
+
+trigger:
+  - none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '12.x'
+    displayName: 'Install Node.js'
+
+  - script: |
+      npm install nx -g
+      npm ci
+    displayName: 'Install dependencies'
+
+  - script: |
+      nx run api:lint
+    displayName: 'Backend linting'
+
+  - script: |
+      nx run api:test
+    displayName: 'Backend unit tests'
+
+  - script: |
+      nx run frontend:lint
+    displayName: 'Frontend linting'
+
+  - script: |
+      nx run shared-components:lint
+    displayName: 'Shared components linting'
+
+  - script: |
+      nx run frontend:test
+    displayName: 'Frontend unit tests'
