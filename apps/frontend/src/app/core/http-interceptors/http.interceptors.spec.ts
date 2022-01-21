@@ -81,14 +81,6 @@ describe('interceptors', () => {
     });
     describe('failure', () => {
       it(`should call the state to log out the user if the http response is ${HttpStatusCode.Unauthorized}`, () => {
-        const mockToken = '123';
-        store.reset({
-          ...store.snapshot(),
-          auth: {
-            ...defaultAuthStateModel,
-            token: mockToken,
-          } as AuthStateModel,
-        });
         jest.spyOn(store, 'dispatch');
 
         let res: unknown;
@@ -116,15 +108,6 @@ describe('interceptors', () => {
         expect(store.dispatch).toHaveBeenCalledTimes(1);
       });
       it(`should throw the error back to the caller if any other http error occurs (e.g. 404)`, () => {
-        const mockToken = '123';
-        store.reset({
-          ...store.snapshot(),
-          auth: {
-            ...defaultAuthStateModel,
-            token: mockToken,
-          } as AuthStateModel,
-        });
-
         let res: unknown;
         let error: unknown;
         httpClient.get(environment.backendUrl).subscribe({
@@ -146,15 +129,6 @@ describe('interceptors', () => {
         );
       });
       it(`should throw the error back to the caller if any other network failure occurs`, () => {
-        const mockToken = '123';
-        store.reset({
-          ...store.snapshot(),
-          auth: {
-            ...defaultAuthStateModel,
-            token: mockToken,
-          } as AuthStateModel,
-        });
-
         let res: unknown;
         let error: unknown;
         httpClient.get(environment.backendUrl).subscribe({
@@ -172,6 +146,7 @@ describe('interceptors', () => {
         expect(res).toBeUndefined();
         expect(error).toBeInstanceOf(HttpErrorResponse);
         expect((error as HttpErrorResponse).status).toBe(0);
+        //TODO tests fixxen
       });
     });
   });
