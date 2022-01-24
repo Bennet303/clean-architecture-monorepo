@@ -18,7 +18,7 @@ steps:
 
   - task: NodeTool@0
     inputs:
-      versionSpec: '12.x'
+      versionSpec: '16.x'
     displayName: 'Installing Node.js'
 
   - script: |
@@ -26,21 +26,21 @@ steps:
     displayName: 'Installing dependencies'
 
   - script: |
-      nx lint api
+      npx nx lint api
     displayName: 'Linting backend'
 
   - script: |
-      nx test api
+      npx nx test api
     displayName: 'Unit testing backend'
 
   - script: |
-      nx lint frontend
+      npx nx lint frontend
     displayName: 'Linting frontend'
 
   - script: |
-      nx lint shared-components
+      npx nx lint shared-components
     displayName: 'Linting shared components'
 
   - script: |
-      nx test frontend
+      npx nx test frontend
     displayName: 'Unit testing frontend'
