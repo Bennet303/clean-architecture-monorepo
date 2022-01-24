@@ -6,7 +6,7 @@ steps:
     inputs:
       targetType: inline
       script: |
-        $targetBranch = "$(System.PullRequest.SourceBranch)"
+        $targetBranch = "$(System.PullRequest.TargetBranch)"
         $sourceBranch = "$(System.PullRequest.SourceBranch)"
         if($targetBranch -eq "refs/heads/master")
         {
