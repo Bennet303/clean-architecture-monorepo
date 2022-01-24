@@ -35,15 +35,15 @@ steps:
     displayName: 'Installing dependencies'
 
   - script: |
-      nx lint api
+      npx nx lint api
     displayName: 'Linting'
 
   - script: |
-      nx test api
+      npx nx test api
     displayName: 'Unit testing'
 
   - script: |
-      nx build api --configuration=production
+      npx nx build api --configuration=production
     displayName: 'Building'
 
   # - script: |

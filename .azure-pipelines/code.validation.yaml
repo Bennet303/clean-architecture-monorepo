@@ -1,0 +1,46 @@
+trigger: none
+
+steps:
+  - task: PowerShell@2
+    displayName: 'Validating source branch'
+    inputs:
+      targetType: inline
+      script: |
+        $targetBranch = "$(System.PullRequest.TargetBranch)"
+        $sourceBranch = "$(System.PullRequest.SourceBranch)"
+        if($targetBranch -eq "refs/heads/master")
+        {
+          if($sourceBranch -ne "refs/heads/develop")
+          {
+            exit 1
+          }
+        }
+
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '16.x'
+    displayName: 'Installing Node.js'
+
+  - script: |
+      npm ci
+    displayName: 'Installing dependencies'
+
+  - script: |
+      npx nx lint api
+    displayName: 'Linting backend'
+
+  - script: |
+      npx nx test api
+    displayName: 'Unit testing backend'
+
+  - script: |
+      npx nx lint frontend
+    displayName: 'Linting frontend'
+
+  - script: |
+      npx nx lint shared-components
+    displayName: 'Linting shared components'
+
+  - script: |
+      npx nx test frontend
+    displayName: 'Unit testing frontend'
