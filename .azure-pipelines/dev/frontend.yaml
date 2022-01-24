@@ -4,10 +4,11 @@ trigger:
 steps:
   - task: NodeTool@0
     inputs:
-      versionSpec: '16.x'
+      versionSpec: '12.x'
     displayName: 'Installing Node.js'
 
   - script: |
+      npm install -g nx
       npm ci
     displayName: 'Installing dependencies'
 
