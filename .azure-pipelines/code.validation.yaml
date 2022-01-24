@@ -1,9 +1,24 @@
 trigger: none
 
 steps:
+  - task: PowerShell@2
+    displayName: 'Validating source branch'
+    inputs:
+      targetType: inline
+      script: |
+        $targetBranch = "$(System.PullRequest.SourceBranch)"
+        $sourceBranch = "$(System.PullRequest.SourceBranch)"
+        if($targetBranch -eq "refs/heads/master")
+        {
+          if($sourceBranch -ne "refs/heads/develop")
+          {
+            exit 1
+          }
+        }
+
   - task: NodeTool@0
     inputs:
-      versionSpec: '16.x'
+      versionSpec: '12.x'
     displayName: 'Installing Node.js'
 
   - script: |
