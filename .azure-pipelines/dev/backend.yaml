@@ -1,9 +1,6 @@
 trigger:
   - develop
 
-pool:
-  vmImage: 'ubuntu-latest'
-
 # variables:
 #   - group: backend_prod
 
@@ -38,7 +35,7 @@ steps:
     displayName: 'Installing dependencies'
 
   - script: |
-      nx build api --configuration=development
+      npx nx build api --configuration=development
     displayName: 'Building'
 
   # - script: |

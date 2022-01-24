@@ -1,9 +1,6 @@
 trigger:
   - master
 
-pool:
-  vmImage: 'ubuntu-latest'
-
 steps:
   - task: NodeTool@0
     inputs:
@@ -15,15 +12,15 @@ steps:
     displayName: 'Installing dependencies'
 
   - script: |
-      nx lint frontend
+      npx nx lint frontend
     displayName: 'Linting'
 
   - script: |
-      nx test frontend
+      npx nx test frontend
     displayName: 'Unit testing'
 
   - script: |
-      nx build frontend --configuration=production
+      npx nx build frontend --configuration=production
     displayName: 'Building'
 
   # - script: |

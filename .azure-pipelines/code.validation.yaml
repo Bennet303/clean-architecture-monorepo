@@ -1,9 +1,21 @@
 trigger: none
 
-pool:
-  vmImage: 'ubuntu-latest'
-
 steps:
+  - task: PowerShell@2
+    displayName: 'Validating source branch'
+    inputs:
+      targetType: inline
+      script: |
+        $targetBranch = "$(System.PullRequest.SourceBranch)"
+        $sourceBranch = "$(System.PullRequest.SourceBranch)"
+        if($targetBranch -eq "refs/heads/master")
+        {
+          if($sourceBranch -ne "refs/heads/develop")
+          {
+            exit 1
+          }
+        }
+
   - task: NodeTool@0
     inputs:
       versionSpec: '16.x'
@@ -14,21 +26,21 @@ steps:
     displayName: 'Installing dependencies'
 
   - script: |
-      nx lint api
+      npx nx lint api
     displayName: 'Linting backend'
 
   - script: |
-      nx test api
+      npx nx test api
     displayName: 'Unit testing backend'
 
   - script: |
-      nx lint frontend
+      npx nx lint frontend
     displayName: 'Linting frontend'
 
   - script: |
-      nx lint shared-components
+      npx nx lint shared-components
     displayName: 'Linting shared components'
 
   - script: |
-      nx test frontend
+      npx nx test frontend
     displayName: 'Unit testing frontend'
