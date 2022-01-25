@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { Navigate } from '@ngxs/router-plugin';
 import { Actions, NgxsModule, ofActionDispatched, Store } from '@ngxs/store';
 import { lastValueFrom } from 'rxjs';
-import { TranslatableError } from '../../../core/abstracts/translatable.error';
+import { TranslatableError } from '../../../core/abstracts/errors';
 import { RolesEnum } from '../../../core/enums/roles.enum';
 import { AuthFeatureModule } from '../../../features/auth/auth.feature.module';
 import { LoginResponseEntity } from '../../../features/auth/entities/login.response.entity';

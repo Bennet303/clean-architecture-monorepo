@@ -6,7 +6,7 @@ import {
 import { TestBed } from '@angular/core/testing';
 import { UserEntity } from '@clean-architecture-monorepo/shared';
 import { environment } from '../../../environments/environment';
-import { TranslatableError } from '../../core/abstracts/translatable.error';
+import { TranslatableError } from '../../core/abstracts/errors';
 import { BackendManageUsersDataSource } from './data-sources/backend.manage.users.data.source';
 import { ManageUsersDataSource } from './data-sources/manage.users.data.source';
 import {

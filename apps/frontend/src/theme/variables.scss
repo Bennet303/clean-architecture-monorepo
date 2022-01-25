@@ -4,8 +4,12 @@
 /** Ionic CSS Variables **/
 :root {
   // Custom theming variables
-  --default-inner-padding: 1rem;
-  --default-outer-padding: 1rem;
+  --default-padding: 8px;
+  --default-padding-close: 2 * var(--default-padding);
+  --default-padding-close-ish: 3 * var(--default-padding);
+  --default-padding-not-close: 4 * var(--default-padding);
+  --default-padding-acquaintance: 8 * var(--default-padding);
+  --default-padding-distant: 16 * var(--default-padding);
   --default-border-radius-box: 4px;
   --default-border-radius-input: 4px;
   --default-font-size-normal: 16px;
