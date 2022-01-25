@@ -4,12 +4,16 @@ import {
   HttpHandler,
   HttpInterceptor,
   HttpRequest,
+  HttpStatusCode,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngxs/store';
 import {
-  catchError,
+  concatMap,
+  delay,
   Observable,
+  of,
+  retryWhen,
   Subject,
   throttleTime,
   throwError,
@@ -17,6 +21,10 @@ import {
 import { AuthStateLogoutAction } from '../../presentation/states/auth/auth.state.actions';
 import { UnauthorizedError } from '../../presentation/states/auth/auth.state.errors';
 import { AuthStateSelectors } from '../../presentation/states/auth/auth.state.selectors';
+import { TimeoutError } from '../abstracts/errors';
+
+export const retryCount = 20;
+export const retryWaitMilliseconds = 1000;
 
 @Injectable()
 export class TokenHttpInterceptor implements HttpInterceptor {
@@ -47,28 +55,27 @@ export class TokenHttpInterceptor implements HttpInterceptor {
       // withCredentials: true, when using backend session
     });
 
-    return next.handle(request).pipe(catchError(this.handleHttpError));
-    // .pipe(timeout(30000), catchError(this.handleTimeoutError)); // when explicitly wanting to catch custom timeout error
+    return next.handle(request).pipe(
+      retryWhen((error) =>
+        error.pipe(
+          concatMap((error, count) => {
+            if (count === retryCount) {
+              return throwError(() => new TimeoutError()); // abort request with timeout error
+            }
+            if (error instanceof HttpErrorResponse) {
+              switch (error.status) {
+                case 0:
+                  return of(error); // retry request when backend cannot be reached
+                case HttpStatusCode.Unauthorized:
+                  this.throttledLogout.next(); // log out
+                  break;
+              }
+            }
+            return throwError(() => error); // abort request with error
+          }),
+          delay(retryWaitMilliseconds) // delay retried requests
+        )
+      )
+    );
   }
-
-  private handleHttpError = (
-    error: HttpErrorResponse
-  ): Observable<HttpEvent<unknown>> => {
-    if (error.status === 401) {
-      this.throttledLogout.next();
-    }
-    return throwError(() => error); // throw error back to the handler so that the data source throws the error to the repository
-  };
-
-  //! only necessary for custom handling timeout error
-  // private handleTimeoutError = (
-  //   error: unknown,
-  //   caughtReq$: Observable<HttpEvent<unknown>>
-  // ): Observable<HttpEvent<unknown>> => {
-  //   if (error instanceof TimeoutError) {
-  //     // handle timeout error here
-  //     return throwError(() => error); // throw TimeoutError if there is no response after 30 seconds
-  //   }
-  //   return caughtReq$; //retry sending the request to the backend until receiving a response
-  // };
 }

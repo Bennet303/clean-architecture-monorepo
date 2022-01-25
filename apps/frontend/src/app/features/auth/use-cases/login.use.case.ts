@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { TranslatableError } from '../../../core/abstracts/translatable.error';
+import { TranslatableError } from '../../../core/abstracts/errors';
 import { UseCase } from '../../../core/abstracts/use.case';
 import { LoginResponseEntity } from '../entities/login.response.entity';
 import { AuthRepository } from '../repositories/auth.repository';

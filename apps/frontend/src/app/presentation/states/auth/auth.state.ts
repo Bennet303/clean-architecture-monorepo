@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Navigate } from '@ngxs/router-plugin';
 import { Action, State, StateContext } from '@ngxs/store';
-import { TranslatableError } from '../../../core/abstracts/translatable.error';
+import { TranslatableError } from '../../../core/abstracts/errors';
 import { LoginUseCase } from '../../../features/auth/use-cases/login.use.case';
 import { LogoutUseCase } from '../../../features/auth/use-cases/logout.use.case';
 import {
