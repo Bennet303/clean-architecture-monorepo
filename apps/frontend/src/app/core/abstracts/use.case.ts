@@ -1,5 +1,5 @@
 import { Entity } from '@clean-architecture-monorepo/shared';
-import { TranslatableError } from './translatable.error';
+import { TranslatableError } from './errors';
 
 export abstract class UseCase<
   I extends Entity | void,

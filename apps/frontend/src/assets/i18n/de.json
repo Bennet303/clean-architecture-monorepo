@@ -1,6 +1,9 @@
 {
   "errors": {
-    "common": "Etwas ist schief gelaufen.",
+    "core": {
+      "common": "Etwas ist schief gelaufen.",
+      "timeout": "Es ist ein Timeout aufgetreten."
+    },
     "features": {
       "manage_users": {
         "failed_creating_user": "Der Nutzer konnte nicht erstellt werden.",

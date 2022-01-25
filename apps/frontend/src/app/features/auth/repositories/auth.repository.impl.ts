@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { TranslatableError } from '../../../core/abstracts/translatable.error';
+import { TranslatableError } from '../../../core/abstracts/errors';
 import {
   FailedLoggingInError,
   FailedLoggingOutError,

@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { UserEntity } from '@clean-architecture-monorepo/shared';
 import { NgxsModule, Store } from '@ngxs/store';
 import { lastValueFrom } from 'rxjs';
-import { TranslatableError } from '../../../core/abstracts/translatable.error';
+import { TranslatableError } from '../../../core/abstracts/errors';
 import { ManageUsersFeatureModule } from '../../../features/manage-users/manage.users.feature.module';
 import { CreateUserUseCase } from '../../../features/manage-users/use-cases/create.user.use.case';
 import { DeleteUserUseCase } from '../../../features/manage-users/use-cases/delete.user.use.case';

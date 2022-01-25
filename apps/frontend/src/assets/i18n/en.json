@@ -1,6 +1,9 @@
 {
   "errors": {
-    "common": "Something went wrong.",
+    "core": {
+      "common": "Something went wrong.",
+      "timeout": "Timeout error"
+    },
     "features": {
       "manage_users": {
         "failed_creating_user": "The user could not be created.",

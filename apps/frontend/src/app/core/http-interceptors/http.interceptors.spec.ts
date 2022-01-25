@@ -9,7 +9,7 @@ import {
   HttpClientTestingModule,
   HttpTestingController,
 } from '@angular/common/http/testing';
-import { TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { NgxsModule, Store } from '@ngxs/store';
 import { lastValueFrom } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -21,7 +21,12 @@ import {
   defaultAuthStateModel,
 } from '../../presentation/states/auth/auth.state.model';
 import { AuthStateModule } from '../../presentation/states/auth/auth.state.module';
-import { TokenHttpInterceptor } from './token.http.interceptor';
+import { TimeoutError } from '../abstracts/errors';
+import {
+  retryCount,
+  retryWaitMilliseconds,
+  TokenHttpInterceptor,
+} from './token.http.interceptor';
 describe('interceptors', () => {
   describe('token interceptor', () => {
     let httpMock: HttpTestingController;
@@ -108,6 +113,8 @@ describe('interceptors', () => {
         expect(store.dispatch).toHaveBeenCalledTimes(1);
       });
       it(`should throw the error back to the caller if any other http error occurs (e.g. 404)`, () => {
+        jest.spyOn(store, 'dispatch');
+
         let res: unknown;
         let error: unknown;
         httpClient.get(environment.backendUrl).subscribe({
@@ -127,8 +134,11 @@ describe('interceptors', () => {
         expect((error as HttpErrorResponse).status).toBe(
           HttpStatusCode.NotFound
         );
+        expect(store.dispatch).not.toHaveBeenCalled();
       });
-      it(`should throw the error back to the caller if any other network failure occurs`, () => {
+      it(`should retry the request ${retryCount} times if any other network failure occurs and return a timeout error if there is still no response`, fakeAsync(() => {
+        jest.spyOn(store, 'dispatch');
+
         let res: unknown;
         let error: unknown;
         httpClient.get(environment.backendUrl).subscribe({
@@ -140,15 +150,45 @@ describe('interceptors', () => {
           },
         });
 
-        const req = httpMock.expectOne(environment.backendUrl);
-        req.error(new ErrorEvent('error'));
+        for (let i = 0; i < retryCount + 1; i++) {
+          const req = httpMock.expectOne(environment.backendUrl);
+          req.error(new ErrorEvent('error'));
+          tick(retryWaitMilliseconds);
+        }
 
         expect(res).toBeUndefined();
-        expect(error).toBeInstanceOf(HttpErrorResponse);
-        expect((error as HttpErrorResponse).status).toBe(0);
-        //TODO tests fixxen
-      });
-      //TODO test
+        expect(error).toBeInstanceOf(TimeoutError);
+        expect(store.dispatch).not.toHaveBeenCalled();
+      }));
+      it(`should retry the request ${retryCount} times if any other network failure occurs and return the response if successful`, fakeAsync(() => {
+        const mockBody = { mockKey: 'mockValue' };
+
+        jest.spyOn(store, 'dispatch');
+
+        let res: unknown;
+        let error: unknown;
+        httpClient.get(environment.backendUrl).subscribe({
+          next: (response) => {
+            res = response;
+          },
+          error: (err) => {
+            error = err;
+          },
+        });
+
+        for (let i = 0; i < retryCount; i++) {
+          const req = httpMock.expectOne(environment.backendUrl);
+          req.error(new ErrorEvent('error'));
+          tick(retryWaitMilliseconds);
+        }
+        const req = httpMock.expectOne(environment.backendUrl);
+        req.flush(mockBody, { status: HttpStatusCode.Ok, statusText: '' });
+
+        expect(error).toBeUndefined();
+        expect(res).toBe(mockBody);
+
+        expect(store.dispatch).not.toHaveBeenCalled();
+      }));
     });
   });
 });
