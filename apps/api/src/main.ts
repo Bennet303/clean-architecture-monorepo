@@ -17,6 +17,7 @@ import { environment } from './environments/environment';
 import * as compression from 'compression';
 import * as helmet from 'helmet';
 import { metaInformation } from './meta.information';
+import { KeycloakAuthGuard } from './app/features/auth/guards/keycloak.auth.guard';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -38,6 +39,8 @@ async function bootstrap() {
       transform: true,
     })
   );
+
+  app.useGlobalGuards(new KeycloakAuthGuard());
 
   if (environment.local) setupSwagger(app, globalPrefix);
 
