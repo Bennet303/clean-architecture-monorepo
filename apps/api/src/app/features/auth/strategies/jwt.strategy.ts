@@ -5,6 +5,7 @@ import { passportJwtSecret } from 'jwks-rsa';
 import { ApiUser } from '../../../core/auth/api.user';
 import { Roles } from '../../../core/auth/roles';
 import { CASLAbilityFactory } from '../casl/casl.ability.factory';
+import { environment } from '../../../../environments/environment';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -12,15 +13,15 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     cache: true,
     rateLimit: true,
     jwksRequestsPerMinute: 5,
-    jwksUri: `https://${process.env.AUTH0_DOMAIN}/.well-known/jwks.json`,
+    jwksUri: `https://${environment.auth0Domain}/.well-known/jwks.json`,
   });
 
   constructor(private readonly caslAbilityFactory: CASLAbilityFactory) {
     super({
       secretOrKeyProvider: JwtStrategy.secret,
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      audience: process.env.AUTH0_AUDIENCE,
-      issuer: `https://${process.env.AUTH0_DOMAIN}/`,
+      audience: environment.auth0Audience,
+      issuer: `https://${environment.auth0Domain}/`,
       algorithms: ['RS256'],
     });
   }
