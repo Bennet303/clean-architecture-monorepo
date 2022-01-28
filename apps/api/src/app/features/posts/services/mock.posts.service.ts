@@ -36,7 +36,7 @@ export class MockPostsService implements PostsService {
     query: FindPostsParam,
     ability: Ability
   ): Promise<PaginatedResponse<PostModel>> {
-    const posts = this.postsDB.filter((post, index) => {
+    const posts = this.postsDB.filter((post) => {
       const isValid = ability.can(Action.Read, post);
       const matchAuthor = query.author_id
         ? query.author_id.includes(post.author._id)

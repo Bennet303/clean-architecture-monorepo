@@ -1,32 +1,27 @@
 import { Injectable } from '@nestjs/common';
 import { UseCase } from '../../../core/abstracts/use.case';
-import { Action } from '../../../core/auth/action';
-import { ApiUser } from '../../../core/auth/api.user';
+import { AuthenticatedParam } from '../../../core/dtos/params/authenticated.param';
 import { FindPostsParam } from '../../../core/dtos/params/posts/find.posts.param';
 import { PostDTO } from '../../../core/dtos/post.dto';
 import { PaginatedResponse } from '../../../core/dtos/responses/paginated.response.dto';
-import { CASLAbilityFactory } from '../../auth/casl/casl.ability.factory';
 import { PostsRepository } from '../repositories/posts.repository';
 
 @Injectable()
 export class GetPostsUseCase
-  implements UseCase<FindPostsParam, PaginatedResponse<PostDTO>>
+  implements
+    UseCase<AuthenticatedParam<FindPostsParam>, PaginatedResponse<PostDTO>>
 {
-  constructor(
-    private readonly repository: PostsRepository,
-    private readonly caslAbilityFactory: CASLAbilityFactory
-  ) {}
+  constructor(private readonly repository: PostsRepository) {}
 
   async execute(
-    param: FindPostsParam
+    param: AuthenticatedParam<FindPostsParam>
   ): Promise<PaginatedResponse<PostDTO> | Error> {
-    const user = new ApiUser({ id: '1', isAdmin: false });
-    const ability = this.caslAbilityFactory.createForUser(user);
-    const posts = await this.repository.getPosts(param, ability);
+    const ability = param.user.ability;
+    const findPostsParam = param.data;
 
-    if (posts instanceof Error) return posts;
+    if (!ability) return new Error('Ability is required');
 
-    posts.items = posts.items.filter((post) => ability.can(Action.Read, post));
+    const posts = await this.repository.getPosts(findPostsParam, ability);
 
     return posts;
   }
