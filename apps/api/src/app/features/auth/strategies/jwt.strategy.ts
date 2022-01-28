@@ -35,7 +35,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       roles: roles as Roles[],
     };
     apiUser.ability = this.caslAbilityFactory.createForUser(apiUser);
-    console.log(apiUser);
     return apiUser;
   }
 }
