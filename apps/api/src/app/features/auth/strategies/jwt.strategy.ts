@@ -13,15 +13,15 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     cache: true,
     rateLimit: true,
     jwksRequestsPerMinute: 5,
-    jwksUri: `https://${environment.auth0Domain}/.well-known/jwks.json`,
+    jwksUri: `https://${environment.authDomain}/.well-known/jwks.json`,
   });
 
   constructor(private readonly caslAbilityFactory: CASLAbilityFactory) {
     super({
       secretOrKeyProvider: JwtStrategy.secret,
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      audience: environment.auth0Audience,
-      issuer: `https://${environment.auth0Domain}/`,
+      audience: environment.authAudience,
+      issuer: `https://${environment.authDomain}/`,
       algorithms: ['RS256'],
     });
   }
@@ -35,6 +35,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       roles: roles as Roles[],
     };
     apiUser.ability = this.caslAbilityFactory.createForUser(apiUser);
+    console.log(apiUser);
     return apiUser;
   }
 }

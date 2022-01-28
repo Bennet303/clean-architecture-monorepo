@@ -9,6 +9,6 @@ export const environment = {
   throttlerLimit: 10,
   keycloakRealm: undefined,
   keycloakBaseUrl: undefined,
-  auth0Domain: undefined,
-  auth0Audience: undefined,
+  authDomain: undefined,
+  authAudience: undefined,
 };

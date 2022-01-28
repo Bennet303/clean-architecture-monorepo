@@ -9,6 +9,6 @@ export const environment = {
   throttlerLimit: process.env.THROTTLER_LIMIT ?? 10,
   keycloakRealm: process.env.KEYCLOAK_REALM,
   keycloakBaseUrl: process.env.KEYCLOAK_BASE_URL,
-  auth0Domain: process.env.AUTH0_DOMAIN,
-  auth0Audience: process.env.AUTH0_AUDIENCE,
+  authDomain: process.env.AUTH_DOMAIN,
+  authAudience: process.env.AUTH_AUDIENCE,
 };
