@@ -10,6 +10,7 @@ import {
 } from '@casl/ability';
 import { Action } from '../../../core/auth/action';
 import { Injectable } from '@nestjs/common';
+import { Roles } from '../../../core/auth/roles';
 
 type Subjects = InferSubjects<typeof PostDTO | typeof ApiUser> | 'all';
 
@@ -22,7 +23,7 @@ export class CASLAbilityFactory {
       Ability as AbilityClass<AppAbility>
     );
 
-    if (user.isAdmin) {
+    if (user.roles.includes(Roles.ADMIN)) {
       can(Action.Manage, 'all'); // default read-write access to everything
     } else {
       can(Action.Read, 'all'); // default read-only access to everything
