@@ -1,7 +1,7 @@
 import { ExecutionContext, UnauthorizedException } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
-export class KeycloakAuthGuard extends AuthGuard('jwt') {
+export class JwtAuthGuard extends AuthGuard('jwt') {
   constructor() {
     super();
   }
