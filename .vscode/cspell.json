@@ -5,7 +5,10 @@
   "language": "en,de-DE",
   // words - list of words to be always considered correct
   "words": [
+    "CASL",
     "devkit",
+    "jwks",
+    "Keycloak",
     "nestjs",
     "ngneat",
     "ngxs",

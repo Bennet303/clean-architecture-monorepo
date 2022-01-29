@@ -8,10 +8,22 @@ import { PostNotFoundError } from '../post.feature.errors';
 import { PostsService } from './posts.service';
 import { ExtendedCreatePostParam } from '../../../core/dtos/params/posts/extended.create.post.param';
 import { Injectable } from '@nestjs/common';
+import { Ability } from '@casl/ability';
+import { Action } from '../../../core/auth/action';
 
 @Injectable()
 export class MockPostsService implements PostsService {
-  postsDB: PostModel[] = [];
+  postsDB: PostModel[] = [
+    {
+      _id: '1',
+      title: 'Title',
+      content: 'This is the content of the post.',
+      author: {
+        _id: '1',
+      },
+      createdAt: new Date(),
+    },
+  ];
 
   async getPost(findOnePost: FindOnePostParam): Promise<PostModel> {
     const res = this.postsDB.find((post) => post._id === findOnePost.id);
@@ -20,10 +32,12 @@ export class MockPostsService implements PostsService {
     return new Promise((resolve) => setTimeout(() => resolve(res), 500));
   }
 
-  getPosts(query: FindPostsParam): Promise<PaginatedResponse<PostModel>> {
-    const posts = this.postsDB.filter((post, index) => {
-      const isValid =
-        index >= query.offset && index < query.offset + query.limit;
+  getPosts(
+    query: FindPostsParam,
+    ability: Ability
+  ): Promise<PaginatedResponse<PostModel>> {
+    const posts = this.postsDB.filter((post) => {
+      const isValid = ability.can(Action.Read, post);
       const matchAuthor = query.author_id
         ? query.author_id.includes(post.author._id)
         : true;
@@ -35,11 +49,15 @@ export class MockPostsService implements PostsService {
         : true;
       return isValid && matchAuthor && matchCreatedBefore && matchCreatedAfter;
     });
+    const paginatedPosts = posts.slice(
+      query.offset,
+      query.offset + query.limit
+    );
     const res = new PaginatedResponse<PostModel>({
-      total: this.postsDB.length,
+      total: posts.length,
       limit: query.limit,
       offset: query.offset,
-      items: posts,
+      items: paginatedPosts,
     });
     return new Promise((resolve) => setTimeout(() => resolve(res), 500));
   }

@@ -43,6 +43,8 @@ import { GetPostsUseCase } from '../../features/posts/use-cases/get.posts.use.ca
 import { EditPostUseCase } from '../../features/posts/use-cases/edit.post.use.case';
 import { DeletePostUseCase } from '../../features/posts/use-cases/delete.post.use.case';
 import { PostNotFoundError } from '../../features/posts/post.feature.errors';
+import { AuthenticatedApiUser } from '../../core/decorators/api.user.decorator';
+import { ApiUser } from '../../core/auth/api.user';
 
 @Controller({
   version: '1',
@@ -73,9 +75,12 @@ export class PostsController extends BaseController {
   })
   @ApiNotFoundResponse({ description: 'Post not found.' })
   @ApiBadRequestResponse({ description: 'Invalid post id.' })
-  async getPost(@Param() param: FindOneUserParam): Promise<PostDTO> {
+  async getPost(
+    @Param() param: FindOneUserParam,
+    @AuthenticatedApiUser() user: ApiUser
+  ): Promise<PostDTO> {
     this.logger?.log(`Making call to get post... [id=${param.id}]`);
-    const res = await this.getPostUC.execute(param);
+    const res = await this.getPostUC.execute({ user, data: param });
 
     if (res instanceof PostNotFoundError) {
       this.logger?.warn(`Post not found. [id=${param.id}]`);
@@ -95,12 +100,13 @@ export class PostsController extends BaseController {
   @ApiPaginatedDto(PostDTO)
   @ApiBadRequestResponse({ description: 'Invalid http query params.' })
   async getPosts(
-    @Query() query: FindPostsParam
+    @Query() query: FindPostsParam,
+    @AuthenticatedApiUser() user: ApiUser
   ): Promise<PaginatedResponse<PostDTO>> {
     this.logger?.log(
       `Making call to get posts... [query=${JSON.stringify(query)}]`
     );
-    const res = await this.getPostsUC.execute(query);
+    const res = await this.getPostsUC.execute({ user, data: query });
 
     if (res instanceof Error) throw this.handleUnexpectedError(res);
 
@@ -147,14 +153,18 @@ export class PostsController extends BaseController {
   @ApiBadRequestResponse({ description: 'Invalid patch document.' })
   async updatePost(
     @Param() param: FindOnePostParam,
-    @Body() post: UpdatePostParam
+    @Body() post: UpdatePostParam,
+    @AuthenticatedApiUser() user: ApiUser
   ): Promise<PostDTO> {
     this.logger?.log(
       `Making call to update post... [id=${param.id}] [patch=${JSON.stringify(
         post
       )}]`
     );
-    const res = await this.editPostUC.execute({ ...param, ...post });
+    const res = await this.editPostUC.execute({
+      user,
+      data: { ...param, ...post },
+    });
 
     if (res instanceof PostNotFoundError) {
       this.logger?.warn(`Post not found. [id=${param.id}]`);
@@ -176,9 +186,12 @@ export class PostsController extends BaseController {
   @ApiNoContentResponse({ description: 'The post has been deleted.' })
   @ApiNotFoundResponse({ description: 'The post does not exist.' })
   @ApiBadRequestResponse({ description: 'Invalid post id.' })
-  async deletePost(@Param() param: FindOnePostParam): Promise<void> {
+  async deletePost(
+    @Param() param: FindOnePostParam,
+    @AuthenticatedApiUser() user: ApiUser
+  ): Promise<void> {
     this.logger?.log(`Making call to delete post... [id=${param.id}]`);
-    const res = await this.deletePostUC.execute(param);
+    const res = await this.deletePostUC.execute({ user, data: param });
 
     if (res instanceof PostNotFoundError) {
       this.logger?.warn(`Post not found. [id=${param.id}]`);

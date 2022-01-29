@@ -1,3 +1,4 @@
+import { Ability } from '@casl/ability';
 import { CreatePostParam } from '../../../core/dtos/params/posts/create.post.param';
 import { FindOnePostParam } from '../../../core/dtos/params/posts/find.one.post.param';
 import { FindPostsParam } from '../../../core/dtos/params/posts/find.posts.param';
@@ -8,7 +9,8 @@ import { PaginatedResponse } from '../../../core/dtos/responses/paginated.respon
 export abstract class PostsRepository {
   abstract getPost(findOnePost: FindOnePostParam): Promise<PostDTO | Error>;
   abstract getPosts(
-    query: FindPostsParam
+    query: FindPostsParam,
+    ability: Ability
   ): Promise<PaginatedResponse<PostDTO> | Error>;
   abstract createPost(post: CreatePostParam): Promise<PostDTO | Error>;
   abstract updatePost(
