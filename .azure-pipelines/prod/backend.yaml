@@ -1,0 +1,50 @@
+trigger:
+  - master
+
+# variables:
+#   - group: backend_prod
+
+steps:
+  # - task: DownloadSecureFile@1
+  #   name: authkey
+  #   displayName: 'Download Firebase Service Account Key'
+  #   inputs:
+  #     secureFile: 'firebaseServiceAccount.json'
+  #     retryCount: '2'
+
+  # - task: CopyFiles@2
+  #   inputs:
+  #     sourceFolder: $(Agent.TempDirectory)
+  #     contents: 'firebaseServiceAccount.json'
+  #     targetFolder: $(System.DefaultWorkingDirectory)/apps/backend/src/environments
+  #   displayName: 'moving "firebaseServiceAccount.json" into the Dockerfile context'
+
+  # - task: DownloadSecureFile@1
+  #   name: gcpAuthkey
+  #   displayName: 'Download GCP Auth Key'
+  #   inputs:
+  #     secureFile: 'symrise-scentfinder-gcp-ffcca06281ae.json'
+
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '16.x'
+    displayName: 'Installing Node.js'
+
+  - script: |
+      npm ci
+    displayName: 'Installing dependencies'
+
+  - script: |
+      npx nx lint api
+    displayName: 'Linting'
+
+  - script: |
+      npx nx test api
+    displayName: 'Unit testing'
+
+  - script: |
+      npx nx build api --configuration=production
+    displayName: 'Building'
+
+  # - script: |
+  #   displayName: 'Deploying'

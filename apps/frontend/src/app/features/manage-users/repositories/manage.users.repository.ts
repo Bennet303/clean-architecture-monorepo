@@ -1,5 +1,5 @@
 import { UserEntity } from '@clean-architecture-monorepo/shared';
-import { TranslatableError } from '../../../core/abstracts/translatable.error';
+import { TranslatableError } from '../../../core/abstracts/errors';
 
 export abstract class ManageUsersRepository {
   abstract getUser(): Promise<UserEntity | TranslatableError>;

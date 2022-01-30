@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { TranslatableError } from '../../core/abstracts/translatable.error';
+import { TranslatableError } from '../../core/abstracts/errors';
 import { RolesEnum } from '../../core/enums/roles.enum';
 import {
   FailedLoggingInError,
