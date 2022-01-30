@@ -1,4 +1,8 @@
-import { UserDTO, FindOneUserParam } from '@clean-architecture-monorepo/dtos';
+import {
+  UserDTO,
+  FindOneUserParam,
+  CreateUserParam,
+} from '@clean-architecture-monorepo/dtos';
 import {
   Body,
   Controller,
@@ -77,11 +81,11 @@ export class ManageUsersController extends BaseController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Create a new user.' })
-  @ApiBody({ type: UserDTO })
+  @ApiBody({ type: CreateUserParam })
   @ApiCreatedResponse({ description: 'The created user.', type: UserDTO })
   @ApiConflictResponse({ description: 'User already exists.' })
   @ApiBadRequestResponse({ description: 'Invalid user.' })
-  async createUser(@Body() user: UserDTO): Promise<UserDTO> {
+  async createUser(@Body() user: CreateUserParam): Promise<UserDTO> {
     this.logger?.log(
       `Making call to create user... [user=${JSON.stringify(user)}]`
     );

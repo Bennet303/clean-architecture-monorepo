@@ -1,5 +1,6 @@
+export * from './lib/decorators/default.array.transform';
+export * from './lib/decorators/user.id.decorator';
 export * from './lib/dto';
-export * from '../../../apps/api/src/app/core/authenticated.param';
 export * from './lib/params/pagination.param';
 export * from './lib/params/parameter';
 export * from './lib/params/posts/create.post.param';
@@ -7,6 +8,7 @@ export * from './lib/params/posts/extended.create.post.param';
 export * from './lib/params/posts/find.one.post.param';
 export * from './lib/params/posts/find.posts.param';
 export * from './lib/params/posts/update.post.param';
+export * from './lib/params/users/create.user.param';
 export * from './lib/params/users/find.one.user.param';
 export * from './lib/post.dto';
 export * from './lib/responses/paginated.response.dto';

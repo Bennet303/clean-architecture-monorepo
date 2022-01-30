@@ -1,11 +1,11 @@
 import {
-  AuthenticatedParam,
   FindPostsParam,
   PaginatedResponse,
   PostDTO,
 } from '@clean-architecture-monorepo/dtos';
 import { Injectable } from '@nestjs/common';
 import { UseCase } from '../../../core/abstracts/use.case';
+import { AuthenticatedParam } from '../../../core/authenticated.param';
 import { PostsRepository } from '../repositories/posts.repository';
 
 @Injectable()

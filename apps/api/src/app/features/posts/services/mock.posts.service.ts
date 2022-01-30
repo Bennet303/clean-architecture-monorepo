@@ -1,5 +1,3 @@
-import { PostModel } from '../../../core/models/post.model';
-import { UserModel } from '../../../core/models/user.model';
 import { PostNotFoundError } from '../post.feature.errors';
 import { PostsService } from './posts.service';
 import { Injectable } from '@nestjs/common';
@@ -12,23 +10,24 @@ import {
   PaginatedResponse,
   UpdatePostParam,
 } from '@clean-architecture-monorepo/dtos';
-
+import { MockPostModel } from '../../../core/models/mock.post.model';
+import { MockUserModel } from '../../../core/models/mock.user.model';
 @Injectable()
 export class MockPostsService implements PostsService {
-  postsDB: PostModel[] = [
-    {
-      _id: '1',
+  postsDB: MockPostModel[] = [
+    new MockPostModel({
+      id: '1',
       title: 'Title',
       content: 'This is the content of the post.',
-      author: {
-        _id: '1',
-      },
+      author: new MockUserModel({
+        id: '1',
+      }),
       createdAt: new Date(),
-    },
+    }),
   ];
 
-  async getPost(findOnePost: FindOnePostParam): Promise<PostModel> {
-    const res = this.postsDB.find((post) => post._id === findOnePost.id);
+  async getPost(findOnePost: FindOnePostParam): Promise<MockPostModel> {
+    const res = this.postsDB.find((post) => post.id === findOnePost.id);
     if (!res) throw new PostNotFoundError();
 
     return new Promise((resolve) => setTimeout(() => resolve(res), 500));
@@ -37,11 +36,11 @@ export class MockPostsService implements PostsService {
   getPosts(
     query: FindPostsParam,
     ability: Ability
-  ): Promise<PaginatedResponse<PostModel>> {
+  ): Promise<PaginatedResponse<MockPostModel>> {
     const posts = this.postsDB.filter((post) => {
       const isValid = ability.can(Action.Read, post);
       const matchAuthor = query.author_id
-        ? query.author_id.includes(post.author._id)
+        ? query.author_id.includes(post.author.id)
         : true;
       const matchCreatedBefore = query.created_before
         ? post.createdAt < query.created_before
@@ -55,7 +54,7 @@ export class MockPostsService implements PostsService {
       query.offset,
       query.offset + query.limit
     );
-    const res = new PaginatedResponse<PostModel>({
+    const res = new PaginatedResponse<MockPostModel>({
       total: posts.length,
       limit: query.limit,
       offset: query.offset,
@@ -64,14 +63,14 @@ export class MockPostsService implements PostsService {
     return new Promise((resolve) => setTimeout(() => resolve(res), 500));
   }
 
-  createPost(post: ExtendedCreatePostParam): Promise<PostModel> {
+  createPost(post: ExtendedCreatePostParam): Promise<MockPostModel> {
     const id = Math.floor(100000 + Math.random() * 900000);
 
-    const newPost = new PostModel({
-      _id: id.toString(),
+    const newPost = new MockPostModel({
+      id: id.toString(),
       title: post.title,
       content: post.content,
-      author: UserModel.fromDTO(post.author),
+      author: new MockUserModel({ ...post.author }),
       createdAt: post.createdAt,
     });
 
@@ -81,8 +80,8 @@ export class MockPostsService implements PostsService {
 
   updatePost(
     updatePost: FindOnePostParam & UpdatePostParam
-  ): Promise<PostModel> {
-    const post = this.postsDB.find((post) => post._id === updatePost.id);
+  ): Promise<MockPostModel> {
+    const post = this.postsDB.find((post) => post.id === updatePost.id);
     if (!post) throw new PostNotFoundError();
 
     post.title = updatePost.title ?? post.title;
@@ -92,10 +91,10 @@ export class MockPostsService implements PostsService {
   }
 
   deletePost(fineOnePost: FindOnePostParam): Promise<void> {
-    const post = this.postsDB.find((post) => post._id === fineOnePost.id);
+    const post = this.postsDB.find((post) => post.id === fineOnePost.id);
     if (!post) throw new PostNotFoundError();
 
-    this.postsDB = this.postsDB.filter((post) => post._id !== fineOnePost.id);
+    this.postsDB = this.postsDB.filter((post) => post.id !== fineOnePost.id);
 
     return new Promise((resolve) => setTimeout(() => resolve(), 500));
   }
