@@ -27,16 +27,6 @@ import {
   ApiTooManyRequestsResponse,
 } from '@nestjs/swagger';
 import { BaseController } from '../../core/abstracts/base.controller';
-import {
-  ApiPaginatedDto,
-  PaginatedResponse,
-} from '../../core/dtos/responses/paginated.response.dto';
-import { PostDTO } from '../../core/dtos/post.dto';
-import { FindOneUserParam } from '../../core/dtos/params/users/find.one.user.param';
-import { CreatePostParam } from '../../core/dtos/params/posts/create.post.param';
-import { FindPostsParam } from '../../core/dtos/params/posts/find.posts.param';
-import { UpdatePostParam } from '../../core/dtos/params/posts/update.post.param';
-import { FindOnePostParam } from '../../core/dtos/params/posts/find.one.post.param';
 import { CreatePostUseCase } from '../../features/posts/use-cases/create.post.use.case';
 import { GetPostUseCase } from '../../features/posts/use-cases/get.post.use.case';
 import { GetPostsUseCase } from '../../features/posts/use-cases/get.posts.use.case';
@@ -45,6 +35,16 @@ import { DeletePostUseCase } from '../../features/posts/use-cases/delete.post.us
 import { PostNotFoundError } from '../../features/posts/post.feature.errors';
 import { AuthenticatedApiUser } from '../../core/decorators/api.user.decorator';
 import { ApiUser } from '../../core/auth/api.user';
+import {
+  FindOneUserParam,
+  FindPostsParam,
+  CreatePostParam,
+  UpdatePostParam,
+  FindOnePostParam,
+  ApiPaginatedDto,
+  PaginatedResponse,
+  PostDTO,
+} from '@clean-architecture-monorepo/dtos';
 
 @Controller({
   version: '1',

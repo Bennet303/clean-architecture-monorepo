@@ -1,7 +1,6 @@
+import { FindOneUserParam, UserDTO } from '@clean-architecture-monorepo/dtos';
 import { Injectable } from '@nestjs/common';
-import { UserDTO } from '../../../core/dtos/user.dto';
 import { UserModel } from '../../../core/models/user.model';
-import { FindOneUserParam } from '../../../core/dtos/params/users/find.one.user.param';
 import {
   UserAlreadyExistsError,
   UserNotFoundError,

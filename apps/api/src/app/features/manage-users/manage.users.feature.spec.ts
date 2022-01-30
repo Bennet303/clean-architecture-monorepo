@@ -1,5 +1,4 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UserDTO } from '../../core/dtos/user.dto';
 import { UserModel } from '../../core/models/user.model';
 import { ManageUsersFeatureModule } from './manage.users.feature.module';
 import { ManageUsersRepository } from './repositories/manage.users.repository';
@@ -12,6 +11,7 @@ import {
   UserAlreadyExistsError,
   UserNotFoundError,
 } from './manage.users.feature.errors';
+import { UserDTO } from '@clean-architecture-monorepo/dtos';
 
 describe('feature: manage-users', () => {
   let service: ManageUsersService;

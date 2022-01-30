@@ -1,7 +1,6 @@
+import { CreatePostParam, PostDTO } from '@clean-architecture-monorepo/dtos';
 import { Injectable } from '@nestjs/common';
 import { UseCase } from '../../../core/abstracts/use.case';
-import { CreatePostParam } from '../../../core/dtos/params/posts/create.post.param';
-import { PostDTO } from '../../../core/dtos/post.dto';
 import { PostsRepository } from '../repositories/posts.repository';
 
 @Injectable()

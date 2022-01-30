@@ -8,5 +8,5 @@
     "target": "es6"
   },
   "exclude": ["**/*.spec.ts"],
-  "include": ["**/*.ts"]
+  "include": ["**/*.ts", "../../apps/api/src/app/core/authenticated.param.ts"]
 }

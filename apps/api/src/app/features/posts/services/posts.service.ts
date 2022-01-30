@@ -1,9 +1,11 @@
 import { Ability } from '@casl/ability';
-import { ExtendedCreatePostParam } from '../../../core/dtos/params/posts/extended.create.post.param';
-import { FindOnePostParam } from '../../../core/dtos/params/posts/find.one.post.param';
-import { FindPostsParam } from '../../../core/dtos/params/posts/find.posts.param';
-import { UpdatePostParam } from '../../../core/dtos/params/posts/update.post.param';
-import { PaginatedResponse } from '../../../core/dtos/responses/paginated.response.dto';
+import {
+  FindOnePostParam,
+  FindPostsParam,
+  PaginatedResponse,
+  ExtendedCreatePostParam,
+  UpdatePostParam,
+} from '@clean-architecture-monorepo/dtos';
 import { PostModel } from '../../../core/models/post.model';
 
 export abstract class PostsService {

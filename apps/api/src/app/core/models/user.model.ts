@@ -1,4 +1,4 @@
-import { UserDTO } from '../dtos/user.dto';
+import { UserDTO } from '@clean-architecture-monorepo/dtos';
 
 export class UserModel {
   _id: string;

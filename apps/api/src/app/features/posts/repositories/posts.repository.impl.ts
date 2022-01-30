@@ -1,13 +1,15 @@
 import { Ability } from '@casl/ability';
+import {
+  CreatePostParam,
+  ExtendedCreatePostParam,
+  FindOnePostParam,
+  FindPostsParam,
+  PaginatedResponse,
+  PostDTO,
+  UpdatePostParam,
+  UserDTO,
+} from '@clean-architecture-monorepo/dtos';
 import { Injectable } from '@nestjs/common';
-import { CreatePostParam } from '../../../core/dtos/params/posts/create.post.param';
-import { ExtendedCreatePostParam } from '../../../core/dtos/params/posts/extended.create.post.param';
-import { FindOnePostParam } from '../../../core/dtos/params/posts/find.one.post.param';
-import { FindPostsParam } from '../../../core/dtos/params/posts/find.posts.param';
-import { UpdatePostParam } from '../../../core/dtos/params/posts/update.post.param';
-import { PostDTO } from '../../../core/dtos/post.dto';
-import { PaginatedResponse } from '../../../core/dtos/responses/paginated.response.dto';
-import { UserDTO } from '../../../core/dtos/user.dto';
 import { PostModel } from '../../../core/models/post.model';
 import { PostsService } from '../services/posts.service';
 import { PostsRepository } from './posts.repository';

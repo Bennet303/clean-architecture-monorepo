@@ -1,5 +1,5 @@
 export * from './lib/dto';
-export * from './lib/params/authenticated.param';
+export * from '../../../apps/api/src/app/core/authenticated.param';
 export * from './lib/params/pagination.param';
 export * from './lib/params/parameter';
 export * from './lib/params/posts/create.post.param';

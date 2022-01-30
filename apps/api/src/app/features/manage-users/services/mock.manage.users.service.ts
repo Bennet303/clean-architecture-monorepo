@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { FindOneUserParam } from '@clean-architecture-monorepo/dtos';
 import { Injectable } from '@nestjs/common';
 import { UserModel } from '../../../core/models/user.model';
-import { FindOneUserParam } from '../../../core/dtos/params/users/find.one.user.param';
 import { UserNotFoundError } from '../manage.users.feature.errors';
 import { ManageUsersService } from './manage.users.service';
 

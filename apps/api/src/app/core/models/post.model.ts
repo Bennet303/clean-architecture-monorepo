@@ -1,4 +1,4 @@
-import { PostDTO } from '../dtos/post.dto';
+import { PostDTO } from '@clean-architecture-monorepo/dtos';
 import { UserModel } from './user.model';
 
 export class PostModel {

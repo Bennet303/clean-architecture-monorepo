@@ -1,15 +1,17 @@
-import { FindOnePostParam } from '../../../core/dtos/params/posts/find.one.post.param';
-import { FindPostsParam } from '../../../core/dtos/params/posts/find.posts.param';
-import { UpdatePostParam } from '../../../core/dtos/params/posts/update.post.param';
-import { PaginatedResponse } from '../../../core/dtos/responses/paginated.response.dto';
 import { PostModel } from '../../../core/models/post.model';
 import { UserModel } from '../../../core/models/user.model';
 import { PostNotFoundError } from '../post.feature.errors';
 import { PostsService } from './posts.service';
-import { ExtendedCreatePostParam } from '../../../core/dtos/params/posts/extended.create.post.param';
 import { Injectable } from '@nestjs/common';
 import { Ability } from '@casl/ability';
 import { Action } from '../../../core/auth/action';
+import {
+  ExtendedCreatePostParam,
+  FindOnePostParam,
+  FindPostsParam,
+  PaginatedResponse,
+  UpdatePostParam,
+} from '@clean-architecture-monorepo/dtos';
 
 @Injectable()
 export class MockPostsService implements PostsService {

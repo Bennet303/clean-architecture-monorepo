@@ -1,3 +1,4 @@
+import { UserDTO, FindOneUserParam } from '@clean-architecture-monorepo/dtos';
 import {
   Body,
   Controller,
@@ -25,7 +26,6 @@ import {
   ApiTooManyRequestsResponse,
 } from '@nestjs/swagger';
 import { BaseController } from '../../core/abstracts/base.controller';
-import { UserDTO } from '../../core/dtos/user.dto';
 import {
   UserAlreadyExistsError,
   UserNotFoundError,
@@ -33,7 +33,6 @@ import {
 import { CreateUserUseCase } from '../../features/manage-users/use-cases/create.user.use.case';
 import { DeleteUserUseCase } from '../../features/manage-users/use-cases/delete.user.use.case';
 import { GetUserUseCase } from '../../features/manage-users/use-cases/get.user.use.case';
-import { FindOneUserParam } from '../../core/dtos/params/users/find.one.user.param';
 
 @Controller({
   version: '1',

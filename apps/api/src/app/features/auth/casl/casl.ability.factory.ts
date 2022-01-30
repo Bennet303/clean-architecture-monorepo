@@ -1,5 +1,4 @@
 import { ApiUser } from '../../../core/auth/api.user';
-import { PostDTO } from '../../../core/dtos/post.dto';
 import {
   Ability,
   AbilityBuilder,
@@ -11,6 +10,7 @@ import {
 import { Action } from '../../../core/auth/action';
 import { Injectable } from '@nestjs/common';
 import { Roles } from '../../../core/auth/roles';
+import { PostDTO } from '@clean-architecture-monorepo/dtos';
 
 type Subjects = InferSubjects<typeof PostDTO | typeof ApiUser> | 'all';
 
