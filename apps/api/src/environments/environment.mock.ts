@@ -1,14 +1,19 @@
+import { IEnvironment } from './interface.environment';
+
 // Configuration for local environment using mock data
-export const environment = {
+export const environment: IEnvironment = {
   name: 'mock',
   production: false,
   local: true,
   useMockData: true,
-  cors_origin: 'http://localhost:4200',
+  corsOrigin: 'http://localhost:4200',
   throttlerTTL: 60,
   throttlerLimit: 10,
-  keycloakRealm: undefined,
-  keycloakBaseUrl: undefined,
   authDomain: undefined,
   authAudience: undefined,
+  databaseHost: 'localhost',
+  databasePort: 3306,
+  databaseUsername: process.env.DATABASE_USER,
+  databasePassword: process.env.DATABASE_PASSWORD,
+  databaseName: 'Monorepo',
 };
