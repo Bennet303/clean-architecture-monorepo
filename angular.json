@@ -384,6 +384,98 @@
         }
       }
     },
+    "prisma-models": {
+      "root": "libs/prisma-models",
+      "sourceRoot": "libs/prisma-models/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/prisma-models/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/prisma-models"],
+          "options": {
+            "jestConfig": "libs/prisma-models/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "prisma-generate": {
+          "executor": "@nrwl/workspace:run-commands",
+          "outputs": [],
+          "options": {
+            "command": "../../node_modules/.bin/prisma generate",
+            "cwd": "libs/prisma-models"
+          }
+        },
+        "migrate-save": {
+          "executor": "@nrwl/workspace:run-commands",
+          "outputs": [],
+          "options": {
+            "command": "../../node_modules/.bin/prisma migrate dev --create-only --preview-feature --schema ./prisma/schema.prisma",
+            "cwd": "libs/prisma-models"
+          }
+        },
+        "migrate-up": {
+          "executor": "@nrwl/workspace:run-commands",
+          "outputs": [],
+          "options": {
+            "command": "../../node_modules/.bin/prisma migrate dev --preview-feature --schema ./prisma/schema.prisma",
+            "cwd": "libs/prisma-models"
+          }
+        },
+        "migrate-reset": {
+          "executor": "@nrwl/workspace:run-commands",
+          "outputs": [],
+          "options": {
+            "command": "../../node_modules/.bin/prisma migrate reset --preview-feature --schema ./prisma/schema.prisma",
+            "cwd": "libs/prisma-models"
+          }
+        },
+        "migrate-deploy": {
+          "executor": "@nrwl/workspace:run-commands",
+          "outputs": [],
+          "options": {
+            "command": "../../node_modules/.bin/prisma migrate deploy --preview-feature --schema ./prisma/schema.prisma",
+            "cwd": "libs/prisma-models"
+          }
+        },
+        "migrate-status": {
+          "executor": "@nrwl/workspace:run-commands",
+          "outputs": [],
+          "options": {
+            "command": "../../node_modules/.bin/prisma migrate status --preview-feature --schema ./prisma/schema.prisma",
+            "cwd": "libs/prisma-models"
+          }
+        },
+        "studio": {
+          "executor": "@nrwl/workspace:run-commands",
+          "outputs": [],
+          "options": {
+            "command": "../../node_modules/.bin/prisma studio --schema ./prisma/schema.prisma",
+            "cwd": "libs/prisma-models"
+          }
+        }
+      }
+    },
+    "shared": {
+      "root": "libs/shared",
+      "sourceRoot": "libs/shared/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/shared/**/*.ts"]
+          }
+        }
+      }
+    },
     "shared-components": {
       "projectType": "library",
       "root": "libs/shared-components",
@@ -462,20 +554,6 @@
           "outputs": ["{options.outputFile}"],
           "options": {
             "lintFilePatterns": ["apps/shared-components-e2e/**/*.{js,ts}"]
-          }
-        }
-      }
-    },
-    "shared": {
-      "root": "libs/shared",
-      "sourceRoot": "libs/shared/src",
-      "projectType": "library",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "outputs": ["{options.outputFile}"],
-          "options": {
-            "lintFilePatterns": ["libs/shared/**/*.ts"]
           }
         }
       }
