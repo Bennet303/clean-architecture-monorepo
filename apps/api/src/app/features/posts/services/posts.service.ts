@@ -4,7 +4,7 @@ import { FindOnePostParam } from '../../../core/dtos/params/posts/find.one.post.
 import { FindPostsParam } from '../../../core/dtos/params/posts/find.posts.param';
 import { UpdatePostParam } from '../../../core/dtos/params/posts/update.post.param';
 import { PaginatedResponse } from '../../../core/dtos/responses/paginated.response.dto';
-import { PostModel } from '../../../core/models/post.model';
+import { PostModel } from '../../../core/models/base/post.model';
 
 export abstract class PostsService {
   abstract getPost(findOnePost: FindOnePostParam): Promise<PostModel>;

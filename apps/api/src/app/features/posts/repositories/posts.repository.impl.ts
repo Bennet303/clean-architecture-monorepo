@@ -8,7 +8,6 @@ import { UpdatePostParam } from '../../../core/dtos/params/posts/update.post.par
 import { PostDTO } from '../../../core/dtos/post.dto';
 import { PaginatedResponse } from '../../../core/dtos/responses/paginated.response.dto';
 import { UserDTO } from '../../../core/dtos/user.dto';
-import { PostModel } from '../../../core/models/post.model';
 import { PostsService } from '../services/posts.service';
 import { PostsRepository } from './posts.repository';
 
@@ -19,7 +18,7 @@ export class PostsRepositoryImpl implements PostsRepository {
   async getPost(findOnePost: FindOnePostParam): Promise<PostDTO | Error> {
     try {
       const model = await this.service.getPost(findOnePost);
-      return PostModel.toDTO(model);
+      return model.toDTO();
     } catch (error) {
       return error as Error;
     }
@@ -31,7 +30,7 @@ export class PostsRepositoryImpl implements PostsRepository {
   ): Promise<PaginatedResponse<PostDTO> | Error> {
     try {
       const model = await this.service.getPosts(query, ability);
-      const postDTOs = model.items.map(PostModel.toDTO);
+      const postDTOs = model.items.map((item) => item.toDTO());
 
       return new PaginatedResponse({
         items: postDTOs,
@@ -52,7 +51,7 @@ export class PostsRepositoryImpl implements PostsRepository {
         createdAt: new Date(),
       });
       const model = await this.service.createPost(createPostParam);
-      return PostModel.toDTO(model);
+      return model.toDTO();
     } catch (error) {
       return error as Error;
     }
@@ -63,7 +62,7 @@ export class PostsRepositoryImpl implements PostsRepository {
   ): Promise<PostDTO | Error> {
     try {
       const model = await this.service.updatePost(updatePost);
-      return PostModel.toDTO(model);
+      return model.toDTO();
     } catch (error) {
       return error as Error;
     }

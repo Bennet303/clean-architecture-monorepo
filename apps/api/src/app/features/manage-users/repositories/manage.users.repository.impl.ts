@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UserDTO } from '../../../core/dtos/user.dto';
-import { UserModel } from '../../../core/models/user.model';
+import { OrmUserModel } from '../../../core/models/typeorm/orm.user.model';
 import { FindOneUserParam } from '../../../core/dtos/params/users/find.one.user.param';
 import {
   UserAlreadyExistsError,
@@ -17,8 +17,8 @@ export class ManageUsersRepositoryImpl implements ManageUsersRepository {
     try {
       if (await this.service.getUser()) throw new UserAlreadyExistsError();
 
-      const res = await this.service.createUser(UserModel.fromDTO(user));
-      return UserModel.toDTO(res);
+      const res = await this.service.createUser(new OrmUserModel(user));
+      return res.toDTO();
     } catch (err) {
       return err as Error;
     }
@@ -38,7 +38,7 @@ export class ManageUsersRepositoryImpl implements ManageUsersRepository {
 
       if (!res) return new UserNotFoundError();
 
-      return UserModel.toDTO(res);
+      return res.toDTO();
     } catch (err) {
       return err as Error;
     }

@@ -1,21 +1,21 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@nestjs/common';
-import { UserModel } from '../../../core/models/user.model';
+import { OrmUserModel } from '../../../core/models/typeorm/orm.user.model';
 import { FindOneUserParam } from '../../../core/dtos/params/users/find.one.user.param';
 import { UserNotFoundError } from '../manage.users.feature.errors';
 import { ManageUsersService } from './manage.users.service';
 
 @Injectable()
 export class MockManageUsersService implements ManageUsersService {
-  currentUser?: UserModel;
+  currentUser?: OrmUserModel;
 
   constructor() {
-    this.currentUser = new UserModel({
-      _id: '1',
+    this.currentUser = new OrmUserModel({
+      id: '1',
     });
   }
 
-  createUser(user: UserModel): Promise<UserModel> {
+  createUser(user: OrmUserModel): Promise<OrmUserModel> {
     this.currentUser = user;
     return new Promise((resolve) => setTimeout(() => resolve(user), 500));
   }
@@ -24,7 +24,7 @@ export class MockManageUsersService implements ManageUsersService {
     else throw new UserNotFoundError();
     return new Promise((resolve) => setTimeout(() => resolve(), 500));
   }
-  getUser(): Promise<UserModel | undefined> {
+  getUser(): Promise<OrmUserModel | undefined> {
     return new Promise((resolve) =>
       setTimeout(() => resolve(this.currentUser), 500)
     );
