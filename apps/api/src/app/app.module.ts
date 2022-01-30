@@ -8,6 +8,8 @@ import { PostsFeatureModule } from './features/posts/post.feature.module';
 import { ThrottlingModule } from './throttling.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { environment } from '../environments/environment';
+import { OrmUserModel } from './core/models/typeorm/orm.user.model';
+import { OrmPostModel } from './core/models/typeorm/orm.post.model';
 
 @Module({
   imports: [
@@ -22,7 +24,8 @@ import { environment } from '../environments/environment';
       username: environment.databaseUsername,
       password: environment.databasePassword,
       database: environment.databaseName,
-      entities: [],
+      //autoLoadEntities: true,
+      entities: [OrmUserModel, OrmPostModel],
       synchronize: !environment.production, // only use this for development
     }),
   ],

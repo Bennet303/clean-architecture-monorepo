@@ -37,7 +37,7 @@ export class MockPostsService implements PostsService {
     const posts = this.postsDB.filter((post) => {
       const isValid = ability.can(Action.Read, post);
       const matchAuthor = query.author_id
-        ? query.author_id.includes(post.author._id)
+        ? query.author_id.includes(post.author.id)
         : true;
       const matchCreatedBefore = query.created_before
         ? post.createdAt < query.created_before

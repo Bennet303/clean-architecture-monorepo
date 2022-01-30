@@ -1,7 +1,14 @@
-import { Entity } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { PostDTO } from '../../dtos/post.dto';
-import { Model } from '../../abstracts/model';
 import { OrmUserModel } from './orm.user.model';
+import { UserModel } from '../base/user.model';
 
 type NonMethodKeys<T> = ({
   // eslint-disable-next-line @typescript-eslint/ban-types
@@ -12,18 +19,31 @@ export type RemoveMethods<T> = Pick<T, NonMethodKeys<T>>;
 @Entity({
   name: 'posts',
 })
-export class OrmPostModel extends Model<PostDTO> {
+export class OrmPostModel extends BaseEntity implements UserModel {
+  @PrimaryGeneratedColumn()
   id!: string;
+
+  @Column()
   title!: string;
+
+  @Column()
   content!: string;
+
+  @Column()
   createdAt!: Date;
+
+  @OneToOne(() => OrmUserModel)
+  @JoinColumn()
   author!: OrmUserModel;
 
   constructor(obj: PostDTO) {
-    super(obj);
+    super();
+    if (obj) {
+      this.fromDTO(obj);
+    }
   }
 
-  protected fromDTO(dto: PostDTO): this {
+  fromDTO(dto: PostDTO): this {
     this.id = dto.id;
     this.title = dto.title;
     this.content = dto.content;

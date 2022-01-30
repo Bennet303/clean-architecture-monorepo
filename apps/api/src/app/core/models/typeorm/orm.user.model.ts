@@ -1,21 +1,25 @@
 import { UserDTO } from '../../dtos/user.dto';
 import { Model } from '../../abstracts/model';
+import { BaseEntity, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-export class OrmUserModel extends Model<UserDTO> {
-  _id!: string;
+@Entity('users')
+export class OrmUserModel extends BaseEntity implements Model<UserDTO> {
+  @PrimaryGeneratedColumn()
+  id!: string;
 
   constructor(obj: UserDTO) {
-    super(obj);
+    super();
+    if (obj) this.fromDTO(obj);
   }
 
-  protected fromDTO(dto: UserDTO): this {
-    this._id = dto.id;
+  fromDTO(dto: UserDTO): this {
+    this.id = dto.id;
     return this;
   }
 
   toDTO(): UserDTO {
     return new UserDTO({
-      id: this._id,
+      id: this.id,
     });
   }
 }

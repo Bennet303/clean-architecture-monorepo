@@ -7,6 +7,6 @@ export abstract class Model<T extends DTO> {
     }
   }
 
-  protected abstract fromDTO(dto: T): this;
+  abstract fromDTO(dto: T): this;
   abstract toDTO(): T;
 }
