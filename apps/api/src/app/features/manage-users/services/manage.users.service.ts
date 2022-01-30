@@ -1,8 +1,12 @@
-import { UserModel } from '../../../core/models/user.model';
-import { FindOneUserParam } from '../../../core/dtos/params/users/find.one.user.param';
+import {
+  CreateUserParam,
+  FindOneUserParam,
+  UserDTO,
+} from '@clean-architecture-monorepo/dtos';
+import { Model } from '@clean-architecture-monorepo/shared';
 
 export abstract class ManageUsersService {
-  abstract createUser(user: UserModel): Promise<UserModel>;
+  abstract createUser(user: CreateUserParam): Promise<Model<UserDTO>>;
   abstract deleteUser(param: FindOneUserParam): Promise<void>;
-  abstract getUser(): Promise<UserModel | undefined>;
+  abstract getUser(): Promise<Model<UserDTO> | undefined>;
 }

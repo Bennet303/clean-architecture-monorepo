@@ -1,20 +1,23 @@
 import { Ability } from '@casl/ability';
-import { ExtendedCreatePostParam } from '../../../core/dtos/params/posts/extended.create.post.param';
-import { FindOnePostParam } from '../../../core/dtos/params/posts/find.one.post.param';
-import { FindPostsParam } from '../../../core/dtos/params/posts/find.posts.param';
-import { UpdatePostParam } from '../../../core/dtos/params/posts/update.post.param';
-import { PaginatedResponse } from '../../../core/dtos/responses/paginated.response.dto';
-import { PostModel } from '../../../core/models/post.model';
+import {
+  FindOnePostParam,
+  FindPostsParam,
+  PaginatedResponse,
+  ExtendedCreatePostParam,
+  UpdatePostParam,
+  PostDTO,
+} from '@clean-architecture-monorepo/dtos';
+import { Model } from '@clean-architecture-monorepo/shared';
 
 export abstract class PostsService {
-  abstract getPost(findOnePost: FindOnePostParam): Promise<PostModel>;
+  abstract getPost(findOnePost: FindOnePostParam): Promise<Model<PostDTO>>;
   abstract getPosts(
     query: FindPostsParam,
     ability: Ability
-  ): Promise<PaginatedResponse<PostModel>>;
-  abstract createPost(post: ExtendedCreatePostParam): Promise<PostModel>;
+  ): Promise<PaginatedResponse<Model<PostDTO>>>;
+  abstract createPost(post: ExtendedCreatePostParam): Promise<Model<PostDTO>>;
   abstract updatePost(
     updatePost: FindOnePostParam & UpdatePostParam
-  ): Promise<PostModel>;
+  ): Promise<Model<PostDTO>>;
   abstract deletePost(fineOnePost: FindOnePostParam): Promise<void>;
 }

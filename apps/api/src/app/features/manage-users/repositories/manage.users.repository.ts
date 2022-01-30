@@ -1,12 +1,15 @@
-import { UserDTO } from '../../../core/dtos/user.dto';
-import { FindOneUserParam } from '../../../core/dtos/params/users/find.one.user.param';
+import {
+  CreateUserParam,
+  FindOneUserParam,
+  UserDTO,
+} from '@clean-architecture-monorepo/dtos';
 import {
   UserAlreadyExistsError,
   UserNotFoundError,
 } from '../manage.users.feature.errors';
 export abstract class ManageUsersRepository {
   abstract createUser(
-    user: UserDTO
+    user: CreateUserParam
   ): Promise<UserDTO | UserAlreadyExistsError | Error>;
   abstract deleteUser(
     param: FindOneUserParam

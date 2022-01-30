@@ -36,6 +36,9 @@
     "api": {
       "tags": []
     },
+    "dtos": {
+      "tags": []
+    },
     "frontend": {
       "tags": []
     },
@@ -43,15 +46,18 @@
       "tags": [],
       "implicitDependencies": ["frontend"]
     },
+    "prisma-models": {
+      "tags": []
+    },
+    "shared": {
+      "tags": []
+    },
     "shared-components": {
       "tags": []
     },
     "shared-components-e2e": {
       "tags": [],
       "implicitDependencies": ["shared-components"]
-    },
-    "shared": {
-      "tags": []
     }
   }
 }

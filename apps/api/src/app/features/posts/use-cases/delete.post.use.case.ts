@@ -1,8 +1,8 @@
+import { FindOnePostParam } from '@clean-architecture-monorepo/dtos';
 import { Injectable } from '@nestjs/common';
 import { UseCase } from '../../../core/abstracts/use.case';
 import { Action } from '../../../core/auth/action';
-import { AuthenticatedParam } from '../../../core/dtos/params/authenticated.param';
-import { FindOnePostParam } from '../../../core/dtos/params/posts/find.one.post.param';
+import { AuthenticatedParam } from '../../../core/authenticated.param';
 import { InsufficientPermissionsError } from '../../auth/auth.errors';
 import { PostNotFoundError } from '../post.feature.errors';
 import { PostsRepository } from '../repositories/posts.repository';

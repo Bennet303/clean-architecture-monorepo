@@ -1,9 +1,11 @@
+import {
+  FindPostsParam,
+  PaginatedResponse,
+  PostDTO,
+} from '@clean-architecture-monorepo/dtos';
 import { Injectable } from '@nestjs/common';
 import { UseCase } from '../../../core/abstracts/use.case';
-import { AuthenticatedParam } from '../../../core/dtos/params/authenticated.param';
-import { FindPostsParam } from '../../../core/dtos/params/posts/find.posts.param';
-import { PostDTO } from '../../../core/dtos/post.dto';
-import { PaginatedResponse } from '../../../core/dtos/responses/paginated.response.dto';
+import { AuthenticatedParam } from '../../../core/authenticated.param';
 import { PostsRepository } from '../repositories/posts.repository';
 
 @Injectable()

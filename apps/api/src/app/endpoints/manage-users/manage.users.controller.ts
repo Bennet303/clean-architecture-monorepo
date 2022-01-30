@@ -1,4 +1,9 @@
 import {
+  UserDTO,
+  FindOneUserParam,
+  CreateUserParam,
+} from '@clean-architecture-monorepo/dtos';
+import {
   Body,
   Controller,
   Delete,
@@ -25,7 +30,6 @@ import {
   ApiTooManyRequestsResponse,
 } from '@nestjs/swagger';
 import { BaseController } from '../../core/abstracts/base.controller';
-import { UserDTO } from '../../core/dtos/user.dto';
 import {
   UserAlreadyExistsError,
   UserNotFoundError,
@@ -33,7 +37,6 @@ import {
 import { CreateUserUseCase } from '../../features/manage-users/use-cases/create.user.use.case';
 import { DeleteUserUseCase } from '../../features/manage-users/use-cases/delete.user.use.case';
 import { GetUserUseCase } from '../../features/manage-users/use-cases/get.user.use.case';
-import { FindOneUserParam } from '../../core/dtos/params/users/find.one.user.param';
 
 @Controller({
   version: '1',
@@ -78,11 +81,11 @@ export class ManageUsersController extends BaseController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Create a new user.' })
-  @ApiBody({ type: UserDTO })
+  @ApiBody({ type: CreateUserParam })
   @ApiCreatedResponse({ description: 'The created user.', type: UserDTO })
   @ApiConflictResponse({ description: 'User already exists.' })
   @ApiBadRequestResponse({ description: 'Invalid user.' })
-  async createUser(@Body() user: UserDTO): Promise<UserDTO> {
+  async createUser(@Body() user: CreateUserParam): Promise<UserDTO> {
     this.logger?.log(
       `Making call to create user... [user=${JSON.stringify(user)}]`
     );

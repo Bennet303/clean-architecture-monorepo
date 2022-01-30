@@ -1,6 +1,6 @@
+import { FindOneUserParam } from '@clean-architecture-monorepo/dtos';
 import { Injectable } from '@nestjs/common';
 import { UseCase } from '../../../core/abstracts/use.case';
-import { FindOneUserParam } from '../../../core/dtos/params/users/find.one.user.param';
 import {
   InvalidInputError,
   UserNotFoundError,

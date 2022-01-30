@@ -1,7 +1,7 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { IsDateString, IsOptional } from 'class-validator';
-import { DefaultArrayTransform } from '../../../decorators/default.array.transform';
-import { UserId } from '../../../decorators/user.id.decorator';
+import { DefaultArrayTransform } from '../../decorators/default.array.transform';
+import { UserId } from '../../decorators/user.id.decorator';
 import { PaginationParam } from '../pagination.param';
 import { Parameter } from '../parameter';
 
