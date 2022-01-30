@@ -36,6 +36,9 @@
     "api": {
       "tags": []
     },
+    "dtos": {
+      "tags": []
+    },
     "frontend": {
       "tags": []
     },

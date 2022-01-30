@@ -90,6 +90,28 @@
         }
       }
     },
+    "dtos": {
+      "root": "libs/dtos",
+      "sourceRoot": "libs/dtos/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/dtos/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/dtos"],
+          "options": {
+            "jestConfig": "libs/dtos/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
     "frontend": {
       "projectType": "application",
       "root": "apps/frontend",
@@ -405,7 +427,7 @@
           }
         },
         "prisma-generate": {
-          "executor": "@nrwl/workspace:run-commands",
+          "builder": "@nrwl/workspace:run-commands",
           "outputs": [],
           "options": {
             "command": "./node_modules/.bin/prisma generate --schema ./libs/prisma-models/prisma/schema.prisma",
@@ -413,7 +435,7 @@
           }
         },
         "migrate-save": {
-          "executor": "@nrwl/workspace:run-commands",
+          "builder": "@nrwl/workspace:run-commands",
           "outputs": [],
           "options": {
             "command": "../../node_modules/.bin/prisma migrate dev --create-only --preview-feature --schema ./prisma/schema.prisma",
@@ -421,7 +443,7 @@
           }
         },
         "migrate-up": {
-          "executor": "@nrwl/workspace:run-commands",
+          "builder": "@nrwl/workspace:run-commands",
           "outputs": [],
           "options": {
             "command": "../../node_modules/.bin/prisma migrate dev --preview-feature --schema ./prisma/schema.prisma",
@@ -429,7 +451,7 @@
           }
         },
         "migrate-reset": {
-          "executor": "@nrwl/workspace:run-commands",
+          "builder": "@nrwl/workspace:run-commands",
           "outputs": [],
           "options": {
             "command": "../../node_modules/.bin/prisma migrate reset --preview-feature --schema ./prisma/schema.prisma",
@@ -437,7 +459,7 @@
           }
         },
         "migrate-deploy": {
-          "executor": "@nrwl/workspace:run-commands",
+          "builder": "@nrwl/workspace:run-commands",
           "outputs": [],
           "options": {
             "command": "../../node_modules/.bin/prisma migrate deploy --preview-feature --schema ./prisma/schema.prisma",
@@ -445,7 +467,7 @@
           }
         },
         "migrate-status": {
-          "executor": "@nrwl/workspace:run-commands",
+          "builder": "@nrwl/workspace:run-commands",
           "outputs": [],
           "options": {
             "command": "../../node_modules/.bin/prisma migrate status --preview-feature --schema ./prisma/schema.prisma",
@@ -453,7 +475,7 @@
           }
         },
         "studio": {
-          "executor": "@nrwl/workspace:run-commands",
+          "builder": "@nrwl/workspace:run-commands",
           "outputs": [],
           "options": {
             "command": "../../node_modules/.bin/prisma studio --schema ./prisma/schema.prisma",
