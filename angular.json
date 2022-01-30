@@ -408,8 +408,8 @@
           "executor": "@nrwl/workspace:run-commands",
           "outputs": [],
           "options": {
-            "command": "../../node_modules/.bin/prisma generate",
-            "cwd": "libs/prisma-models"
+            "command": "./node_modules/.bin/prisma generate --schema ./libs/prisma-models/prisma/schema.prisma",
+            "cwd": "./"
           }
         },
         "migrate-save": {
