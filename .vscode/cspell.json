@@ -12,7 +12,8 @@
     "nestjs",
     "ngneat",
     "ngxs",
-    "transloco"
+    "transloco",
+    "typeorm"
   ],
   "flagWords": [
     "Usecase",

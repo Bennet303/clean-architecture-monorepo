@@ -6,6 +6,8 @@ import { AuthFeatureModule } from './features/auth/auth.feature.module';
 import { ManageUsersFeatureModule } from './features/manage-users/manage.users.feature.module';
 import { PostsFeatureModule } from './features/posts/post.feature.module';
 import { ThrottlingModule } from './throttling.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { environment } from '../environments/environment';
 
 @Module({
   imports: [
@@ -13,6 +15,16 @@ import { ThrottlingModule } from './throttling.module';
     PostsFeatureModule,
     ThrottlingModule,
     AuthFeatureModule,
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: environment.databaseHost,
+      port: environment.databasePort,
+      username: environment.databaseUsername,
+      password: environment.databasePassword,
+      database: environment.databaseName,
+      entities: [],
+      synchronize: !environment.production, // only use this for development
+    }),
   ],
   controllers: [AppController, ManageUsersController, PostsController],
 })
