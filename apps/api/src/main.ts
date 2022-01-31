@@ -33,6 +33,11 @@ async function bootstrap() {
 
   app.use(compression());
 
+  if (environment.corsOrigin)
+    app.enableCors({
+      origin: [environment.corsOrigin],
+    });
+
   app.useGlobalPipes(
     new ValidationPipe({
       disableErrorMessages: !environment.local, //! change to 'true' for production
