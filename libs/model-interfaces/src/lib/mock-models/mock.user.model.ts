@@ -1,8 +1,8 @@
 import { UserDTO } from '@clean-architecture-monorepo/dtos';
-import { Model } from '@clean-architecture-monorepo/shared';
-import { RemoveMethods } from '../utils/remove.methods';
+import { UserModel } from '@clean-architecture-monorepo/model-interfaces';
+import { RemoveMethods } from '@clean-architecture-monorepo/shared';
 
-export class MockUserModel extends Model<UserDTO> {
+export class MockUserModel extends UserModel {
   id!: string;
 
   constructor(obj: RemoveMethods<MockUserModel>) {

@@ -1,9 +1,9 @@
 import { PostDTO } from '@clean-architecture-monorepo/dtos';
-import { Model } from '@clean-architecture-monorepo/shared';
-import { RemoveMethods } from '../utils/remove.methods';
 import { MockUserModel } from './mock.user.model';
+import { PostModel } from '@clean-architecture-monorepo/model-interfaces';
+import { RemoveMethods } from '@clean-architecture-monorepo/shared';
 
-export class MockPostModel extends Model<PostDTO> {
+export class MockPostModel extends PostModel {
   id!: string;
   title!: string;
   author!: MockUserModel;

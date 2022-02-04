@@ -5,19 +5,18 @@ import {
   PaginatedResponse,
   ExtendedCreatePostParam,
   UpdatePostParam,
-  PostDTO,
 } from '@clean-architecture-monorepo/dtos';
-import { Model } from '@clean-architecture-monorepo/shared';
+import { PostModel } from '@clean-architecture-monorepo/model-interfaces';
 
 export abstract class PostsService {
-  abstract getPost(findOnePost: FindOnePostParam): Promise<Model<PostDTO>>;
+  abstract getPost(findOnePost: FindOnePostParam): Promise<PostModel>;
   abstract getPosts(
     query: FindPostsParam,
     ability: Ability
-  ): Promise<PaginatedResponse<Model<PostDTO>>>;
-  abstract createPost(post: ExtendedCreatePostParam): Promise<Model<PostDTO>>;
+  ): Promise<PaginatedResponse<PostModel>>;
+  abstract createPost(post: ExtendedCreatePostParam): Promise<PostModel>;
   abstract updatePost(
     updatePost: FindOnePostParam & UpdatePostParam
-  ): Promise<Model<PostDTO>>;
+  ): Promise<PostModel>;
   abstract deletePost(fineOnePost: FindOnePostParam): Promise<void>;
 }

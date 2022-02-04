@@ -10,8 +10,11 @@ import {
   PaginatedResponse,
   UpdatePostParam,
 } from '@clean-architecture-monorepo/dtos';
-import { MockPostModel } from '../../../core/models/mock.post.model';
-import { MockUserModel } from '../../../core/models/mock.user.model';
+import {
+  MockPostModel,
+  MockUserModel,
+} from '@clean-architecture-monorepo/model-interfaces';
+
 @Injectable()
 export class MockPostsService implements PostsService {
   postsDB: MockPostModel[] = [
