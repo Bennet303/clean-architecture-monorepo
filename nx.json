@@ -46,6 +46,9 @@
       "tags": [],
       "implicitDependencies": ["frontend"]
     },
+    "model-interfaces": {
+      "tags": []
+    },
     "prisma-models": {
       "tags": []
     },

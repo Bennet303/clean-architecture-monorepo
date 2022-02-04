@@ -406,6 +406,28 @@
         }
       }
     },
+    "model-interfaces": {
+      "root": "libs/model-interfaces",
+      "sourceRoot": "libs/model-interfaces/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/model-interfaces/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/model-interfaces"],
+          "options": {
+            "jestConfig": "libs/model-interfaces/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
     "prisma-models": {
       "root": "libs/prisma-models",
       "sourceRoot": "libs/prisma-models/src",
