@@ -46,6 +46,9 @@
       "tags": [],
       "implicitDependencies": ["frontend"]
     },
+    "mock-models": {
+      "tags": []
+    },
     "model-interfaces": {
       "tags": []
     },

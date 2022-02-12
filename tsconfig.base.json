@@ -17,6 +17,9 @@
     "strict": true,
     "paths": {
       "@clean-architecture-monorepo/dtos": ["libs/dtos/src/index.ts"],
+      "@clean-architecture-monorepo/mock-models": [
+        "libs/mock-models/src/index.ts"
+      ],
       "@clean-architecture-monorepo/model-interfaces": [
         "libs/model-interfaces/src/index.ts"
       ],

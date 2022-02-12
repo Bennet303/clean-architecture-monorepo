@@ -406,6 +406,28 @@
         }
       }
     },
+    "mock-models": {
+      "root": "libs/mock-models",
+      "sourceRoot": "libs/mock-models/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/mock-models/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/mock-models"],
+          "options": {
+            "jestConfig": "libs/mock-models/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
     "model-interfaces": {
       "root": "libs/model-interfaces",
       "sourceRoot": "libs/model-interfaces/src",
