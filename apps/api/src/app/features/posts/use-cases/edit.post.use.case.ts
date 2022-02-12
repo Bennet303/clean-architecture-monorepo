@@ -25,7 +25,7 @@ export class EditPostUseCase
   > {
     const ability = param.user.ability;
 
-    if (!ability) return new Error('Ability is required'); // TODO: add internal and external errors
+    if (!ability) return new Error('Ability is required');
 
     const post = await this.repository.getPost(param.data, ability);
 

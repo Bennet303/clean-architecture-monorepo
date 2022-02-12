@@ -19,7 +19,7 @@ export class DeletePostUseCase
     const ability = param.user.ability;
     const findOnePostParam = param.data;
 
-    if (!ability) return new Error('Ability is required'); // TODO: add internal and external errors
+    if (!ability) return new Error('Ability is required');
 
     const postOrError = await this.repository.getPost(
       findOnePostParam,
