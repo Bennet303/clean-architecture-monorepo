@@ -3,7 +3,7 @@ import {
   CreateUserParam,
   FindOneUserParam,
 } from '@clean-architecture-monorepo/dtos';
-import { MockUserModel } from '@clean-architecture-monorepo/model-interfaces';
+import { MockUserModel } from '@clean-architecture-monorepo/mock-models';
 import { Injectable } from '@nestjs/common';
 import { UserNotFoundError } from '../manage.users.feature.errors';
 import { ManageUsersService } from './manage.users.service';

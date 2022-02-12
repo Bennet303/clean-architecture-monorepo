@@ -125,12 +125,18 @@ export class PostsController extends BaseController {
     type: PostDTO,
   })
   @ApiBadRequestResponse({ description: 'Invalid post.' })
-  async createPost(@Body() post: CreatePostParam): Promise<PostDTO> {
+  async createPost(
+    @Body() post: CreatePostParam,
+    @AuthenticatedApiUser() user: ApiUser
+  ): Promise<PostDTO> {
     this.logger?.log(
       `Making call to create post... [post=${JSON.stringify(post)}]`
     );
 
-    const res = await this.createPostUC.execute(post);
+    const res = await this.createPostUC.execute({
+      user,
+      data: post,
+    });
 
     if (res instanceof Error) throw this.handleUnexpectedError(res);
 

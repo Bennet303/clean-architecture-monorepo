@@ -9,6 +9,10 @@ import {
   UpdatePostParam,
   UserDTO,
 } from '@clean-architecture-monorepo/dtos';
+import {
+  Comparator,
+  Filter,
+} from '@clean-architecture-monorepo/model-interfaces';
 import { Injectable } from '@nestjs/common';
 import { PostsService } from '../services/posts.service';
 import { PostsRepository } from './posts.repository';
@@ -17,9 +21,12 @@ import { PostsRepository } from './posts.repository';
 export class PostsRepositoryImpl implements PostsRepository {
   constructor(private readonly service: PostsService) {}
 
-  async getPost(findOnePost: FindOnePostParam): Promise<PostDTO | Error> {
+  async getPost(
+    findOnePost: FindOnePostParam,
+    ability: Ability
+  ): Promise<PostDTO | Error> {
     try {
-      const model = await this.service.getPost(findOnePost);
+      const model = await this.service.getOnePost(findOnePost, ability);
       return model.toDTO();
     } catch (error) {
       return error as Error;
@@ -31,7 +38,23 @@ export class PostsRepositoryImpl implements PostsRepository {
     ability: Ability
   ): Promise<PaginatedResponse<PostDTO> | Error> {
     try {
-      const model = await this.service.getPosts(query, ability);
+      const builder = this.service.getFilterBuilder();
+
+      if (query.author_id) builder.addAuthorFilter(new Filter(query.author_id));
+      if (query.created_before)
+        builder.addCreatedDateFilter(
+          new Filter(query.created_before, Comparator.LESS_THAN)
+        );
+      if (query.created_after)
+        builder.addCreatedDateFilter(
+          new Filter(query.created_after, Comparator.GREATER_THAN)
+        );
+
+      const model = await this.service.getPostsPaginated(
+        builder,
+        query,
+        ability
+      );
       const postDTOs = model.items.map((item) => item.toDTO());
 
       return new PaginatedResponse({
@@ -60,10 +83,15 @@ export class PostsRepositoryImpl implements PostsRepository {
   }
 
   async updatePost(
-    updatePost: FindOnePostParam & UpdatePostParam
+    updatePost: FindOnePostParam & UpdatePostParam,
+    ability: Ability
   ): Promise<PostDTO | Error> {
     try {
-      const model = await this.service.updatePost(updatePost);
+      const model = await this.service.updateOnePost(
+        updatePost,
+        updatePost,
+        ability
+      );
       return model.toDTO();
     } catch (error) {
       return error as Error;
@@ -72,7 +100,7 @@ export class PostsRepositoryImpl implements PostsRepository {
 
   async deletePost(fineOnePost: FindOnePostParam): Promise<void | Error> {
     try {
-      return await this.service.deletePost(fineOnePost);
+      return await this.service.deleteOnePost(fineOnePost);
     } catch (error) {
       return error as Error;
     }

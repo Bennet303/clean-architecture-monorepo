@@ -6,14 +6,16 @@ import { Action } from '../../../core/auth/action';
 import {
   ExtendedCreatePostParam,
   FindOnePostParam,
-  FindPostsParam,
   PaginatedResponse,
+  PaginationParam,
   UpdatePostParam,
 } from '@clean-architecture-monorepo/dtos';
 import {
+  MockPostFilterBuilder,
   MockPostModel,
   MockUserModel,
-} from '@clean-architecture-monorepo/model-interfaces';
+} from '@clean-architecture-monorepo/mock-models';
+import { InsufficientPermissionsError } from '../../auth/auth.errors';
 
 @Injectable()
 export class MockPostsService implements PostsService {
@@ -29,38 +31,55 @@ export class MockPostsService implements PostsService {
     }),
   ];
 
-  async getPost(findOnePost: FindOnePostParam): Promise<MockPostModel> {
-    const res = this.postsDB.find((post) => post.id === findOnePost.id);
-    if (!res) throw new PostNotFoundError();
+  getFilterBuilder(): MockPostFilterBuilder {
+    return new MockPostFilterBuilder();
+  }
+  async getOnePost(
+    findOneParam: FindOnePostParam,
+    ability: Ability
+  ): Promise<MockPostModel> {
+    const post = this.postsDB.find((post) => post.id === findOneParam.id);
+    if (!post) throw new PostNotFoundError();
+    if (ability.cannot(Action.Read, post))
+      throw new InsufficientPermissionsError();
 
-    return new Promise((resolve) => setTimeout(() => resolve(res), 500));
+    return new Promise((resolve) => setTimeout(() => resolve(post), 500));
   }
 
-  getPosts(
-    query: FindPostsParam,
+  async getPosts(
+    builder: MockPostFilterBuilder,
     ability: Ability
-  ): Promise<PaginatedResponse<MockPostModel>> {
+  ): Promise<MockPostModel[]> {
     const posts = this.postsDB.filter((post) => {
       const isValid = ability.can(Action.Read, post);
-      const matchAuthor = query.author_id
-        ? query.author_id.includes(post.author.id)
+      const matchAuthor = builder.authorIds
+        ? builder.authorIds.includes(post.author.id)
         : true;
-      const matchCreatedBefore = query.created_before
-        ? post.createdAt < query.created_before
+      const matchCreatedBefore = builder.createdBefore
+        ? post.createdAt < builder.createdBefore
         : true;
-      const matchCreatedAfter = query.created_after
-        ? post.createdAt > query.created_after
+      const matchCreatedAfter = builder.createdAfter
+        ? post.createdAt > builder.createdAfter
         : true;
       return isValid && matchAuthor && matchCreatedBefore && matchCreatedAfter;
     });
+    return posts;
+  }
+
+  async getPostsPaginated(
+    builder: MockPostFilterBuilder,
+    pagination: PaginationParam,
+    ability: Ability
+  ): Promise<PaginatedResponse<MockPostModel>> {
+    const posts = await this.getPosts(builder, ability);
     const paginatedPosts = posts.slice(
-      query.offset,
-      query.offset + query.limit
+      pagination.offset,
+      pagination.offset + pagination.limit
     );
     const res = new PaginatedResponse<MockPostModel>({
       total: posts.length,
-      limit: query.limit,
-      offset: query.offset,
+      limit: pagination.limit,
+      offset: pagination.offset,
       items: paginatedPosts,
     });
     return new Promise((resolve) => setTimeout(() => resolve(res), 500));
@@ -81,10 +100,12 @@ export class MockPostsService implements PostsService {
     return new Promise((resolve) => setTimeout(() => resolve(newPost), 500));
   }
 
-  updatePost(
-    updatePost: FindOnePostParam & UpdatePostParam
+  async updateOnePost(
+    findOneParam: FindOnePostParam,
+    updatePost: UpdatePostParam,
+    ability: Ability
   ): Promise<MockPostModel> {
-    const post = this.postsDB.find((post) => post.id === updatePost.id);
+    const post = await this.getOnePost(findOneParam, ability);
     if (!post) throw new PostNotFoundError();
 
     post.title = updatePost.title ?? post.title;
@@ -93,11 +114,11 @@ export class MockPostsService implements PostsService {
     return new Promise((resolve) => setTimeout(() => resolve(post), 500));
   }
 
-  deletePost(fineOnePost: FindOnePostParam): Promise<void> {
-    const post = this.postsDB.find((post) => post.id === fineOnePost.id);
+  deleteOnePost(findOneParam: FindOnePostParam): Promise<void> {
+    const post = this.postsDB.find((post) => post.id === findOneParam.id);
     if (!post) throw new PostNotFoundError();
 
-    this.postsDB = this.postsDB.filter((post) => post.id !== fineOnePost.id);
+    this.postsDB = this.postsDB.filter((post) => post.id !== findOneParam.id);
 
     return new Promise((resolve) => setTimeout(() => resolve(), 500));
   }

@@ -9,14 +9,18 @@ import {
 } from '@clean-architecture-monorepo/dtos';
 
 export abstract class PostsRepository {
-  abstract getPost(findOnePost: FindOnePostParam): Promise<PostDTO | Error>;
+  abstract getPost(
+    findOnePost: FindOnePostParam,
+    ability: Ability
+  ): Promise<PostDTO | Error>;
   abstract getPosts(
     query: FindPostsParam,
     ability: Ability
   ): Promise<PaginatedResponse<PostDTO> | Error>;
   abstract createPost(post: CreatePostParam): Promise<PostDTO | Error>;
   abstract updatePost(
-    updatePost: FindOnePostParam & UpdatePostParam
+    updatePost: FindOnePostParam & UpdatePostParam,
+    ability: Ability
   ): Promise<PostDTO | Error>;
   abstract deletePost(fineOnePost: FindOnePostParam): Promise<void | Error>;
 }

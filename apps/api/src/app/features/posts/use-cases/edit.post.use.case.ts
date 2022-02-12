@@ -25,13 +25,15 @@ export class EditPostUseCase
   > {
     const ability = param.user.ability;
 
-    const post = await this.repository.getPost(param.data);
+    if (!ability) return new Error('Ability is required'); // TODO: add internal and external errors
+
+    const post = await this.repository.getPost(param.data, ability);
 
     if (post instanceof Error) return post;
 
     if (!ability || !ability.can(Action.Update, post))
       return new InsufficientPermissionsError();
 
-    return this.repository.updatePost(param.data);
+    return this.repository.updatePost(param.data, ability);
   }
 }

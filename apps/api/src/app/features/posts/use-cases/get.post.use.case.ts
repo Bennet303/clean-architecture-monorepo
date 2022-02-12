@@ -19,7 +19,9 @@ export class GetPostUseCase
     const ability = param.user.ability;
     const findOnePostParam = param.data;
 
-    const post = await this.repository.getPost(findOnePostParam);
+    if (!ability) return new Error('Ability is required'); // TODO: add internal and external errors
+
+    const post = await this.repository.getPost(findOnePostParam, ability);
 
     if (post instanceof Error) return post;
 
