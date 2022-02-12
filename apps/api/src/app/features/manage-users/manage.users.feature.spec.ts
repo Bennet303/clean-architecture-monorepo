@@ -1,5 +1,4 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UserModel } from '../../core/models/user.model';
 import { ManageUsersFeatureModule } from './manage.users.feature.module';
 import { ManageUsersRepository } from './repositories/manage.users.repository';
 import { ManageUsersService } from './services/manage.users.service';
@@ -12,6 +11,8 @@ import {
   UserNotFoundError,
 } from './manage.users.feature.errors';
 import { UserDTO } from '@clean-architecture-monorepo/dtos';
+import { UserModel } from '@clean-architecture-monorepo/model-interfaces';
+import { MockUserModel } from '@clean-architecture-monorepo/mock-models';
 
 describe('feature: manage-users', () => {
   let service: ManageUsersService;
@@ -42,7 +43,7 @@ describe('feature: manage-users', () => {
 
     beforeEach(() => {
       useCase = testModule.get<CreateUserUseCase>(CreateUserUseCase);
-      mockUserModel = UserModel.fromDTO(mockUser);
+      mockUserModel = new MockUserModel({ id: '1' });
     });
 
     it('should be defined', () => {
@@ -138,7 +139,7 @@ describe('feature: manage-users', () => {
 
     beforeEach(() => {
       useCase = testModule.get<GetUserUseCase>(GetUserUseCase);
-      mockUserModel = UserModel.fromDTO(mockUser);
+      mockUserModel = new MockUserModel({ id: '1' });
     });
 
     it('should be defined', () => {
